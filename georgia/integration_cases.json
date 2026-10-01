@@ -360,5 +360,320 @@
       "nonEmptyPrivate": true
     },
     "provenance": "Comments: knowledge source with unverified legacy price (Наша цена 80$, 46 EUR) never becomes customer money (scenario 7)."
+  },
+  {
+    "id": "int_broad_date_next_week_real",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Real production regression (2026-10): «на следующей неделе» + 2 people + Batumi got the generic manager fallback (semantic_supplier_confirmation, conversation NEEDS_HUMAN) because the broad date was dropped from lead facts and the statement was classified as an availability question."
+  },
+  {
+    "id": "int_broad_date_this_week",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Добрый день, мы на этой неделе будем в Грузии, нас 3 человека, стартуем из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 3,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: current calendar week."
+  },
+  {
+    "id": "int_broad_date_in_a_week",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте, приезжаем через неделю, 2 человека, будем жить в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: approximate relative offset (через неделю) stays a window, never one day."
+  },
+  {
+    "id": "int_broad_date_about_two_weeks",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Примерно через две недели прилетаем в Кутаиси, нас 4 человека"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 4,
+      "startCity": "Кутаиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: hedged relative offset (примерно через две недели)."
+  },
+  {
+    "id": "int_broad_date_weekend",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Хотим поехать на выходных, 2 человека, из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: weekend."
+  },
+  {
+    "id": "int_broad_date_late_month_named",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Планируем в конце ноября, 2 человека, старт из Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: part of a named month (end)."
+  },
+  {
+    "id": "int_broad_date_mid_month_named",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Будем в середине ноября, нас 2 человека, из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: part of a named month (middle)."
+  },
+  {
+    "id": "int_broad_date_next_week_near_weekend",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе ближе к выходным, 2 человека, мы в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: relative week refined toward the weekend; still a window."
+  },
+  {
+    "id": "int_broad_date_exact_control",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! 4 ноября приезжаем, 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": true,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Positive control: the same turn with an exact date stays an ordinary sent qualification reply and remains a concrete quote date."
   }
 ]
