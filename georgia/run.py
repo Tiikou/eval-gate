@@ -63,6 +63,10 @@ MUTATIONS = {
  'exact_failure_falls_back_to_catalog_price': ('instagram-v2/providers/tripster-hybrid-catalog-provider.js', 'return { ok: false, code: result.code, card: withoutCustomerMoney(card), metrics: result.metrics };', 'return { ok: false, code: result.code, card, metrics: result.metrics };'),
  'exact_quote_ignores_fx': ('georgia-on-demand-quote.js', 'const unitUsd = convertToUsd(moneyText(facts.unit), facts.currency, facts.fx.rate);', 'const unitUsd = moneyText(facts.unit);'),
  'comments_money_guard_bypass': ('instagram-v2/comments/no-money.js', '  if (!value.trim()) return value;', '  return value;'),
+ # Broad/relative-date qualification (real regression class, 2026-10-01).
+ 'broad_date_dropped': ('instagram-v2/context/direct-lead-state.js', 'const broad=broadDateWindow(value,today);', 'const broad=null;'),
+ 'week_statement_as_availability': ('instagram-v2/direct/builder.js', "['date_availability', /(?:", "['date_availability', /(?:на\\s+(?:эт[уо]й?|следующ[а-яё]*)\\s+недел|"),
+ 'broad_window_collapsed_to_one_day': ('instagram-v2/context/direct-lead-state.js', 'if(sy===ey&&sm===em)return`${start.getUTCDate()}–${end.getUTCDate()} ${MONTH_NAMES[em]} ${ey}`;', 'if(sy===ey&&sm===em)return`${start.getUTCDate()} ${MONTH_NAMES[sm]} ${sy}`;'),
 }
 # Named cases a mutation must turn RED (a subset of what fails). Every
 # production business invariant above has at least one end-to-end (int_) detector.
@@ -86,6 +90,9 @@ EXPECTED_DETECTORS = {
  'exact_failure_falls_back_to_catalog_price': {'int_direct_exact_quote_unavailable'},
  'comments_money_guard_bypass': {'int_comments_money_suppressed', 'int_comments_unverified_source_price'},
  'crm_without_evidence': {'crm_insufficient_evidence'},
+ 'broad_date_dropped': {'int_broad_date_next_week_real', 'int_broad_date_late_month_named'},
+ 'week_statement_as_availability': {'int_broad_date_next_week_real', 'int_broad_date_this_week'},
+ 'broad_window_collapsed_to_one_day': {'int_broad_date_mid_month_named', 'int_broad_date_late_month_named'},
 }
 
 def native_provenance():
