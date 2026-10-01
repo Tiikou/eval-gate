@@ -467,6 +467,41 @@
     "provenance": "Variant of the real regression: a relative-week timing statement followed by an unrelated recommendation question is still qualification, not an availability question (independent review finding, 2026-10-01)."
   },
   {
+    "id": "int_broad_date_party_in_words",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! Нас будет два человека на следующей неделе в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: party size written in words before a relative week («будет два человека … на следующей неделе») is qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
     "id": "int_broad_date_this_week",
     "scenario": "direct_broad_date_qualification",
     "layer": "D",
