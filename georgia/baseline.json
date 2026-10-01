@@ -1,0 +1,658 @@
+{
+  "name": "georgia-poc",
+  "provider": "deterministic",
+  "threshold": 1.0,
+  "pass_rate": 1.0,
+  "n_cases": 30,
+  "n_passed": 30,
+  "total_checks": 30,
+  "passed_checks": 30,
+  "cases": [
+    {
+      "id": "legacy_eur36",
+      "question": "legacy_eur36",
+      "answer": "{\"amount\": \"60.00\", \"currency\": \"EUR\", \"final\": true}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "legacy_below_midpoint",
+      "question": "legacy_below_midpoint",
+      "answer": "{\"amount\": \"60.00\", \"currency\": \"EUR\", \"final\": true}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "legacy_midpoint",
+      "question": "legacy_midpoint",
+      "answer": "{\"amount\": \"70.00\", \"currency\": \"EUR\", \"final\": true}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "legacy_no_double_markup",
+      "question": "legacy_no_double_markup",
+      "answer": "{\"amount\": \"60.00\", \"currency\": \"EUR\", \"final\": true}",
+      "passed": true,
+      "retrieved_ids": [
+        "scope"
+      ],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "legacy_wrong_currency",
+      "question": "legacy_wrong_currency",
+      "answer": "{\"error\": \"WRONG_CURRENCY\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "legacy_missing_price",
+      "question": "legacy_missing_price",
+      "answer": "{\"error\": \"MISSING_OR_INVALID_PRICE\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pricing_below_tier",
+      "question": "pricing_below_tier",
+      "answer": "{\"price\": \"70.00\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pricing_tier_boundary",
+      "question": "pricing_tier_boundary",
+      "answer": "{\"price\": \"80.00\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "direct_eur_verified_fx",
+      "question": "direct_eur_verified_fx",
+      "answer": "{\"cost\": \"39.60\", \"price\": \"60.00\", \"currency\": \"USD\", \"paymentReady\": false}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "direct_eur_no_fx",
+      "question": "direct_eur_no_fx",
+      "answer": "{\"error\": \"FX_EVIDENCE_REQUIRED\"}",
+      "passed": true,
+      "retrieved_ids": [
+        "scope"
+      ],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "direct_missing_source_field",
+      "question": "direct_missing_source_field",
+      "answer": "{\"error\": \"PRICE_EVIDENCE_REQUIRED\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "malformed_source",
+      "question": "malformed_source",
+      "answer": "{\"error\": \"INVALID_SOURCE_AMOUNT\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "delivery_confirmed",
+      "question": "delivery_confirmed",
+      "answer": "{\"state\": \"SENT\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "delivery_failed",
+      "question": "delivery_failed",
+      "answer": "{\"state\": \"REJECTED_BEFORE_DELIVERY\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "delivery_unknown",
+      "question": "delivery_unknown",
+      "answer": "{\"state\": \"DELIVERY_UNKNOWN\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "delivery_after_write_timeout",
+      "question": "delivery_after_write_timeout",
+      "answer": "{\"state\": \"DELIVERY_UNKNOWN\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "direct_duplicate",
+      "question": "direct_duplicate",
+      "answer": "{\"sends\": 1, \"writes\": 1, \"replay\": \"already_sent\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "comments_duplicate",
+      "question": "comments_duplicate",
+      "answer": "{\"sends\": 1, \"writes\": 1, \"replay\": \"already_sent\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "unknown_retry_no_duplicate",
+      "question": "unknown_retry_no_duplicate",
+      "answer": "{\"sends\": 1, \"writes\": 0, \"replay\": \"delivery_unknown\"}",
+      "passed": true,
+      "retrieved_ids": [
+        "scope"
+      ],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "failed_retry",
+      "question": "failed_retry",
+      "answer": "{\"sends\": 2, \"writes\": 0, \"replay\": \"first_attempt\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "hallucinated_price",
+      "question": "hallucinated_price",
+      "answer": "{\"accepted\": false, \"reason\": \"unsupported_money\", \"moneyTokens\": []}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "safe_unknown_fact",
+      "question": "safe_unknown_fact",
+      "answer": "{\"accepted\": true, \"reason\": null, \"moneyTokens\": []}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "partial_source_unknown_slot",
+      "question": "partial_source_unknown_slot",
+      "answer": "{\"accepted\": false, \"reason\": \"unknown_price_slot\", \"moneyTokens\": []}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "comments_legacy_eur",
+      "question": "comments_legacy_eur",
+      "answer": "{\"moneyPresent\": false, \"hasRoute\": true, \"empty\": false}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "comments_no_price_columns",
+      "question": "comments_no_price_columns",
+      "answer": "{\"moneyPresent\": false, \"hasRoute\": false, \"empty\": true}",
+      "passed": true,
+      "retrieved_ids": [
+        "scope"
+      ],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "crm_confirmed",
+      "question": "crm_confirmed",
+      "answer": "{\"status\": \"SENT\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "crm_unknown_not_sent",
+      "question": "crm_unknown_not_sent",
+      "answer": "{\"error\": \"delivery_status_not_sent\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "crm_insufficient_evidence",
+      "question": "crm_insufficient_evidence",
+      "answer": "{\"error\": \"source_not_georgia_v2_direct\"}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "crm_unknown_bridge",
+      "question": "crm_unknown_bridge",
+      "answer": "{\"status\": \"permanent_failure\", \"writes\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "authorized_price_slot",
+      "question": "authorized_price_slot",
+      "answer": "{\"accepted\": true, \"reason\": null, \"moneyTokens\": [{\"amount\": \"130\", \"currency\": \"USD\"}]}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    }
+  ],
+  "generated_at": "2026-10-01T16:43:40.980116+00:00",
+  "gate": {
+    "passed": true,
+    "exit_code": 0,
+    "reasons": [],
+    "regressions": []
+  },
+  "contract_sha256": "98c2fd7f85b8ca34418928f92ba12185bc4e368847a40b56996a050d9cbeec1d"
+}
