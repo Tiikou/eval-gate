@@ -3,10 +3,10 @@
   "provider": "deterministic",
   "threshold": 1.0,
   "pass_rate": 1.0,
-  "n_cases": 30,
-  "n_passed": 30,
-  "total_checks": 30,
-  "passed_checks": 30,
+  "n_cases": 41,
+  "n_passed": 41,
+  "total_checks": 41,
+  "passed_checks": 41,
   "cases": [
     {
       "id": "legacy_eur36",
@@ -645,14 +645,245 @@
           }
         }
       ]
+    },
+    {
+      "id": "int_direct_priced_discovery",
+      "question": "int_direct_priced_discovery",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 0, \"eventStates\": [\"SENT\"], \"calculatedPriceUsd\": \"130.00\", \"calculatedBasis\": \"PER_PERSON\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"130\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 1, \"crmSentTurns\": 1, \"crmTurnMatchesDelivery\": true, \"crmInboundWrites\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_direct_discovery_eur_fx",
+      "question": "int_direct_discovery_eur_fx",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 0, \"eventStates\": [\"SENT\"], \"calculatedPriceUsd\": \"320.00\", \"calculatedBasis\": \"PER_GROUP\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"320\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 1, \"crmSentTurns\": 1, \"crmTurnMatchesDelivery\": true, \"crmInboundWrites\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_direct_exact_order_fx",
+      "question": "int_direct_exact_order_fx",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 0, \"eventStates\": [\"SENT\"], \"calculatedPriceUsd\": \"360.00\", \"calculatedBasis\": \"PER_BOOKING\", \"quoteSource\": \"ON_DEMAND_SUPPLIER_QUOTE\", \"gatewayRequests\": 1, \"renderedMoney\": [{\"amount\": \"360\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 1, \"crmSentTurns\": 1, \"crmTurnMatchesDelivery\": true, \"crmInboundWrites\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_direct_exact_quote_unavailable",
+      "question": "int_direct_exact_quote_unavailable",
+      "answer": "{\"statuses\": [\"fallback_sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 0, \"eventStates\": [\"SENT\", \"FAILED\"], \"calculatedPriceUsd\": null, \"calculatedBasis\": \"PER_GROUP\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 1, \"renderedMoney\": [], \"percentRendered\": false, \"crmTurnWrites\": 1, \"crmSentTurns\": 1, \"crmTurnMatchesDelivery\": true, \"crmInboundWrites\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_direct_unverified_price",
+      "question": "int_direct_unverified_price",
+      "answer": "{\"statuses\": [\"fallback_sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 0, \"eventStates\": [\"SENT\", \"FAILED\"], \"calculatedPriceUsd\": null, \"calculatedBasis\": null, \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [], \"percentRendered\": false, \"crmTurnWrites\": 1, \"crmSentTurns\": 1, \"crmTurnMatchesDelivery\": true, \"crmInboundWrites\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_direct_stale_price_evidence",
+      "question": "int_direct_stale_price_evidence",
+      "answer": "{\"statuses\": [\"fallback_sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 0, \"eventStates\": [\"SENT\", \"FAILED\"], \"calculatedPriceUsd\": null, \"calculatedBasis\": null, \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [], \"percentRendered\": false, \"crmTurnWrites\": 1, \"crmSentTurns\": 1, \"crmTurnMatchesDelivery\": true, \"crmInboundWrites\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_direct_duplicate_inbound",
+      "question": "int_direct_duplicate_inbound",
+      "answer": "{\"statuses\": [\"sent\", \"already_sent\"], \"actions\": [\"consumed\", \"consumed\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 0, \"eventStates\": [\"SENT\"], \"calculatedPriceUsd\": \"130.00\", \"calculatedBasis\": \"PER_PERSON\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"130\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 1, \"crmSentTurns\": 1, \"crmTurnMatchesDelivery\": true, \"crmInboundWrites\": 1, \"modelCalls\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_direct_delivery_unknown",
+      "question": "int_direct_delivery_unknown",
+      "answer": "{\"statuses\": [\"delivery_unknown\", \"delivery_unknown\"], \"actions\": [\"manager_handoff\", \"manager_handoff\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 2, \"eventStates\": [\"DELIVERY_UNKNOWN\"], \"calculatedPriceUsd\": \"130.00\", \"calculatedBasis\": \"PER_PERSON\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"130\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 0, \"crmSentTurns\": 0, \"crmTurnMatchesDelivery\": false, \"crmInboundWrites\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_direct_delivery_timeout_unknown",
+      "question": "int_direct_delivery_timeout_unknown",
+      "answer": "{\"statuses\": [\"delivery_unknown\", \"delivery_unknown\"], \"actions\": [\"manager_handoff\", \"manager_handoff\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 2, \"eventStates\": [\"DELIVERY_UNKNOWN\"], \"calculatedPriceUsd\": \"130.00\", \"calculatedBasis\": \"PER_PERSON\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"130\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 0, \"crmSentTurns\": 0, \"crmTurnMatchesDelivery\": false, \"crmInboundWrites\": 1}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_comments_money_suppressed",
+      "question": "int_comments_money_suppressed",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_comments_unverified_source_price",
+      "question": "int_comments_unverified_source_price",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
     }
   ],
-  "generated_at": "2026-10-01T16:43:40.980116+00:00",
+  "generated_at": "2026-10-01T18:47:02.039573+00:00",
   "gate": {
     "passed": true,
     "exit_code": 0,
     "reasons": [],
     "regressions": []
   },
-  "contract_sha256": "98c2fd7f85b8ca34418928f92ba12185bc4e368847a40b56996a050d9cbeec1d"
+  "contract_sha256": "23a10b58e84d3175d5f706a94d8ea60dec567fd70c5ebd008fb154c38ef7719c"
 }

@@ -2,19 +2,28 @@
 
 This fork adapts [dbhavery/eval-gate](https://github.com/dbhavery/eval-gate) at
 `71b832630e76da7d1dbe0d91c0c35145db2847c6`. Upstream code is unchanged.
-It runs 30 anonymous contracts, regenerates outputs from selected Georgia source
-modules on every invocation, and applies upstream structural JSON assertions,
-a 100% threshold, and a reviewed baseline. It is not connected to deployment.
+It runs 41 anonymous contracts (35 production + 6 legacy reference) regenerated from
+Georgia source on every invocation, including 11 mocked-boundary integration scenarios
+through Georgia's own runtime entry points, and applies upstream structural JSON
+assertions, a 100% threshold and a reviewed baseline. It is not connected to deployment.
 
-**POC verdict: NEEDS_WORK for full integration.** The requested legacy
-`€36 + €25 -> €61 -> €60` rule was not found in release
-`2ebaf59d78fb8adddc4aa035f63184a751a08f97`. Its six cases test the clearly labelled
-`legacy_policy.cjs` reference, not production. Current Georgia pricing validates
-supplier evidence, converts EUR using verified FX to USD, applies tier markup,
-and rounds UP to $10; current Comments suppress all money. Do not replace that
-business rule with the reference or interpret its mutations as production proof.
-No live process inspection was performed: the default source is the clean release
-build identified by local deployment evidence, not the old dirty backend checkout.
+**Verdict: READY_FOR_INTEGRATION** (for a separate, explicitly authorized Night Run/CI
+wiring task). See `evidence/PRICING_CONTRACT.md` for the verified production pricing contract.
+
+**Production pricing contract (canonical 2ebaf59, verified in code, not prose):** money
+reaches a customer only in Direct, only from a validated quote: supplier price with
+verified, fresh evidence -> verified FX to USD (ceil to the cent) -> tier markup
+(`GEORGIA_SALES_PRICING_V1`) -> round UP to $10 -> rendered by the code-owned price slot.
+Discovery uses the collector (XLSX authority) row; a concrete order (product + date +
+party size) uses a live supplier quote, and a failed live quote withholds money (no
+fallback). Comments, the legacy Direct path and site fallback carry no money.
+
+**Legacy +€25: LEGACY_REFERENCE_ONLY.** The `€36 + €25 -> €61 -> €60` rule exists in no
+Georgia source or runtime (2ebaf59 Direct/webhook, 263f9ba Gateway companion). Its six
+cases (`production_contract: false`) test the POC-owned `legacy_policy.cjs` and are
+reported separately as `LEGACY_REFERENCE_ONLY=6/6`. They are not production guarantees.
+Changing production pricing to +€25 would be a new product decision; this gate does not
+infer or implement it.
 
 ## Run
 
@@ -59,6 +68,17 @@ that changed Georgia code still works.
 - B: actual Direct money renderer and Comments no-money guard: supported price
   slots, unknown slots, hallucinated amounts, safe deferrals, currency leakage.
   Assertions constrain structural outcomes and rendered money tokens rather than attractive wording.
+- D (`georgia/integration.cjs`, `georgia/integration_cases.json`): synthetic event ->
+  Direct host disposition (`processDirectAtV2Boundary` + `runDirectOwnership`) -> V2
+  Direct runtime/adapter/builder (the same composition as `instagram-agent.js`) ->
+  catalog selection -> discovery/exact pricing -> money renderer/output guard -> mocked
+  Graph send -> real SQLite delivery states -> real CRM mirror records on a mocked bridge;
+  and Comments webhook -> Comments runtime/builder -> no-money guard -> mocked Graph.
+  Mocked only: model (deterministic; fabricates `$130` when it has no slot), Graph send,
+  supplier quote gateway, collector XLSX row source, conversation resolver, CRM transport.
+  The harness blocks subprocess/network modules, `fetch`, and filesystem reads outside the
+  snapshot/work dir/pinned SQLite (exit 2 if touched). Customer-visible money is checked
+  by an independent token detector against the authorized calculated value.
 - C: actual delivery classifier, real SQLite claim/state transitions, CRM envelope
   mapper and comment-private CRM reconciliation with injected mock callbacks.
   Send/write counts in state cases are simulated effects gated by real claims;
@@ -72,7 +92,7 @@ fail the gate. An assertion/input contract hash detects weakening of parameters
 that upstream's check-type-only baseline comparison does not detect.
 
 This does NOT evaluate live LLM behavior, prompts, retrieval quality, real APIs,
-Graph delivery, production DB concurrency, whole agent pipelines, real CRM writes,
+Graph delivery, production DB concurrency, the legacy `instagram-agent.js` tick, real CRM writes,
 or guarantee factual correctness of all prose. Tests are derived from existing
 Georgia source regression classes, not exported customer transcripts. No PII,
 credentials, `.env`, customer logs, catalogs or production DBs are copied to Git.
@@ -81,6 +101,7 @@ unit/integration tests as independent required gates.
 
 ## Cases and baseline
 
+`georgia/integration_cases.json` holds layer-D scenarios (bounded 10+; total corpus 20-60).
 `georgia/cases.json` records ID, harness operation, anonymous input, selected
 expected fields, layer and provenance. Add a case for a real failure class and
 its positive control. Extend the finite dispatch in `harness.cjs` only with a
@@ -111,7 +132,13 @@ failing cases, then runs a fresh unmodified GREEN control after EVERY mutation.
 Original source is never edited. A surviving mutation, error exit 2, missing or
 ambiguous anchor, or failed restoration makes the proof unsuccessful.
 
-Ten behavioral defects are covered: legacy +25/rounding/EUR label, current FX
+The final proof covers 22 mutations (19 on canonical Georgia modules, 3 on the legacy
+reference): wrong calculated amount/currency, wrong rendered amount/currency, discovery
+and exact-quote FX bypass, rounding, duplicate send, UNKNOWN as success, UNKNOWN resent on
+replay, duplicate/incorrect CRM write, CRM source-evidence bypass, unverified/stale price
+accepted, failed exact quote falling back to catalog money, renderer bypass and Comments
+money-guard bypass. Each mutation must also fail its named `EXPECTED_DETECTORS`.
+Earlier POC history: ten behavioral defects were covered: legacy +25/rounding/EUR label, current FX
 and rounding, duplicate claims, UNKNOWN as success, CRM source-evidence bypass,
 complete money-renderer bypass, and corruption of a validated rendered amount/currency. The first narrow residual-money-check
 mutation survived because an earlier independent guard still rejected the price.
@@ -123,6 +150,17 @@ it does not claim every single redundant guard is independently necessary.
 `evidence/mutation-proof.json` and `evidence/georgia-summary.json` record final
 POC results. False-positive/negative numbers cover these synthetic controls and
 injected behavioral defects only; they are not production calibration estimates.
+
+## Integration readiness (not wired)
+
+Use `./scripts/run-georgia-evals.sh --source-root <isolated candidate checkout>` as a
+blocking step: exit 0 pass, 1 regression (block), 2 config/infrastructure (block, never
+treat as pass). Needs Python >=3.11, Node 26 and `npm ci` in this project; ~4 s per run,
+~2 min for `--prove-mutations`. No network, credentials or live LLM. Keep Georgia's native
+suites as independent gates. Known native results on 2ebaf59: `instagram-v2-runtime-contract-test.js`
+fails identically on main 53d0ff6 (pre-existing); `check:repository-boundary` (and the
+UX suite's broader-checks subtest that calls it) fails only on 2ebaf59 because its one-line
+`openclaw-georgia-deployed-loader-test.ts` change left a stale manifest checksum.
 
 ## Upstream maintenance
 

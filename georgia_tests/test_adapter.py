@@ -43,6 +43,7 @@ def test_sql_symlink_escape_is_rejected(tmp_path,monkeypatch):
     source=tmp_path/'source'; source.mkdir()
     # The selected JS closure is already safe; test the independent SQL path.
     monkeypatch.setattr(run,'ENTRIES',[])
+    monkeypatch.setattr(run,'INTEGRATION_ENTRIES',[])
     (source/'instagram-v2').mkdir()
     outside=tmp_path/'outside.sql'; outside.write_text('must not read')
     (source/'instagram-v2/state-schema.sql').symlink_to(outside)
