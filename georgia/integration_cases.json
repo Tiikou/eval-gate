@@ -397,6 +397,41 @@
     "provenance": "Real production regression (2026-10): «на следующей неделе» + 2 people + Batumi got the generic manager fallback (semantic_supplier_confirmation, conversation NEEDS_HUMAN) because the broad date was dropped from lead facts and the statement was classified as an availability question."
   },
   {
+    "id": "int_broad_date_next_week_party_future",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе приезжаем, нас будет 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: a future-tense party statement («нас будет 2 человека») after a relative week is still qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
     "id": "int_broad_date_this_week",
     "scenario": "direct_broad_date_qualification",
     "layer": "D",
