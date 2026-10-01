@@ -432,6 +432,41 @@
     "provenance": "Variant of the real regression: a future-tense party statement («нас будет 2 человека») after a relative week is still qualification, not an availability question (independent review finding, 2026-10-01)."
   },
   {
+    "id": "int_broad_date_next_week_unrelated_question",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе будем в Батуми, нас 2 человека, что посоветуете?"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: a relative-week timing statement followed by an unrelated recommendation question is still qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
     "id": "int_broad_date_this_week",
     "scenario": "direct_broad_date_qualification",
     "layer": "D",
