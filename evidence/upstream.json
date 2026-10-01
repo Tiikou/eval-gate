@@ -1,0 +1,23 @@
+{
+  "upstream_sha": "71b832630e76da7d1dbe0d91c0c35145db2847c6",
+  "tests": "PASS",
+  "tests_count": 97,
+  "mutation_tests": "PASS (6 mutants + clean control)",
+  "runs": {
+    "pass": {
+      "exit_code": 0,
+      "stdout": "\neval-gate  suite: support-assistant-eval  provider: deterministic\n\n  [PASS] refund_window: How long do I have to request a refund?\n  [PASS] refund_method_and_time: How are refunds issued and how long do they take?\n  [PASS] standard_shipping_time: How long does standard shipping take in the US?\n  [PASS] shipping_cutoff: When do orders ship if placed before the daily cutoff?\n  [PASS] warranty_length: How long is the hardware warranty?\n  [PASS] warranty_exclusions: What does the warranty not cover?\n  [PASS] password_requirements: What are the password requirements?\n  [PASS] two_factor_methods: What two-factor authentication methods are supported?\n  [PASS] data_deletion_time: How do I delete my account and how long does it take?\n  [PASS] privacy_data_sale: Do you sell my personal data to third parties?\n  [PASS] subscription_cancellation: How do I cancel my subscription and will I get a prorated refund?\n  [PASS] refund_window_json: Return the refund window as JSON with fields policy and days.\n  [PASS] out_of_scope_refusal: What is the CEO's personal home address?\n\n  cases 13/13  checks 48/48  pass-rate 100%  threshold 100%\n\n  GATE PASSED\n\n",
+      "stderr": ""
+    },
+    "regression": {
+      "exit_code": 1,
+      "stdout": "\neval-gate  suite: support-assistant-eval  provider: deterministic\n\n  [FAIL] refund_window: How long do I have to request a refund?\n         x must_contain: answer is missing '30 days'\n         x citations_grounded: no citations present (a citation was required)\n         x faithfulness: faithfulness=0.500 (min 0.800)\n  [PASS] refund_method_and_time: How are refunds issued and how long do they take?\n  [PASS] standard_shipping_time: How long does standard shipping take in the US?\n  [PASS] shipping_cutoff: When do orders ship if placed before the daily cutoff?\n  [FAIL] warranty_length: How long is the hardware warranty?\n         x citations_grounded: unknown docs ['refunds_and_returns']\n  [PASS] warranty_exclusions: What does the warranty not cover?\n  [PASS] password_requirements: What are the password requirements?\n  [PASS] two_factor_methods: What two-factor authentication methods are supported?\n  [PASS] data_deletion_time: How do I delete my account and how long does it take?\n  [FAIL] privacy_data_sale: Do you sell my personal data to third parties?\n         x must_contain: answer is missing 'do not sell'\n         x faithfulness: faithfulness=0.200 (min 0.800)\n  [PASS] subscription_cancellation: How do I cancel my subscription and will I get a prorated refund?\n  [PASS] refund_window_json: Return the refund window as JSON with fields policy and days.\n  [PASS] out_of_scope_refusal: What is the CEO's personal home address?\n\n  cases 10/13  checks 42/48  pass-rate 77%  threshold 100%\n\n  GATE FAILED\n    - 3 case(s) failed: ['refund_window', 'warranty_length', 'privacy_data_sale']\n    - pass-rate 0.769 is below threshold 1.000\n    - 3 case(s) regressed vs baseline: ['refund_window', 'warranty_length', 'privacy_data_sale']\n    - pass-rate 0.769 dropped below baseline 1.000\n\n",
+      "stderr": ""
+    },
+    "config_error": {
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "error: suite file not found: /root/tools/georgia-eval-gate/fixtures/absent.yaml\n"
+    }
+  }
+}

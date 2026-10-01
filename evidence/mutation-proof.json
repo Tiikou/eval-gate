@@ -1,0 +1,340 @@
+[
+  {
+    "mutation": "disable_plus25",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [],
+    "detected_by": [
+      "legacy_below_midpoint",
+      "legacy_eur36",
+      "legacy_midpoint",
+      "legacy_no_double_markup"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "break_legacy_rounding",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [],
+    "detected_by": [
+      "legacy_midpoint"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "eur_to_usd",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [],
+    "detected_by": [
+      "legacy_below_midpoint",
+      "legacy_eur36",
+      "legacy_midpoint",
+      "legacy_no_double_markup"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "duplicate_send",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "direct_duplicate",
+      "int_direct_duplicate_inbound"
+    ],
+    "detected_by": [
+      "comments_duplicate",
+      "direct_duplicate",
+      "int_comments_money_suppressed",
+      "int_comments_unverified_source_price",
+      "int_direct_duplicate_inbound"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "unknown_as_success",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "delivery_unknown",
+      "int_direct_delivery_unknown"
+    ],
+    "detected_by": [
+      "delivery_unknown",
+      "int_direct_delivery_unknown"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "crm_without_evidence",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "crm_insufficient_evidence"
+    ],
+    "detected_by": [
+      "crm_insufficient_evidence"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "hallucinated_price",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "hallucinated_price"
+    ],
+    "detected_by": [
+      "authorized_price_slot",
+      "hallucinated_price",
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown",
+      "int_direct_discovery_eur_fx",
+      "int_direct_duplicate_inbound",
+      "int_direct_exact_order_fx",
+      "int_direct_exact_quote_unavailable",
+      "int_direct_priced_discovery",
+      "int_direct_stale_price_evidence",
+      "int_direct_unverified_price",
+      "partial_source_unknown_slot"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "ignore_verified_fx",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "direct_eur_verified_fx",
+      "int_direct_discovery_eur_fx"
+    ],
+    "detected_by": [
+      "direct_eur_verified_fx",
+      "int_direct_discovery_eur_fx"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "corrupt_rendered_money",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "authorized_price_slot"
+    ],
+    "detected_by": [
+      "authorized_price_slot",
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown",
+      "int_direct_duplicate_inbound",
+      "int_direct_priced_discovery"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "break_current_rounding",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_priced_discovery",
+      "pricing_below_tier"
+    ],
+    "detected_by": [
+      "direct_eur_verified_fx",
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown",
+      "int_direct_discovery_eur_fx",
+      "int_direct_duplicate_inbound",
+      "int_direct_exact_order_fx",
+      "int_direct_priced_discovery",
+      "pricing_below_tier"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "wrong_calculated_amount",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_priced_discovery"
+    ],
+    "detected_by": [
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown",
+      "int_direct_duplicate_inbound",
+      "int_direct_priced_discovery"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "wrong_calculated_currency",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_exact_order_fx",
+      "int_direct_priced_discovery"
+    ],
+    "detected_by": [
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown",
+      "int_direct_discovery_eur_fx",
+      "int_direct_duplicate_inbound",
+      "int_direct_exact_order_fx",
+      "int_direct_priced_discovery"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "wrong_rendered_amount",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_exact_order_fx",
+      "int_direct_priced_discovery"
+    ],
+    "detected_by": [
+      "authorized_price_slot",
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown",
+      "int_direct_discovery_eur_fx",
+      "int_direct_duplicate_inbound",
+      "int_direct_exact_order_fx",
+      "int_direct_priced_discovery"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "wrong_rendered_currency",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_exact_order_fx",
+      "int_direct_priced_discovery"
+    ],
+    "detected_by": [
+      "authorized_price_slot",
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown",
+      "int_direct_discovery_eur_fx",
+      "int_direct_duplicate_inbound",
+      "int_direct_exact_order_fx",
+      "int_direct_priced_discovery"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "crm_duplicate_write",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_priced_discovery"
+    ],
+    "detected_by": [
+      "int_direct_discovery_eur_fx",
+      "int_direct_duplicate_inbound",
+      "int_direct_exact_order_fx",
+      "int_direct_exact_quote_unavailable",
+      "int_direct_priced_discovery",
+      "int_direct_stale_price_evidence",
+      "int_direct_unverified_price"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "crm_wrong_delivery_id",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_priced_discovery"
+    ],
+    "detected_by": [
+      "int_direct_discovery_eur_fx",
+      "int_direct_duplicate_inbound",
+      "int_direct_exact_order_fx",
+      "int_direct_exact_quote_unavailable",
+      "int_direct_priced_discovery",
+      "int_direct_stale_price_evidence",
+      "int_direct_unverified_price"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "unknown_resent_on_replay",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown"
+    ],
+    "detected_by": [
+      "int_direct_delivery_timeout_unknown",
+      "int_direct_delivery_unknown",
+      "unknown_retry_no_duplicate"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "unverified_price_accepted",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_unverified_price"
+    ],
+    "detected_by": [
+      "int_direct_unverified_price"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "stale_price_accepted",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_stale_price_evidence"
+    ],
+    "detected_by": [
+      "int_direct_stale_price_evidence"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "exact_failure_falls_back_to_catalog_price",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_exact_quote_unavailable"
+    ],
+    "detected_by": [
+      "int_direct_exact_quote_unavailable"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "exact_quote_ignores_fx",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_direct_exact_order_fx"
+    ],
+    "detected_by": [
+      "int_direct_exact_order_fx"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "comments_money_guard_bypass",
+    "expected": 1,
+    "actual": 1,
+    "expected_detectors": [
+      "int_comments_money_suppressed",
+      "int_comments_unverified_source_price"
+    ],
+    "detected_by": [
+      "comments_legacy_eur",
+      "comments_no_price_columns",
+      "int_comments_money_suppressed",
+      "int_comments_unverified_source_price"
+    ],
+    "restored": 0
+  }
+]

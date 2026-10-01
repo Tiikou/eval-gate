@@ -1,0 +1,81 @@
+[
+  {
+    "mutation": "disable_plus25",
+    "expected": 1,
+    "actual": 1,
+    "detected_by": [
+      "legacy_eur36",
+      "legacy_below_midpoint",
+      "legacy_midpoint",
+      "legacy_no_double_markup"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "break_legacy_rounding",
+    "expected": 1,
+    "actual": 1,
+    "detected_by": [
+      "legacy_midpoint"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "eur_to_usd",
+    "expected": 1,
+    "actual": 1,
+    "detected_by": [
+      "legacy_eur36",
+      "legacy_below_midpoint",
+      "legacy_midpoint",
+      "legacy_no_double_markup"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "duplicate_send",
+    "expected": 1,
+    "actual": 1,
+    "detected_by": [
+      "direct_duplicate",
+      "comments_duplicate",
+      "crm_event_replay"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "unknown_as_success",
+    "expected": 1,
+    "actual": 1,
+    "detected_by": [
+      "delivery_unknown"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "crm_without_evidence",
+    "expected": 1,
+    "actual": 1,
+    "detected_by": [
+      "crm_insufficient_evidence"
+    ],
+    "restored": 0
+  },
+  {
+    "mutation": "hallucinated_price",
+    "expected": 1,
+    "actual": 0,
+    "detected_by": [],
+    "restored": 0
+  },
+  {
+    "mutation": "break_current_rounding",
+    "expected": 1,
+    "actual": 1,
+    "detected_by": [
+      "pricing_below_tier",
+      "direct_eur_verified_fx"
+    ],
+    "restored": 0
+  }
+]

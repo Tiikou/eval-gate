@@ -1,0 +1,364 @@
+[
+  {
+    "id": "int_direct_priced_discovery",
+    "scenario": "direct_priced_discovery",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT"
+      ],
+      "calculatedPriceUsd": "130.00",
+      "calculatedBasis": "PER_PERSON",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "provenance": "Direct discovery: verified USD 90 -> tier 40%/min $30 -> $126 -> round up $10 -> $130 per person; rendered, sent once, CRM SENT turn equals delivered text/id (scenarios 1, 8, 10)."
+  },
+  {
+    "id": "int_direct_discovery_eur_fx",
+    "scenario": "direct_discovery_eur_fx",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT"
+      ],
+      "calculatedPriceUsd": "320.00",
+      "calculatedBasis": "PER_GROUP",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "320",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "provenance": "Direct discovery: EUR 210 x verified FX 1.137846 = $238.95 -> 30%/min $40 -> $310.64 -> $320 per group; no EUR leaks (scenarios 1, 10)."
+  },
+  {
+    "id": "int_direct_exact_order_fx",
+    "scenario": "direct_exact_order_fx",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT"
+      ],
+      "calculatedPriceUsd": "360.00",
+      "calculatedBasis": "PER_BOOKING",
+      "quoteSource": "ON_DEMAND_SUPPLIER_QUOTE",
+      "gatewayRequests": 1,
+      "renderedMoney": [
+        {
+          "amount": "360",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "provenance": "Direct exact order: live supplier EUR 250 x FX = $284.47 -> 20%/min $75 -> $359.47 -> $360 per booking; exact authority replaces discovery $320 (scenarios 1, 10)."
+  },
+  {
+    "id": "int_direct_exact_quote_unavailable",
+    "scenario": "direct_exact_quote_unavailable",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "fallback_sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT",
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": "PER_GROUP",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 1,
+      "renderedMoney": [],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "provenance": "Direct exact order: supplier timeout withholds money; no fallback to discovery/stale price (scenario 4)."
+  },
+  {
+    "id": "int_direct_unverified_price",
+    "scenario": "direct_unverified_price",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "fallback_sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT",
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "provenance": "Direct: collector row without verified price evidence has no customer money; fabricated amount refused (scenario 4)."
+  },
+  {
+    "id": "int_direct_stale_price_evidence",
+    "scenario": "direct_stale_price_evidence",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "fallback_sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT",
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "provenance": "Direct: stale price evidence (30 days) is not authority (scenario 4)."
+  },
+  {
+    "id": "int_direct_duplicate_inbound",
+    "scenario": "direct_duplicate_inbound",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "sent",
+        "already_sent"
+      ],
+      "actions": [
+        "consumed",
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT"
+      ],
+      "calculatedPriceUsd": "130.00",
+      "calculatedBasis": "PER_PERSON",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1,
+      "modelCalls": 1
+    },
+    "provenance": "Direct: the same inbound event twice -> one generation, one send, one CRM turn (scenario 2)."
+  },
+  {
+    "id": "int_direct_delivery_unknown",
+    "scenario": "direct_delivery_unknown",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "delivery_unknown",
+        "delivery_unknown"
+      ],
+      "actions": [
+        "manager_handoff",
+        "manager_handoff"
+      ],
+      "sends": 1,
+      "managerTasks": 2,
+      "eventStates": [
+        "DELIVERY_UNKNOWN"
+      ],
+      "calculatedPriceUsd": "130.00",
+      "calculatedBasis": "PER_PERSON",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "provenance": "Direct: Graph response without delivery id is DELIVERY_UNKNOWN; replay does not resend; no SENT CRM turn; manager handoff, no retry (scenarios 3, 9)."
+  },
+  {
+    "id": "int_direct_delivery_timeout_unknown",
+    "scenario": "direct_delivery_timeout_unknown",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "delivery_unknown",
+        "delivery_unknown"
+      ],
+      "actions": [
+        "manager_handoff",
+        "manager_handoff"
+      ],
+      "sends": 1,
+      "managerTasks": 2,
+      "eventStates": [
+        "DELIVERY_UNKNOWN"
+      ],
+      "calculatedPriceUsd": "130.00",
+      "calculatedBasis": "PER_PERSON",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "provenance": "Direct: transport timeout after request is DELIVERY_UNKNOWN; same no-resend/no-success semantics (scenarios 3, 9)."
+  },
+  {
+    "id": "int_comments_money_suppressed",
+    "scenario": "comments_money_suppressed",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicSends": 1,
+      "privateSends": 1,
+      "publicState": "SENT",
+      "privateState": "SENT",
+      "replayStatus": "already_sent",
+      "renderedMoney": [],
+      "percentRendered": false,
+      "nonEmptyPrivate": true
+    },
+    "provenance": "Comments: no pricing authority; model EUR/USD/GEL amounts and prepayment share never reach Graph; duplicate comment not resent (scenarios 5, 6)."
+  },
+  {
+    "id": "int_comments_unverified_source_price",
+    "scenario": "comments_unverified_source_price",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicSends": 1,
+      "privateSends": 1,
+      "publicState": "SENT",
+      "privateState": "SENT",
+      "replayStatus": "already_sent",
+      "renderedMoney": [],
+      "percentRendered": false,
+      "nonEmptyPrivate": true
+    },
+    "provenance": "Comments: knowledge source with unverified legacy price (Наша цена 80$, 46 EUR) never becomes customer money (scenario 7)."
+  }
+]

@@ -14,3 +14,7 @@ venv/
 reports/*.json
 reports/*.html
 !reports/.gitkeep
+
+# Georgia run artifacts contain fresh generated outputs and temporary provenance.
+reports/georgia/
+node_modules/

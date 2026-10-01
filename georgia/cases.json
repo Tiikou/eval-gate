@@ -1,0 +1,446 @@
+[
+  {
+    "id": "legacy_eur36",
+    "kind": "legacy",
+    "input": {
+      "amount": "36"
+    },
+    "expected": {
+      "amount": "60.00",
+      "currency": "EUR",
+      "final": true
+    },
+    "layer": "A-reference",
+    "source": "User-requested legacy reference; no deployed implementation found",
+    "production_contract": false,
+    "provenance": "LEGACY_REFERENCE_ONLY: tests georgia/legacy_policy.cjs (EUR + €25 -> nearest €10), which exists in no Georgia source/runtime at 2ebaf59/263f9ba. Not a production guarantee; production pricing is the Direct USD tier contract."
+  },
+  {
+    "id": "legacy_below_midpoint",
+    "kind": "legacy",
+    "input": {
+      "amount": "39.99"
+    },
+    "expected": {
+      "amount": "60.00",
+      "currency": "EUR",
+      "final": true
+    },
+    "layer": "A-reference",
+    "source": "User-requested legacy reference; no deployed implementation found",
+    "production_contract": false,
+    "provenance": "LEGACY_REFERENCE_ONLY: tests georgia/legacy_policy.cjs (EUR + €25 -> nearest €10), which exists in no Georgia source/runtime at 2ebaf59/263f9ba. Not a production guarantee; production pricing is the Direct USD tier contract."
+  },
+  {
+    "id": "legacy_midpoint",
+    "kind": "legacy",
+    "input": {
+      "amount": "40"
+    },
+    "expected": {
+      "amount": "70.00",
+      "currency": "EUR",
+      "final": true
+    },
+    "layer": "A-reference",
+    "source": "User-requested legacy reference; no deployed implementation found",
+    "production_contract": false,
+    "provenance": "LEGACY_REFERENCE_ONLY: tests georgia/legacy_policy.cjs (EUR + €25 -> nearest €10), which exists in no Georgia source/runtime at 2ebaf59/263f9ba. Not a production guarantee; production pricing is the Direct USD tier contract."
+  },
+  {
+    "id": "legacy_no_double_markup",
+    "kind": "legacy_replay",
+    "input": {
+      "amount": "36"
+    },
+    "expected": {
+      "amount": "60.00",
+      "currency": "EUR",
+      "final": true
+    },
+    "layer": "A-reference",
+    "source": "User-requested legacy reference; no deployed implementation found",
+    "production_contract": false,
+    "provenance": "LEGACY_REFERENCE_ONLY: tests georgia/legacy_policy.cjs (EUR + €25 -> nearest €10), which exists in no Georgia source/runtime at 2ebaf59/263f9ba. Not a production guarantee; production pricing is the Direct USD tier contract."
+  },
+  {
+    "id": "legacy_wrong_currency",
+    "kind": "legacy",
+    "input": {
+      "amount": "36",
+      "currency": "USD"
+    },
+    "expected": {
+      "error": "WRONG_CURRENCY"
+    },
+    "layer": "A-reference",
+    "source": "User-requested legacy reference; no deployed implementation found",
+    "production_contract": false,
+    "provenance": "LEGACY_REFERENCE_ONLY: tests georgia/legacy_policy.cjs (EUR + €25 -> nearest €10), which exists in no Georgia source/runtime at 2ebaf59/263f9ba. Not a production guarantee; production pricing is the Direct USD tier contract."
+  },
+  {
+    "id": "legacy_missing_price",
+    "kind": "legacy",
+    "input": {},
+    "expected": {
+      "error": "MISSING_OR_INVALID_PRICE"
+    },
+    "layer": "A-reference",
+    "source": "User-requested legacy reference; no deployed implementation found",
+    "production_contract": false,
+    "provenance": "LEGACY_REFERENCE_ONLY: tests georgia/legacy_policy.cjs (EUR + €25 -> nearest €10), which exists in no Georgia source/runtime at 2ebaf59/263f9ba. Not a production guarantee; production pricing is the Direct USD tier contract."
+  },
+  {
+    "id": "pricing_below_tier",
+    "kind": "pricing",
+    "input": {
+      "cost": "49.99"
+    },
+    "expected": {
+      "price": "70.00"
+    },
+    "layer": "A",
+    "source": "georgia-sales-pricing.js:calculatePrice; test/v2-direct-own-sales-pricing.test.js"
+  },
+  {
+    "id": "pricing_tier_boundary",
+    "kind": "pricing",
+    "input": {
+      "cost": "50"
+    },
+    "expected": {
+      "price": "80.00"
+    },
+    "layer": "A",
+    "source": "georgia-sales-pricing.js:calculatePrice; test/v2-direct-own-sales-pricing.test.js"
+  },
+  {
+    "id": "direct_eur_verified_fx",
+    "kind": "quote",
+    "input": {
+      "sourceCurrency": "EUR",
+      "sourcePrice": "36",
+      "fxRateToUsd": "1.100000",
+      "fxEvidenceRef": "synthetic_fx",
+      "fxVerifiedAt": "2026-10-01T10:00:00.000Z"
+    },
+    "expected": {
+      "cost": "39.60",
+      "price": "60.00",
+      "currency": "USD",
+      "paymentReady": false
+    },
+    "layer": "A",
+    "source": "georgia-sales-pricing.js:buildQuote; current verified USD policy"
+  },
+  {
+    "id": "direct_eur_no_fx",
+    "kind": "quote",
+    "input": {
+      "sourceCurrency": "EUR",
+      "sourcePrice": "36"
+    },
+    "expected": {
+      "error": "FX_EVIDENCE_REQUIRED"
+    },
+    "layer": "A",
+    "source": "georgia-sales-pricing.js:buildQuote"
+  },
+  {
+    "id": "direct_missing_source_field",
+    "kind": "quote",
+    "input": {
+      "priceEvidenceRef": ""
+    },
+    "expected": {
+      "error": "PRICE_EVIDENCE_REQUIRED"
+    },
+    "layer": "A",
+    "source": "georgia-sales-pricing.js:buildQuote"
+  },
+  {
+    "id": "malformed_source",
+    "kind": "quote",
+    "input": {
+      "sourcePrice": "garbage"
+    },
+    "expected": {
+      "error": "INVALID_SOURCE_AMOUNT"
+    },
+    "layer": "A",
+    "source": "georgia-sales-pricing.js:buildQuote"
+  },
+  {
+    "id": "delivery_confirmed",
+    "kind": "delivery",
+    "input": {
+      "result": {
+        "ok": true,
+        "deliveryId": "synthetic_delivery",
+        "recipientId": "synthetic_recipient"
+      }
+    },
+    "expected": {
+      "state": "SENT"
+    },
+    "layer": "C",
+    "source": "instagram-v2/delivery-classifier.js; instagram-v2-state-core-test.js"
+  },
+  {
+    "id": "delivery_failed",
+    "kind": "delivery",
+    "input": {
+      "result": {
+        "ok": false,
+        "delivered": false
+      }
+    },
+    "expected": {
+      "state": "REJECTED_BEFORE_DELIVERY"
+    },
+    "layer": "C",
+    "source": "instagram-v2/delivery-classifier.js; instagram-v2-state-core-test.js"
+  },
+  {
+    "id": "delivery_unknown",
+    "kind": "delivery",
+    "input": {
+      "result": {
+        "ok": true
+      }
+    },
+    "expected": {
+      "state": "DELIVERY_UNKNOWN"
+    },
+    "layer": "C",
+    "source": "instagram-v2/delivery-classifier.js; instagram-v2-state-core-test.js"
+  },
+  {
+    "id": "delivery_after_write_timeout",
+    "kind": "delivery_error",
+    "input": {
+      "code": "ETIMEDOUT",
+      "requestBodyWritten": true
+    },
+    "expected": {
+      "state": "DELIVERY_UNKNOWN"
+    },
+    "layer": "C",
+    "source": "instagram-v2/delivery-classifier.js"
+  },
+  {
+    "id": "direct_duplicate",
+    "kind": "state",
+    "input": {
+      "channel": "direct",
+      "outcome": "CONFIRMED"
+    },
+    "expected": {
+      "sends": 1,
+      "writes": 1,
+      "replay": "already_sent"
+    },
+    "layer": "C",
+    "source": "instagram-v2/state-store.js:claimEvent; simulated effects gated by real state"
+  },
+  {
+    "id": "comments_duplicate",
+    "kind": "state",
+    "input": {
+      "channel": "comment_private",
+      "outcome": "CONFIRMED"
+    },
+    "expected": {
+      "sends": 1,
+      "writes": 1,
+      "replay": "already_sent"
+    },
+    "layer": "C",
+    "source": "instagram-v2/state-store.js:claimEvent; simulated effects gated by real state"
+  },
+  {
+    "id": "unknown_retry_no_duplicate",
+    "kind": "state",
+    "input": {
+      "channel": "direct",
+      "outcome": "UNKNOWN"
+    },
+    "expected": {
+      "sends": 1,
+      "writes": 0,
+      "replay": "delivery_unknown"
+    },
+    "layer": "C",
+    "source": "instagram-v2/state-store.js:claimEvent; simulated effects gated by real state"
+  },
+  {
+    "id": "failed_retry",
+    "kind": "state",
+    "input": {
+      "channel": "direct",
+      "outcome": "FAILED"
+    },
+    "expected": {
+      "sends": 2,
+      "writes": 0,
+      "replay": "first_attempt"
+    },
+    "layer": "C",
+    "source": "instagram-v2/state-store.js:claimEvent; simulated effects gated by real state"
+  },
+  {
+    "id": "hallucinated_price",
+    "kind": "money",
+    "input": {
+      "text": "Цена 999 долларов."
+    },
+    "expected": {
+      "accepted": false,
+      "reason": "unsupported_money",
+      "moneyTokens": []
+    },
+    "layer": "B",
+    "source": "instagram-v2/direct/money-authority.js:renderMoney"
+  },
+  {
+    "id": "safe_unknown_fact",
+    "kind": "money",
+    "input": {
+      "text": "Стоимость нужно уточнить отдельно."
+    },
+    "expected": {
+      "accepted": true,
+      "reason": null,
+      "moneyTokens": []
+    },
+    "layer": "B",
+    "source": "instagram-v2/direct/money-authority.js:renderMoney"
+  },
+  {
+    "id": "partial_source_unknown_slot",
+    "kind": "money",
+    "input": {
+      "text": "[[PRICE:42]]"
+    },
+    "expected": {
+      "accepted": false,
+      "reason": "unknown_price_slot",
+      "moneyTokens": []
+    },
+    "layer": "B",
+    "source": "instagram-v2/direct/money-authority.js:renderMoney"
+  },
+  {
+    "id": "comments_legacy_eur",
+    "kind": "comments",
+    "input": {
+      "text": "Кахетия — винный маршрут. Цена €36."
+    },
+    "expected": {
+      "moneyPresent": false,
+      "hasRoute": true,
+      "empty": false
+    },
+    "layer": "B",
+    "source": "instagram-v2/comments/no-money.js; current Comments forbids all money"
+  },
+  {
+    "id": "comments_no_price_columns",
+    "kind": "comments",
+    "input": {
+      "text": "Цена 999 USD."
+    },
+    "expected": {
+      "moneyPresent": false,
+      "hasRoute": false,
+      "empty": true
+    },
+    "layer": "B",
+    "source": "instagram-v2/comments/no-money.js; current Comments forbids all money"
+  },
+  {
+    "id": "crm_confirmed",
+    "kind": "crm",
+    "input": {},
+    "expected": {
+      "status": "SENT"
+    },
+    "layer": "C",
+    "source": "instagram-v2/integration/direct-crm-mirror-record.js"
+  },
+  {
+    "id": "crm_unknown_not_sent",
+    "kind": "crm",
+    "input": {
+      "deliveryStatus": "DELIVERY_UNKNOWN"
+    },
+    "expected": {
+      "error": "delivery_status_not_sent"
+    },
+    "layer": "C",
+    "source": "instagram-v2/integration/direct-crm-mirror-record.js"
+  },
+  {
+    "id": "crm_insufficient_evidence",
+    "kind": "crm",
+    "input": {
+      "source": "unverified_source"
+    },
+    "expected": {
+      "error": "source_not_georgia_v2_direct"
+    },
+    "layer": "C",
+    "source": "instagram-v2/integration/direct-crm-mirror-record.js"
+  },
+  {
+    "id": "crm_unknown_bridge",
+    "kind": "crm_reconcile",
+    "input": {
+      "bridgeResult": {
+        "ok": true,
+        "deliveryUnknown": true
+      },
+      "bridgeStatus": "unknown"
+    },
+    "expected": {
+      "status": "permanent_failure",
+      "writes": 1
+    },
+    "layer": "C",
+    "source": "instagram-v2/integration/comment-private-crm-reconcile.js; mock write attempt != confirmation"
+  },
+  {
+    "id": "authorized_price_slot",
+    "kind": "money",
+    "input": {
+      "text": "Стоимость [[PRICE:42]].",
+      "context": {
+        "catalogState": {
+          "options": [
+            {
+              "variants": [
+                {
+                  "experienceId": 42,
+                  "title": "Синтетический маршрут",
+                  "priceLabel": "$130 за человека"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "expected": {
+      "accepted": true,
+      "reason": null,
+      "moneyTokens": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ]
+    },
+    "layer": "B",
+    "source": "instagram-v2/direct/money-authority.js:renderMoney positive control"
+  }
+]

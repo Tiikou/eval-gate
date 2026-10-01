@@ -1,0 +1,38 @@
+{
+  "host": "rotten-peach.ptr.network",
+  "python": "3.12.3",
+  "node": "26.9.0",
+  "github_account": "Tiikou",
+  "github_orgs": [],
+  "fork": "https://github.com/Tiikou/eval-gate",
+  "legacy_backend": {
+    "path": "/root/robbery-ai/backend",
+    "branch": "main",
+    "head": "1960a08c32546ed22000f4a2032d98f17084cdb5",
+    "dirty": true
+  },
+  "evaluated_release_source": {
+    "path": "/root/georgia-pr97-integration-20261001-evidence/primary-release-build",
+    "head": "2ebaf59d78fb8adddc4aa035f63184a751a08f97",
+    "clean": true,
+    "provenance": "local deployment evidence; no fresh live-process attestation"
+  },
+  "poc_path": "/root/tools/georgia-eval-gate",
+  "upstream_sha": "71b832630e76da7d1dbe0d91c0c35145db2847c6",
+  "test_directories": [
+    "test",
+    "test-fixtures"
+  ],
+  "safe_harness": "capability-limited copied pure modules, pinned POC SQLite, temporary synthetic state, mocked effects",
+  "locations": {
+    "pricing_currency_fx": "georgia-sales-pricing.js",
+    "external_pricing": "instagram-v2/providers/tripster-hybrid-catalog-provider.js",
+    "delivery": "instagram-v2/delivery-classifier.js",
+    "duplicate_state": "instagram-v2/state-store.js",
+    "crm_outbound_contract": "instagram-v2/integration/direct-crm-mirror-record.js",
+    "direct": "instagram-v2/adapters/direct-polling-adapter.js",
+    "comments": "instagram-v2/adapters/comments-adapter.js",
+    "dry_run": "scripts/georgia-v2-dry-run.js"
+  },
+  "gh_network_note": "sandbox DNS failure initially looked like invalid auth; escalation verified existing auth without changing credentials"
+}
