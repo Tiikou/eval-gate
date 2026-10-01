@@ -323,8 +323,10 @@ const { FALLBACK_TEXT } = src('instagram-v2/direct/fallback-policy');
 const REASK_PEOPLE = /сколько\s+(?:вас|человек|людей|гост|участник)|количеств\S*\s+(?:человек|гостей|участник)/iu;
 const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+)?(?:старт|выезж|поед|начин)|город\S*\s+(?:старта|отправлени|выезда)/iu;
 const REASK_DATE = /на\s+какие\s+даты|какого\s+числа|когда\s+(?:вы\s+)?(?:планиру|приезжа|прилета)/iu;
-async function broadDateQualification({ message }) {
-  const d = createDirect('broaddate', { model: qualificationModel });
+// The real production turn failed in the model call itself (model_unavailable).
+const unavailableModel = calls => ({ complete: async () => { calls.push(1); const e = new Error('synthetic model timeout'); e.code = 'ETIMEDOUT'; throw e; } });
+async function broadDateQualification({ message, model = 'qualification' }) {
+  const d = createDirect('broaddate', { model: model === 'unavailable' ? unavailableModel : qualificationModel });
   try {
     const r = await deliverDirect(d, 'synthetic_event_1', message, {});
     const summary = directSummary(d, [r]);
