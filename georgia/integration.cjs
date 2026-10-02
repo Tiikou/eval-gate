@@ -137,7 +137,7 @@ function directModel(calls) {
   };
 }
 
-function createDirect(name, { row = authorityRow(), gateway = null, send = null } = {}) {
+function createDirect(name, { row = authorityRow(), gateway = null, send = null, model = null } = {}) {
   const root = fs.mkdtempSync(path.join(WORK, `${name}-`));
   const effects = { sends: [], modelCalls: [], gatewayRequests: [], crm: [], managerTasks: [], needsHuman: [], legacyCalls: 0, retries: 0, cards: [] };
   const catalog = createDirectCatalogProvider({
@@ -157,7 +157,7 @@ function createDirect(name, { row = authorityRow(), gateway = null, send = null 
     storeOptions: { privateRoot: root, dbPath: path.join(root, 'state.sqlite') },
     expectedIdentity: { accountId: ACCOUNT, username: USERNAME },
     resolveTokenIdentity: async () => ({ accountId: ACCOUNT, username: USERNAME, enabled: true }),
-    modelClient: directModel(effects.modelCalls),
+    modelClient: (model || directModel)(effects.modelCalls),
     knowledgeProvider: createDirectKnowledgeProvider({ bundle: { knowledge: '' }, catalogProvider: spiedCatalog, webProvider: async () => ({ ok: false }) }),
     manualExampleProviderFactory: () => async () => [],
     sendInstagram: async input => {
@@ -299,6 +299,70 @@ const SCENARIOS = {
   async comments_unverified_source_price() { return comments('source', { publicReply: 'Наша цена 80$ за человека.', privateReply: 'Здравствуйте! По каталогу: Наша цена 80 USD, а у поставщика 46 евро. На какие даты планируете?' }, 'Каталог (без подтверждения цены): Кахетия — Наша цена: 80$; у поставщика 46 EUR.'); }
 };
 
+// Broad/relative-date qualification (real production regression class): a
+// first Direct message states people, start city and a broad/relative date.
+// Mocked model with the observed production decision: it hands the turn to a
+// human for supplier confirmation when Georgia's own turn contract presents an
+// availability request or an unknown date; otherwise it asks an ordinary
+// qualification question without money. Every judgement about the date is
+// Georgia's (lead state, turn dimensions, output guard, fallback policy).
+// Structural outcome only: no generic fallback or needs_human, known facts
+// persisted, the date persisted as non-exact progress, nothing re-asked.
+function qualificationModel(calls) {
+  return {
+    complete: async input => {
+      calls.push(1);
+      const prompt = JSON.stringify(input);
+      if (/CLIENT ASKED IN THIS TURN: [^.]*date_availability/.test(prompt) || /\\?"datesText\\?":null/.test(prompt)) return { text: JSON.stringify({ direct_action: 'needs_human', reason: 'supplier_confirmation' }) };
+      return { text: 'Подскажите, пожалуйста, какой формат поездки Вам интересен: групповой или индивидуальный?' };
+    }
+  };
+}
+const { quoteInputFrom } = src('instagram-v2/direct/catalog-selection');
+const { FALLBACK_TEXT } = src('instagram-v2/direct/fallback-policy');
+const REASK_PEOPLE = /сколько\s+(?:вас|человек|людей|гост|участник)|количеств\S*\s+(?:человек|гостей|участник)/iu;
+const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+)?(?:старт|выезж|поед|начин)|город\S*\s+(?:старта|отправлени|выезда)/iu;
+const REASK_DATE = /на\s+какие\s+даты|какого\s+числа|когда\s+(?:вы\s+)?(?:планиру|приезжа|прилета)/iu;
+// The real production turn failed in the model call itself (model_unavailable).
+const unavailableModel = calls => ({ complete: async () => { calls.push(1); const e = new Error('synthetic model timeout'); e.code = 'ETIMEDOUT'; throw e; } });
+const rejectedQualificationModel = calls => ({ complete: async () => { calls.push(1); return { text: 'Это 180 dollars за группу.' }; } });
+async function broadDateQualification({ message, model = 'qualification' }) {
+  const d = createDirect('broaddate', { model: model === 'unavailable' ? unavailableModel : model === 'rejected' ? rejectedQualificationModel : qualificationModel });
+  try {
+    const r = await deliverDirect(d, 'synthetic_event_1', message, {});
+    const summary = directSummary(d, [r]);
+    const facts = d.runtime.store.getConversationContextEnvelope({ accountId: ACCOUNT, conversationId: CONVERSATION })?.leadFacts || {};
+    const conversation = d.runtime.store.getConversation(ACCOUNT, CONVERSATION) || {};
+    const last = String(d.effects.sends[d.effects.sends.length - 1]?.text || '');
+    return {
+      statuses: summary.statuses, actions: summary.actions, sends: summary.sends, eventStates: summary.eventStates,
+      managerTasks: summary.managerTasks, legacyCalls: summary.legacyCalls,
+      handoffReason: String(conversation.needs_human_reason || ''),
+      conversationMode: String(conversation.mode || ''),
+      genericFallback: d.effects.sends.some(x => String(x.text).trim() === FALLBACK_TEXT),
+      modelCalls: d.effects.modelCalls.length,
+      people: Number.isInteger(facts.people) ? facts.people : null,
+      startCity: facts.startCity || null,
+      datePersisted: Boolean(String(facts.datesText || '').trim()),
+      exactQuoteDate: Boolean(quoteInputFrom(facts)),
+      reaskPeople: REASK_PEOPLE.test(last),
+      reaskStartCity: REASK_CITY.test(last),
+      reaskDate: REASK_DATE.test(last),
+      gatewayRequests: summary.gatewayRequests,
+      renderedMoney: summary.renderedMoney
+    };
+  } finally { d.runtime.store.close(); }
+}
+SCENARIOS.direct_broad_date_qualification = c => broadDateQualification(c.input);
+SCENARIOS.direct_broad_date_matrix = async c => {
+  const results = [];
+  for (const turn of c.input.turns) {
+    const output = await broadDateQualification(turn);
+    results.push(Object.fromEntries(Object.keys(c.expected.results[results.length]).map(key => [key, output[key]])));
+  }
+  return { results };
+};
+
 async function comments(name, reply, policy = 'Synthetic policy.') {
   const root = fs.mkdtempSync(path.join(WORK, `comments-${name}-`));
   const publicCalls = []; const privateCalls = []; let modelCalls = 0;
@@ -338,7 +402,7 @@ async function comments(name, reply, policy = 'Synthetic policy.') {
   for (const c of CASES) {
     const scenario = SCENARIOS[c.scenario];
     if (!scenario) throw new Error(`HARNESS_UNKNOWN_SCENARIO:${c.scenario}`);
-    out[c.id] = await scenario();
+    out[c.id] = await scenario(c);
   }
   if (blocked.length) throw new Error(`EXTERNAL_OR_OUT_OF_SANDBOX_ACCESS:${[...new Set(blocked)].join(',')}`);
   process.stdout.write(JSON.stringify(out));

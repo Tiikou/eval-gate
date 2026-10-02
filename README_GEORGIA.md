@@ -2,8 +2,8 @@
 
 This fork adapts [dbhavery/eval-gate](https://github.com/dbhavery/eval-gate) at
 `71b832630e76da7d1dbe0d91c0c35145db2847c6`. Upstream code is unchanged.
-It runs 41 anonymous contracts (35 production + 6 legacy reference) regenerated from
-Georgia source on every invocation, including 11 mocked-boundary integration scenarios
+It runs 58 anonymous contracts (52 production + 6 legacy reference) regenerated from
+Georgia source on every invocation, including 28 mocked-boundary integration scenarios
 through Georgia's own runtime entry points, and applies upstream structural JSON
 assertions, a 100% threshold and a reviewed baseline. It is not connected to deployment.
 
@@ -101,6 +101,13 @@ unit/integration tests as independent required gates.
 
 ## Cases and baseline
 
+The bounded review closure adds three matrix contracts within the existing 20–60
+corpus limit. They cover “2 участника” and “двое/два/2 с сыном” on throwing and
+rejected-model paths, plus existing human/complaint controls. Every matrix turn
+uses a fresh runtime and compares all selected expected fields exactly; reached
+model-call counts distinguish outage coverage from pre-model handling. The
+existing broad-date acceptance corpus is unchanged. No new edge-case class is added.
+
 `georgia/integration_cases.json` holds layer-D scenarios (bounded 10+; total corpus 20-60).
 `georgia/cases.json` records ID, harness operation, anonymous input, selected
 expected fields, layer and provenance. Add a case for a real failure class and
@@ -132,12 +139,14 @@ failing cases, then runs a fresh unmodified GREEN control after EVERY mutation.
 Original source is never edited. A surviving mutation, error exit 2, missing or
 ambiguous anchor, or failed restoration makes the proof unsuccessful.
 
-The final proof covers 22 mutations (19 on canonical Georgia modules, 3 on the legacy
+The proof covers 27 mutations (24 on Georgia modules, 3 on the legacy
 reference): wrong calculated amount/currency, wrong rendered amount/currency, discovery
 and exact-quote FX bypass, rounding, duplicate send, UNKNOWN as success, UNKNOWN resent on
 replay, duplicate/incorrect CRM write, CRM source-evidence bypass, unverified/stale price
 accepted, failed exact quote falling back to catalog money, renderer bypass and Comments
-money-guard bypass. Each mutation must also fail its named `EXPECTED_DETECTORS`.
+money-guard bypass, broad-date extraction/classification/window preservation, reached
+model-unavailable handoff and rejected-output human-boundary bypass. Each mutation
+must also fail its named `EXPECTED_DETECTORS`.
 Earlier POC history: ten behavioral defects were covered: legacy +25/rounding/EUR label, current FX
 and rounding, duplicate claims, UNKNOWN as success, CRM source-evidence bypass,
 complete money-renderer bypass, and corruption of a validated rendered amount/currency. The first narrow residual-money-check

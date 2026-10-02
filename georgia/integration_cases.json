@@ -360,5 +360,853 @@
       "nonEmptyPrivate": true
     },
     "provenance": "Comments: knowledge source with unverified legacy price (Наша цена 80$, 46 EUR) never becomes customer money (scenario 7)."
+  },
+  {
+    "id": "int_broad_date_next_week_real",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Real production regression (2026-10): «на следующей неделе» + 2 people + Batumi got the generic manager fallback (semantic_supplier_confirmation, conversation NEEDS_HUMAN) because the broad date was dropped from lead facts and the statement was classified as an availability question."
+  },
+  {
+    "id": "int_broad_date_next_week_party_future",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе приезжаем, нас будет 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: a future-tense party statement («нас будет 2 человека») after a relative week is still qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
+    "id": "int_broad_date_next_week_unrelated_question",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе будем в Батуми, нас 2 человека, что посоветуете?"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: a relative-week timing statement followed by an unrelated recommendation question is still qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
+    "id": "int_broad_date_party_in_words",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! Нас будет два человека на следующей неделе в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: party size written in words before a relative week («будет два человека … на следующей неделе») is qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
+    "id": "int_broad_date_this_week",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Добрый день, мы на этой неделе будем в Грузии, нас 3 человека, стартуем из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 3,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: current calendar week."
+  },
+  {
+    "id": "int_broad_date_in_a_week",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте, приезжаем через неделю, 2 человека, будем жить в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: approximate relative offset (через неделю) stays a window, never one day."
+  },
+  {
+    "id": "int_broad_date_about_two_weeks",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Примерно через две недели прилетаем в Кутаиси, нас 4 человека"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 4,
+      "startCity": "Кутаиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: hedged relative offset (примерно через две недели)."
+  },
+  {
+    "id": "int_broad_date_weekend",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Хотим поехать на выходных, 2 человека, из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: weekend."
+  },
+  {
+    "id": "int_broad_date_late_month_named",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Планируем в конце ноября, 2 человека, старт из Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: part of a named month (end)."
+  },
+  {
+    "id": "int_broad_date_mid_month_named",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Будем в середине ноября, нас 2 человека, из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: part of a named month (middle)."
+  },
+  {
+    "id": "int_broad_date_next_week_near_weekend",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе ближе к выходным, 2 человека, мы в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: relative week refined toward the weekend; still a window."
+  },
+  {
+    "id": "int_broad_date_exact_control",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! 4 ноября приезжаем, 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": true,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Positive control: the same turn with an exact date stays an ordinary sent qualification reply and remains a concrete quote date."
+  },
+  {
+    "id": "int_model_unavailable_broad_date_real",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "unavailable"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "modelCalls": 1
+    },
+    "provenance": "Exact production path of the real regression (2026-10-01T18:43:53Z, error_code=model_unavailable after ~128 s): the model call failed on the first ordinary qualification turn and the builder sent the generic manager fallback. Owner decision 2026-10-01: ordinary qualification makes deterministic progress when the model is unavailable (no money, no availability claim, known facts not re-asked)."
+  },
+  {
+    "id": "int_model_unavailable_exact_date",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! 4 ноября приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "unavailable"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": true,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "modelCalls": 1
+    },
+    "provenance": "Model-unavailable control with an exact date: ordinary qualification still makes deterministic progress and the exact date stays a concrete quote date."
+  },
+  {
+    "id": "int_review22_participants",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 2,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 2,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "provenance": "Bounded matrix of the approved participants review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
+  },
+  {
+    "id": "int_review22_son",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "provenance": "Bounded matrix of the approved son review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
+  },
+  {
+    "id": "int_review22_boundaries",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "На следующей неделе позовите Никиту",
+          "model": "rejected"
+        },
+        {
+          "message": "На этой неделе хочу пожаловаться",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "fallback_sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT",
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "model_invalid_output_after_repair",
+          "genericFallback": true,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "fallback_sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT",
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "model_invalid_output_after_repair",
+          "genericFallback": true,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "provenance": "Bounded matrix of the approved boundaries review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
   }
 ]
