@@ -813,7 +813,8 @@
       "reaskStartCity": false,
       "reaskDate": false,
       "gatewayRequests": 0,
-      "renderedMoney": []
+      "renderedMoney": [],
+      "modelCalls": 1
     },
     "provenance": "Exact production path of the real regression (2026-10-01T18:43:53Z, error_code=model_unavailable after ~128 s): the model call failed on the first ordinary qualification turn and the builder sent the generic manager fallback. Owner decision 2026-10-01: ordinary qualification makes deterministic progress when the model is unavailable (no money, no availability claim, known facts not re-asked)."
   },
@@ -849,8 +850,363 @@
       "reaskStartCity": false,
       "reaskDate": false,
       "gatewayRequests": 0,
-      "renderedMoney": []
+      "renderedMoney": [],
+      "modelCalls": 1
     },
     "provenance": "Model-unavailable control with an exact date: ordinary qualification still makes deterministic progress and the exact date stays a concrete quote date."
+  },
+  {
+    "id": "int_review22_participants",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 2,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 2,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "provenance": "Bounded matrix of the approved participants review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
+  },
+  {
+    "id": "int_review22_son",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "provenance": "Bounded matrix of the approved son review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
+  },
+  {
+    "id": "int_review22_boundaries",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "На следующей неделе позовите Никиту",
+          "model": "rejected"
+        },
+        {
+          "message": "На этой неделе хочу пожаловаться",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "fallback_sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT",
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "model_invalid_output_after_repair",
+          "genericFallback": true,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "fallback_sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT",
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "model_invalid_output_after_repair",
+          "genericFallback": true,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "provenance": "Bounded matrix of the approved boundaries review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
   }
 ]

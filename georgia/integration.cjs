@@ -325,8 +325,9 @@ const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+
 const REASK_DATE = /на\s+какие\s+даты|какого\s+числа|когда\s+(?:вы\s+)?(?:планиру|приезжа|прилета)/iu;
 // The real production turn failed in the model call itself (model_unavailable).
 const unavailableModel = calls => ({ complete: async () => { calls.push(1); const e = new Error('synthetic model timeout'); e.code = 'ETIMEDOUT'; throw e; } });
+const rejectedQualificationModel = calls => ({ complete: async () => { calls.push(1); return { text: 'Это 180 dollars за группу.' }; } });
 async function broadDateQualification({ message, model = 'qualification' }) {
-  const d = createDirect('broaddate', { model: model === 'unavailable' ? unavailableModel : qualificationModel });
+  const d = createDirect('broaddate', { model: model === 'unavailable' ? unavailableModel : model === 'rejected' ? rejectedQualificationModel : qualificationModel });
   try {
     const r = await deliverDirect(d, 'synthetic_event_1', message, {});
     const summary = directSummary(d, [r]);
@@ -339,6 +340,7 @@ async function broadDateQualification({ message, model = 'qualification' }) {
       handoffReason: String(conversation.needs_human_reason || ''),
       conversationMode: String(conversation.mode || ''),
       genericFallback: d.effects.sends.some(x => String(x.text).trim() === FALLBACK_TEXT),
+      modelCalls: d.effects.modelCalls.length,
       people: Number.isInteger(facts.people) ? facts.people : null,
       startCity: facts.startCity || null,
       datePersisted: Boolean(String(facts.datesText || '').trim()),
@@ -352,6 +354,14 @@ async function broadDateQualification({ message, model = 'qualification' }) {
   } finally { d.runtime.store.close(); }
 }
 SCENARIOS.direct_broad_date_qualification = c => broadDateQualification(c.input);
+SCENARIOS.direct_broad_date_matrix = async c => {
+  const results = [];
+  for (const turn of c.input.turns) {
+    const output = await broadDateQualification(turn);
+    results.push(Object.fromEntries(Object.keys(c.expected.results[results.length]).map(key => [key, output[key]])));
+  }
+  return { results };
+};
 
 async function comments(name, reply, policy = 'Synthetic policy.') {
   const root = fs.mkdtempSync(path.join(WORK, `comments-${name}-`));
