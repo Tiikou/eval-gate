@@ -64,11 +64,24 @@ MUTATIONS = {
  'exact_quote_ignores_fx': ('georgia-on-demand-quote.js', 'const unitUsd = convertToUsd(moneyText(facts.unit), facts.currency, facts.fx.rate);', 'const unitUsd = moneyText(facts.unit);'),
  'comments_money_guard_bypass': ('instagram-v2/comments/no-money.js', '  if (!value.trim()) return value;', '  return value;'),
  # Broad/relative-date qualification (real regression class, 2026-10-01).
- 'model_unavailable_generic_handoff': ('instagram-v2/direct/builder.js', "if (typeof deterministicDirectFallback === 'function' && modelUnavailableQualificationEligible(input, dimensions, error, {", "if (false && typeof deterministicDirectFallback === 'function' && modelUnavailableQualificationEligible(input, dimensions, error, {"),
- 'rejected_broad_date_human_boundary_bypass': ('instagram-v2/direct/builder.js', "if (typeof deterministicDirectFallback === 'function' && humanBoundaryOnTimingTurn(input)) {", "if (false && typeof deterministicDirectFallback === 'function' && humanBoundaryOnTimingTurn(input)) {"),
+
+ 'semantic_unproved_quote_inputs': ('instagram-v2/direct/conversation-semantics.js', '|| !quoteDerivable(update.field,', '|| false && !quoteDerivable(update.field,'),
+ 'semantic_stale_history': ('instagram-v2/direct/conversation-semantics.js', "if (update.source !== 'CURRENT_MESSAGE' && prior[update.field] != null", "if (false && update.source !== 'CURRENT_MESSAGE' && prior[update.field] != null"),
+ 'semantic_withdrawn_resurrection': ('instagram-v2/direct/conversation-semantics.js', 'if (supersededHistory(update, withdrawn, input.history)) continue;', 'if (false && supersededHistory(update, withdrawn, input.history)) continue;'),
+ 'semantic_stale_format': ('instagram-v2/direct/conversation-semantics.js', "if (format.source !== 'CURRENT_MESSAGE' && (prior.format || prior.formatOpen === true)", "if (false && format.source !== 'CURRENT_MESSAGE' && (prior.format || prior.formatOpen === true)"),
+ 'semantic_false_product': ('instagram-v2/direct/conversation-semantics.js', 'if (review.unsupportedProductClaims.length) {', 'if (false && review.unsupportedProductClaims.length) {'),
+ 'semantic_false_action': ('instagram-v2/direct/conversation-semantics.js', "if (review.completedActions.length) return 'semantic_unverified_external_action';", "if (false && review.completedActions.length) return 'semantic_unverified_external_action';"),
+ 'semantic_false_prior': ('instagram-v2/direct/conversation-semantics.js', 'for (const claim of review.priorClaims) {', 'for (const claim of []) {'),
+ 'fabricated_availability': ('instagram-v2/direct/output-guard.js', 'if (factReason) return { text: null, reason: factReason };', 'if (false && factReason) return { text: null, reason: factReason };'),
+ 'stale_delivery_claim': ('instagram-v2/state-store.js', "if(!event||event.lease_owner!==claim.leaseOwner||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');", "if(!event||event.lease_owner!==claim.leaseOwner)throw new GeorgiaV2Error('event_claim_mismatch');"),
+ 'manual_stale_cas': ('instagram-v2/state-store.js', 'WHERE account_id=? AND conversation_id=? AND revision=?`).run(mode,reason,now,boundaryReceivedAt,boundaryEventId,now,text(accountId),text(conversationId),expectedRevision);', 'WHERE account_id=? AND conversation_id=? AND ? IS NOT NULL`).run(mode,reason,now,boundaryReceivedAt,boundaryEventId,now,text(accountId),text(conversationId),expectedRevision);'),
+ 'interpretation_outage_fabricates_progress': ('instagram-v2/direct/builder.js', "catch (error) { return noFallbackNeedsHuman(error.message?.startsWith('semantic_') ? error.message : 'semantic_model_unavailable', { modelCalls: 1 }); }", "catch (error) { return {type:'reply',text:'Подскажите формат поездки?',leadFacts:{people:2},modelCalls:1}; }"),
+ 'foreign_delivery_owner': ('instagram-v2/state-store.js', "if(!event||event.lease_owner!==claim.leaseOwner||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');", "if(!event||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');"),
+ 'overwrite_current_format': ('instagram-v2/direct/conversation-semantics.js', 'facts.format = choice;', "facts.format = 'group';"),
  'broad_date_dropped': ('instagram-v2/context/direct-lead-state.js', 'const broad=broadDateWindow(value,today);', 'const broad=null;'),
- 'week_statement_as_availability': ('instagram-v2/direct/builder.js', "['date_availability', /(?:", "['date_availability', /(?:на\\s+(?:эт[уо]й?|следующ[а-яё]*)\\s+недел|"),
  'broad_window_collapsed_to_one_day': ('instagram-v2/context/direct-lead-state.js', 'if(sy===ey&&sm===em)return`${start.getUTCDate()}–${end.getUTCDate()} ${MONTH_NAMES[em]} ${ey}`;', 'if(sy===ey&&sm===em)return`${start.getUTCDate()} ${MONTH_NAMES[sm]} ${sy}`;'),
+ 'semantic_week_statement_availability': ('instagram-v2/direct/conversation-semantics.js', 'return Object.freeze({ ...proposal, selection, droppedSelection, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });', "return Object.freeze({ ...proposal, availabilityRequested:true, questions:['date_availability'], selection, droppedSelection, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });"),
+ 'semantic_human_boundary_bypass': ('instagram-v2/direct/builder.js', "let result = semantic.action === 'handoff' ? needsHuman('semantic_requires_human') : await buildReply(validated);", "let result = await buildReply({ ...validated, semanticInterpretation: {...semantic,action:'qualify'} });"),
 }
 # Named cases a mutation must turn RED (a subset of what fails). Every
 # production business invariant above has at least one end-to-end (int_) detector.
@@ -92,11 +105,24 @@ EXPECTED_DETECTORS = {
  'exact_failure_falls_back_to_catalog_price': {'int_direct_exact_quote_unavailable'},
  'comments_money_guard_bypass': {'int_comments_money_suppressed', 'int_comments_unverified_source_price'},
  'crm_without_evidence': {'crm_insufficient_evidence'},
- 'model_unavailable_generic_handoff': {'int_model_unavailable_broad_date_real', 'int_model_unavailable_exact_date', 'int_review22_participants', 'int_review22_son'},
- 'rejected_broad_date_human_boundary_bypass': {'int_review22_boundaries'},
- 'broad_date_dropped': {'int_broad_date_next_week_real', 'int_broad_date_late_month_named'},
- 'week_statement_as_availability': {'int_broad_date_next_week_real', 'int_broad_date_this_week'},
- 'broad_window_collapsed_to_one_day': {'int_broad_date_mid_month_named', 'int_broad_date_late_month_named'},
+
+ 'semantic_unproved_quote_inputs': {'int_hard_wrong_people', 'int_hard_wrong_date'},
+ 'semantic_stale_history': {'int_hard_stale_people'},
+ 'semantic_withdrawn_resurrection': {'int_hard_withdrawn_people'},
+ 'semantic_stale_format': {'int_hard_wrong_format'},
+ 'semantic_false_product': {'int_hard_product_fact'},
+ 'semantic_false_action': {'int_hard_external_action'},
+ 'semantic_false_prior': {'int_hard_false_prior'},
+ 'fabricated_availability': {'int_hard_availability'},
+ 'stale_delivery_claim': {'int_hard_claim_cas'},
+ 'manual_stale_cas': {'int_hard_manual_cas'},
+ 'interpretation_outage_fabricates_progress': {'int_model_unavailable_broad_date_real', 'int_model_unavailable_exact_date'},
+ 'foreign_delivery_owner': {'int_hard_claim_owner'},
+ 'overwrite_current_format': {'int_hard_current_format'},
+ 'broad_date_dropped': {'int_hard_broad_windows'},
+ 'broad_window_collapsed_to_one_day': {'int_hard_broad_windows'},
+ 'semantic_week_statement_availability': {'int_hard_date_statement'},
+ 'semantic_human_boundary_bypass': {'int_review22_boundaries'},
 }
 
 def native_provenance():
@@ -161,7 +187,7 @@ def evaluate(source: Path, report_dir: Path, mutation=None, baseline=True):
     integration_cases = json.loads(CASE_FILES[1].read_text())
     cases = leaf_cases + integration_cases
     # Explicit corpus bound: raise it deliberately as the reviewed corpus grows.
-    if len(cases)<20 or len(cases)>60 or len(integration_cases)<10 or len({c['id'] for c in cases})!=len(cases) or any(not re.fullmatch(r'[a-z0-9_]+', c['id']) for c in cases):
+    if len(cases)<20 or len(cases)>90 or len(integration_cases)<10 or len({c['id'] for c in cases})!=len(cases) or any(not re.fullmatch(r'[a-z0-9_]+', c['id']) for c in cases):
         raise ValueError('insufficient/duplicate cases')
     if any(c['layer']!='D' for c in integration_cases) or any(c['layer']=='D' for c in leaf_cases):
         raise ValueError('integration cases must be layer D and only in integration_cases.json')
@@ -204,7 +230,7 @@ def evaluate(source: Path, report_dir: Path, mutation=None, baseline=True):
         result = run_suite(load_suite(suite_file),provider_mode='deterministic')
         base = load_baseline(BASELINE) if baseline else None
         verdict = evaluate_gate(result, base)
-        contract_hash = hashlib.sha256((json.dumps(cases,sort_keys=True,ensure_ascii=False)+hashlib.sha256((ROOT/'georgia/integration.cjs').read_bytes()).hexdigest()).encode()).hexdigest()
+        contract_hash = hashlib.sha256((json.dumps(cases,sort_keys=True,ensure_ascii=False)+hashlib.sha256((ROOT/'georgia/integration.cjs').read_bytes()).hexdigest()+hashlib.sha256((ROOT/'georgia/hard-invariants.cjs').read_bytes()).hexdigest()).encode()).hexdigest()
         if base and base.get('contract_sha256') != contract_hash:
             verdict.passed = False
             verdict.reasons.append('case contract differs from baseline: review inputs/assertions before recording')

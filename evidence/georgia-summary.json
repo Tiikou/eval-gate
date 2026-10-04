@@ -1,32 +1,32 @@
 {
-  "status": "READY_FOR_INTEGRATION",
-  "poc_verdict": "READY_FOR_INTEGRATION",
-  "scope_note": "Ready for a separate, explicitly authorized task to wire into Night Run/CI. Not connected to any deploy gate here.",
-  "georgia_agent_source_head": "2ebaf59d78fb8adddc4aa035f63184a751a08f97",
-  "georgia_agent_source_tree": "cc4900582f585e070a632809817bf502da476313",
-  "gateway_companion_inspected": "263f9baef218fbc2d8b1c1f56525b1641f3c4337",
-  "sources_verified": [
-    "default release build == git archive 2ebaf59 (diff -rq: only .git differs)",
-    "live Direct/webhook cwd = releases/git-2ebaf59...-aux-combined-v1; 485 runtime .js/.cjs/.mjs/.sql/.json files byte-identical to 2ebaf59"
-  ],
-  "upstream_sha": "71b832630e76da7d1dbe0d91c0c35145db2847c6",
+  "status": "OFFLINE_STRUCTURAL_PASS",
+  "scope_note": "Corrected external gate candidate for exact97ff6fa. Installed NIGHT RUN pin unchanged; native-equivalent diagnostic required separately. No deploy approval.",
+  "georgia_agent_source_head": "97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9",
+  "georgia_agent_source_tree": "6d17fb3ba1b1f1a01d6a82dbd5af2b3fcf9cec64",
   "upstream_tests": "97/97 PASS",
   "adapter_tests": "6/6 PASS",
-  "cases_total": 41,
-  "cases_pass": 41,
-  "production_contract_cases": "35/35",
-  "integration_cases": "11/11",
+  "cases_total": 78,
+  "cases_pass": 78,
+  "production_contract_cases": "72/72",
+  "integration_cases": "48/48 (30runtime +18HARD boundary probes)",
   "legacy_reference_only_cases": "6/6 (not production guarantees)",
-  "mutations_total": 22,
-  "mutations_caught": 22,
-  "mutation_semantics": "GREEN control -> one anchored source mutation -> exit 1 with named expected detectors failing -> fresh unmodified GREEN control; exit 2/anchor errors are never catches",
+  "mutations_total": 39,
+  "mutations_caught": 39,
+  "production_mutations": 36,
+  "legacy_mutations": 3,
+  "mutation_semantics": "GREEN control -> one anchored source mutation -> exit1 and all named expected detectors fail -> fresh restoredGREEN0. Infrastructure/anchor errors never count.",
+  "provider": "deterministic (mocked model purposes)",
   "external_calls_real": 0,
   "real_messages_sent": 0,
   "real_crm_writes": 0,
   "live_llm": false,
-  "exit_codes": {
-    "0": "PASS",
-    "1": "REGRESSION",
-    "2": "CONFIG/INFRASTRUCTURE"
+  "commands": [
+    "env -i PATH=/usr/bin:/bin HOME=/tmp TZ=UTC LANG=C.UTF-8 .venv/bin/python -m georgia.run --source-root /root/scratch/georgia-gate-rootcause-20261004/a/original/source --record-baseline",
+    "env -i PATH=/usr/bin:/bin HOME=/tmp TZ=UTC LANG=C.UTF-8 PYTHONUNBUFFERED=1 .venv/bin/python -m georgia.run --source-root /root/scratch/georgia-gate-rootcause-20261004/a/original/source --prove-mutations"
+  ],
+  "artifact_sha256": {
+    "evidence/mutation-proof.json": "6e04442bc76324b4de4a1326f2c4dfb848623fdb9d51376b1bd988a6cf8aaf61",
+    "evidence/admission-97ff6fa/control-report.json": "82a825117e06a43b341e4dac3c96d3cd9af928bd9da73c525cee131b1b26c258",
+    "evidence/admission-97ff6fa/control-provenance.json": "2b8ebf25cf5eab5e36fc57e3a342d29a0fcfab8a08fbcf957ba120dbdd6433e8"
   }
 }

@@ -1,0 +1,36 @@
+{
+  "version": "night-run-georgia-release-gate/v1",
+  "repo": "/root/georgia-rollout-97ff6fa-20261004/target",
+  "candidateSha": "97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9",
+  "candidateTree": "6d17fb3ba1b1f1a01d6a82dbd5af2b3fcf9cec64",
+  "profile": "georgia-direct-ux",
+  "profileSha256": "7cc0dc1635634e6336a8aedbc2074883fe49fb1512a7f0e7732b411d61166f7d",
+  "evalGate": {
+    "sha": "01481718909288ec0ce36a1fc8dc0adebda9d64d",
+    "tree": "165aa2e639e4ad0a630d0ce61840813db4297e41",
+    "depsSha256": "f2a4b9fdeaa66b3eaba38996d26e682dad98e77d81d803245777a0701a4015f3"
+  },
+  "nightRunSha": "f321fea7f6739dda92e4437b136dae66b0a7c554",
+  "unit": "night-run-release-gate-97ff6fa962cc-ac6a29",
+  "startedAt": "2026-10-04T15:57:58.226Z",
+  "finishedAt": "2026-10-04T15:59:28.742Z",
+  "outcome": "TEST_FAIL",
+  "outcomeDetail": "tests failed",
+  "exitCode": 1,
+  "nativeExit": "0",
+  "nativeResult": "PASS",
+  "eval": {
+    "NATIVE_EXIT_CODE": "0",
+    "GEORGIA_CANDIDATE_SHA": "97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9",
+    "EVAL_GATE_SHA": "01481718909288ec0ce36a1fc8dc0adebda9d64d",
+    "EVAL_GATE_TREE": "165aa2e639e4ad0a630d0ce61840813db4297e41",
+    "GEORGIA_CANDIDATE_TREE": "6d17fb3ba1b1f1a01d6a82dbd5af2b3fcf9cec64",
+    "CASE_COUNT": "58",
+    "INTEGRATION_CASE_COUNT": "28",
+    "MUTATION_PROOF_VERSION": "sha256:2e4d2580cee6435e26bc59b27f1120b82c736c0b125ab129589071c1a55f7841",
+    "EVAL_EXIT_CODE": "1",
+    "EVAL_RESULT": "REGRESSION"
+  },
+  "output": "/root/night-run/state/release-gates/georgia/97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9-2026-10-04T155758225Z-0bccee.log",
+  "outputSha256": "d8aa30097370ba6638f194d57bb3b4f8d5c94516488403727d12a2e67ac977b9"
+}

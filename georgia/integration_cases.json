@@ -117,7 +117,7 @@
     "input": {},
     "expected": {
       "statuses": [
-        "fallback_sent"
+        "sent"
       ],
       "actions": [
         "consumed"
@@ -125,8 +125,7 @@
       "sends": 1,
       "managerTasks": 0,
       "eventStates": [
-        "SENT",
-        "FAILED"
+        "SENT"
       ],
       "calculatedPriceUsd": null,
       "calculatedBasis": "PER_GROUP",
@@ -141,7 +140,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct exact order: supplier timeout withholds money; no fallback to discovery/stale price (scenario 4)."
+    "provenance": "Direct exact order: supplier timeout withholds money; no fallback to discovery/stale price (scenario 4). Valid current behavior with unavailable/untrusted price is one grounded no-price response; money and price authority remain absent."
   },
   {
     "id": "int_direct_unverified_price",
@@ -150,7 +149,7 @@
     "input": {},
     "expected": {
       "statuses": [
-        "fallback_sent"
+        "sent"
       ],
       "actions": [
         "consumed"
@@ -158,8 +157,7 @@
       "sends": 1,
       "managerTasks": 0,
       "eventStates": [
-        "SENT",
-        "FAILED"
+        "SENT"
       ],
       "calculatedPriceUsd": null,
       "calculatedBasis": null,
@@ -174,7 +172,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct: collector row without verified price evidence has no customer money; fabricated amount refused (scenario 4)."
+    "provenance": "Direct: collector row without verified price evidence has no customer money; fabricated amount refused (scenario 4). Valid current behavior with unavailable/untrusted price is one grounded no-price response; money and price authority remain absent."
   },
   {
     "id": "int_direct_stale_price_evidence",
@@ -183,7 +181,7 @@
     "input": {},
     "expected": {
       "statuses": [
-        "fallback_sent"
+        "sent"
       ],
       "actions": [
         "consumed"
@@ -191,8 +189,7 @@
       "sends": 1,
       "managerTasks": 0,
       "eventStates": [
-        "SENT",
-        "FAILED"
+        "SENT"
       ],
       "calculatedPriceUsd": null,
       "calculatedBasis": null,
@@ -207,7 +204,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct: stale price evidence (30 days) is not authority (scenario 4)."
+    "provenance": "Direct: stale price evidence (30 days) is not authority (scenario 4). Valid current behavior with unavailable/untrusted price is one grounded no-price response; money and price authority remain absent."
   },
   {
     "id": "int_direct_duplicate_inbound",
@@ -245,7 +242,7 @@
       "retriesScheduled": 0,
       "percentRendered": false,
       "crmInboundWrites": 1,
-      "modelCalls": 1
+      "generationNotRepeated": true
     },
     "provenance": "Direct: the same inbound event twice -> one generation, one send, one CRM turn (scenario 2)."
   },
@@ -791,30 +788,28 @@
     },
     "expected": {
       "statuses": [
-        "sent"
+        "needs_human_without_fallback"
       ],
       "actions": [
         "consumed"
       ],
-      "sends": 1,
+      "sends": 0,
       "eventStates": [
-        "SENT"
+        "FAILED"
       ],
-      "conversationMode": "AUTO",
-      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
       "genericFallback": false,
       "managerTasks": 0,
       "legacyCalls": 0,
-      "people": 2,
-      "startCity": "Батуми",
-      "datePersisted": true,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
       "exactQuoteDate": false,
       "reaskPeople": false,
       "reaskStartCity": false,
       "reaskDate": false,
       "gatewayRequests": 0,
-      "renderedMoney": [],
-      "modelCalls": 1
+      "renderedMoney": []
     },
     "provenance": "Exact production path of the real regression (2026-10-01T18:43:53Z, error_code=model_unavailable after ~128 s): the model call failed on the first ordinary qualification turn and the builder sent the generic manager fallback. Owner decision 2026-10-01: ordinary qualification makes deterministic progress when the model is unavailable (no money, no availability claim, known facts not re-asked)."
   },
@@ -828,30 +823,28 @@
     },
     "expected": {
       "statuses": [
-        "sent"
+        "needs_human_without_fallback"
       ],
       "actions": [
         "consumed"
       ],
-      "sends": 1,
+      "sends": 0,
       "eventStates": [
-        "SENT"
+        "FAILED"
       ],
-      "conversationMode": "AUTO",
-      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
       "genericFallback": false,
       "managerTasks": 0,
       "legacyCalls": 0,
-      "people": 2,
-      "startCity": "Батуми",
-      "datePersisted": true,
-      "exactQuoteDate": true,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
       "reaskPeople": false,
       "reaskStartCity": false,
       "reaskDate": false,
       "gatewayRequests": 0,
-      "renderedMoney": [],
-      "modelCalls": 1
+      "renderedMoney": []
     },
     "provenance": "Model-unavailable control with an exact date: ordinary qualification still makes deterministic progress and the exact date stays a concrete quote date."
   },
@@ -868,6 +861,10 @@
         {
           "message": "Нас 2 участника на следующей неделе в Батуми",
           "model": "rejected"
+        },
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "qualification"
         }
       ]
     },
@@ -875,30 +872,53 @@
       "results": [
         {
           "statuses": [
-            "sent"
+            "needs_human_without_fallback"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 1,
+          "sends": 0,
           "eventStates": [
-            "SENT"
+            "FAILED"
           ],
-          "conversationMode": "AUTO",
-          "handoffReason": "",
+          "conversationMode": "NEEDS_HUMAN",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
-          "people": 2,
-          "startCity": "Батуми",
-          "datePersisted": true,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
           "exactQuoteDate": false,
           "reaskPeople": false,
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": [],
-          "modelCalls": 1
+          "renderedMoney": []
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
         },
         {
           "statuses": [
@@ -924,8 +944,7 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": [],
-          "modelCalls": 2
+          "renderedMoney": []
         }
       ]
     },
@@ -960,6 +979,18 @@
         {
           "message": "Нас 2 с сыном на следующей неделе в Батуми",
           "model": "rejected"
+        },
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "qualification"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "qualification"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "qualification"
         }
       ]
     },
@@ -967,30 +998,153 @@
       "results": [
         {
           "statuses": [
-            "sent"
+            "needs_human_without_fallback"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 1,
+          "sends": 0,
           "eventStates": [
-            "SENT"
+            "FAILED"
           ],
-          "conversationMode": "AUTO",
-          "handoffReason": "",
+          "conversationMode": "NEEDS_HUMAN",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
-          "people": 3,
-          "startCity": "Батуми",
-          "datePersisted": true,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
           "exactQuoteDate": false,
           "reaskPeople": false,
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": [],
-          "modelCalls": 1
+          "renderedMoney": []
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
         },
         {
           "statuses": [
@@ -1016,8 +1170,7 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": [],
-          "modelCalls": 2
+          "renderedMoney": []
         },
         {
           "statuses": [
@@ -1043,8 +1196,7 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": [],
-          "modelCalls": 1
+          "renderedMoney": []
         },
         {
           "statuses": [
@@ -1070,62 +1222,7 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": [],
-          "modelCalls": 2
-        },
-        {
-          "statuses": [
-            "sent"
-          ],
-          "actions": [
-            "consumed"
-          ],
-          "sends": 1,
-          "eventStates": [
-            "SENT"
-          ],
-          "conversationMode": "AUTO",
-          "handoffReason": "",
-          "genericFallback": false,
-          "managerTasks": 0,
-          "legacyCalls": 0,
-          "people": 3,
-          "startCity": "Батуми",
-          "datePersisted": true,
-          "exactQuoteDate": false,
-          "reaskPeople": false,
-          "reaskStartCity": false,
-          "reaskDate": false,
-          "gatewayRequests": 0,
-          "renderedMoney": [],
-          "modelCalls": 1
-        },
-        {
-          "statuses": [
-            "sent"
-          ],
-          "actions": [
-            "consumed"
-          ],
-          "sends": 1,
-          "eventStates": [
-            "SENT"
-          ],
-          "conversationMode": "AUTO",
-          "handoffReason": "",
-          "genericFallback": false,
-          "managerTasks": 0,
-          "legacyCalls": 0,
-          "people": 3,
-          "startCity": "Батуми",
-          "datePersisted": true,
-          "exactQuoteDate": false,
-          "reaskPeople": false,
-          "reaskStartCity": false,
-          "reaskDate": false,
-          "gatewayRequests": 0,
-          "renderedMoney": [],
-          "modelCalls": 2
+          "renderedMoney": []
         }
       ]
     },
@@ -1139,11 +1236,11 @@
       "turns": [
         {
           "message": "На следующей неделе позовите Никиту",
-          "model": "rejected"
+          "model": "qualification"
         },
         {
           "message": "На этой неделе хочу пожаловаться",
-          "model": "rejected"
+          "model": "qualification"
         }
       ]
     },
@@ -1162,20 +1259,19 @@
             "FAILED"
           ],
           "conversationMode": "NEEDS_HUMAN",
-          "handoffReason": "model_invalid_output_after_repair",
           "genericFallback": true,
           "managerTasks": 0,
           "legacyCalls": 0,
           "people": null,
           "startCity": null,
-          "datePersisted": true,
+          "datePersisted": false,
           "exactQuoteDate": false,
           "reaskPeople": false,
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
           "renderedMoney": [],
-          "modelCalls": 2
+          "handoffReason": "semantic_requires_human"
         },
         {
           "statuses": [
@@ -1190,23 +1286,308 @@
             "FAILED"
           ],
           "conversationMode": "NEEDS_HUMAN",
-          "handoffReason": "model_invalid_output_after_repair",
           "genericFallback": true,
           "managerTasks": 0,
           "legacyCalls": 0,
           "people": null,
           "startCity": null,
-          "datePersisted": true,
+          "datePersisted": false,
           "exactQuoteDate": false,
           "reaskPeople": false,
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
           "renderedMoney": [],
-          "modelCalls": 2
+          "handoffReason": "semantic_requires_human"
         }
       ]
     },
-    "provenance": "Bounded matrix of the approved boundaries review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
+    "provenance": "Typed semantic handoff for explicit human request and complaint, with existing safe acknowledgement and NEEDS_HUMAN state; never treats a broad date alone as handoff."
+  },
+  {
+    "id": "int_response_model_unavailable",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "response_unavailable"
+    },
+    "expected": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Typed Direct V2 interpretation is valid first; generated customer response then fails/untrusted. No send, money, or external action is allowed."
+  },
+  {
+    "id": "int_response_rejected_money",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "response_rejected"
+    },
+    "expected": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Valid semantic interpretation followed by a malicious answer containing unsupported USD and false booking action; output guards must prevent any unsupported customer money or action."
+  },
+  {
+    "id": "int_hard_wrong_people",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "wrong_people"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_wrong_date",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "wrong_date"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_stale_people",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "stale_people"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_withdrawn_people",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "withdrawn_people"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_wrong_format",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "wrong_format"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_topic_as_customer",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "topic_as_customer"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_valid_customer",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "valid_customer"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_product_fact",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "product_fact"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_external_action",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "external_action"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_false_prior",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "false_prior"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_valid_review",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "valid_review"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_availability",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "availability"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_claim_cas",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "claim_cas"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_manual_cas",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "manual_cas"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_claim_owner",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "claim_owner"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Current revision but wrong lease owner cannot commit delivery; separate owner-only source mutation required."
+  },
+  {
+    "id": "int_hard_current_format",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "current_format"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Validated current private preference must replace older group preference; source mutation forces wrong current format."
+  },
+  {
+    "id": "int_hard_broad_windows",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "broad_windows"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent fixed calendar windows stay bounded, are not dropped, and cannot become exact quote dates; parser is evidence, not oracle or conversational authority."
+  },
+  {
+    "id": "int_hard_date_statement",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "date_statement"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Validated model interpretation of a broad date statement does not acquire availability intent, questions or human boundary through code."
   }
 ]
