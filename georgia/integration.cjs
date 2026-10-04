@@ -21,6 +21,7 @@ const NATIVE = path.resolve(nativeArg, 'node_modules');
 const HERE = __dirname;
 const blocked = [];
 const CASES = JSON.parse(fs.readFileSync(casesFile, 'utf8'));
+const { runHardInvariant } = require('./hard-invariants.cjs');
 
 const inside = (p, dir) => p === dir || p.startsWith(dir.endsWith(path.sep) ? dir : dir + path.sep);
 const ALLOWED = [SRC, WORK, NATIVE, HERE];
@@ -130,11 +131,47 @@ function directModel(calls) {
   return {
     complete: async input => {
       calls.push(1);
+      if (input.purpose === 'direct_semantics') return { text: JSON.stringify(semanticFixture(input)) };
+      if (input.purpose === 'direct_response_semantics') return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: [] }) };
       const prompt = JSON.stringify(input);
       const slot = prompt.match(/Price authority: «[^»]*» = (\[\[PRICE:\d+\]\])/);
-      return { text: `Стоимость экскурсии «${TITLE}» — ${slot ? slot[1] : '$130 за человека'}. Подходит Вам этот вариант?` };
+      return { text: slot ? `Стоимость экскурсии «${TITLE}» — ${slot[1]}. Подходит Вам этот вариант?` : 'Точную стоимость сейчас подтвердить не могу.' };
     }
   };
+}
+
+// Purpose-typed offline model contract. These fixtures are authored decisions,
+// not outputs of Georgia's regex/parser; the runtime validates their evidence.
+function semanticFixture(request) {
+  const data = JSON.parse(request.messages?.[1]?.content || '{}');
+  const message = String(data.CURRENT_MESSAGE || '');
+  const proposal = { format: { state: 'unknown', choice: null, source: null, quote: null }, updates: [], requestKind: 'travel', availabilityRequested: false, action: 'qualify', questions: [], correction: false, apologyWarranted: false, selection: null, releaseSelection: false, topicSwitch: false, transitionEvidence: null };
+  if (/позовите Никиту|пожаловаться/i.test(message)) proposal.action = 'handoff';
+  if (/сколько стоит|сколько будет стоить/i.test(message)) { proposal.action = 'answer'; proposal.questions = ['price']; }
+  const facts = [
+    ['Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми', '2', '2 человека', 'Батуми', 'На следующей неделе'],
+    ['На следующей неделе приезжаем, нас будет 2 человека, мы прилетаем в Батуми', '2', 'нас будет 2 человека', 'Батуми', 'на следующей неделе'],
+    ['На следующей неделе будем в Батуми, нас 2 человека, что посоветуете?', '2', 'нас 2 человека', 'Батуми', 'на следующей неделе'],
+    ['Здравствуйте! Нас будет два человека на следующей неделе в Батуми', '2', 'два человека', 'Батуми', 'на следующей неделе'],
+    ['Добрый день, мы на этой неделе будем в Грузии, нас 3 человека, стартуем из Тбилиси', '3', 'нас 3 человека', 'Тбилиси', 'на этой неделе'],
+    ['Здравствуйте, приезжаем через неделю, 2 человека, будем жить в Батуми', '2', '2 человека', 'Батуми', 'через неделю'],
+    ['Примерно через две недели прилетаем в Кутаиси, нас 4 человека', '4', 'нас 4 человека', 'Кутаиси', 'примерно через две недели'],
+    ['Хотим поехать на выходных, 2 человека, из Тбилиси', '2', '2 человека', 'Тбилиси', 'на выходных'],
+    ['Планируем в конце ноября, 2 человека, старт из Батуми', '2', '2 человека', 'Батуми', 'в конце ноября'],
+    ['Будем в середине ноября, нас 2 человека, из Тбилиси', '2', 'нас 2 человека', 'Тбилиси', 'в середине ноября'],
+    ['На следующей неделе ближе к выходным, 2 человека, мы в Батуми', '2', '2 человека', 'Батуми', 'на следующей неделе ближе к выходным'],
+    ['Здравствуйте! 4 ноября приезжаем, 2 человека, мы прилетаем в Батуми', '2', '2 человека', 'Батуми', '4 ноября'],
+    ['Нас 2 участника на следующей неделе в Батуми', '2', '2 участника', 'Батуми', 'на следующей неделе'],
+    ['Нас двое с сыном на следующей неделе в Батуми', '3', 'двое с сыном', 'Батуми', 'на следующей неделе'],
+    ['Нас два с сыном на следующей неделе в Батуми', '3', 'два с сыном', 'Батуми', 'на следующей неделе'],
+    ['Нас 2 с сыном на следующей неделе в Батуми', '3', '2 с сыном', 'Батуми', 'на следующей неделе']
+  ].find(row => row[0] === message);
+  if (facts) {
+    for (const [field, value, quote] of [['datesText', facts[4], message], ['people', Number(facts[1]), message], ['startCity', facts[3], message]]) {
+      proposal.updates.push({ field, value, source: 'CURRENT_MESSAGE', quote });
+    }
+  }
+  return proposal;
 }
 
 function createDirect(name, { row = authorityRow(), gateway = null, send = null, model = null } = {}) {
@@ -223,6 +260,7 @@ function directSummary({ runtime, effects }, results) {
 }
 
 const SCENARIOS = {
+  async hard_invariant(c) { return runHardInvariant(c, src, WORK); },
   // 1/8/10: discovery quote USD 90 -> tier markup -> round up -> $130 per person.
   async direct_priced_discovery() {
     const d = createDirect('discovery'); seedSelection(d.runtime);
@@ -248,8 +286,9 @@ const SCENARIOS = {
     const d = createDirect('duplicate'); seedSelection(d.runtime);
     try {
       const first = await deliverDirect(d, 'synthetic_event_1', 'Сколько стоит?', {});
+      const callsAfterFirst = d.effects.modelCalls.length;
       const second = await deliverDirect(d, 'synthetic_event_1', 'Сколько стоит?', {});
-      return { ...directSummary(d, [first, second]), modelCalls: d.effects.modelCalls.length };
+      return { ...directSummary(d, [first, second]), generationNotRepeated: d.effects.modelCalls.length === callsAfterFirst };
     } finally { d.runtime.store.close(); }
   },
   // 3/9: an ambiguous Graph response is DELIVERY_UNKNOWN: no resend on replay,
@@ -299,35 +338,29 @@ const SCENARIOS = {
   async comments_unverified_source_price() { return comments('source', { publicReply: 'Наша цена 80$ за человека.', privateReply: 'Здравствуйте! По каталогу: Наша цена 80 USD, а у поставщика 46 евро. На какие даты планируете?' }, 'Каталог (без подтверждения цены): Кахетия — Наша цена: 80$; у поставщика 46 EUR.'); }
 };
 
-// Broad/relative-date qualification (real production regression class): a
-// first Direct message states people, start city and a broad/relative date.
-// Mocked model with the observed production decision: it hands the turn to a
-// human for supplier confirmation when Georgia's own turn contract presents an
-// availability request or an unknown date; otherwise it asks an ordinary
-// qualification question without money. Every judgement about the date is
-// Georgia's (lead state, turn dimensions, output guard, fallback policy).
-// Structural outcome only: no generic fallback or needs_human, known facts
-// persisted, the date persisted as non-exact progress, nothing re-asked.
-function qualificationModel(calls) {
-  return {
-    complete: async input => {
-      calls.push(1);
-      const prompt = JSON.stringify(input);
-      if (/CLIENT ASKED IN THIS TURN: [^.]*date_availability/.test(prompt) || /\\?"datesText\\?":null/.test(prompt)) return { text: JSON.stringify({ direct_action: 'needs_human', reason: 'supplier_confirmation' }) };
-      return { text: 'Подскажите, пожалуйста, какой формат поездки Вам интересен: групповой или индивидуальный?' };
-    }
-  };
+// These cases vary the actual semantic-model stage, then let the same typed
+// response mock serve the other purposes. A failed interpretation is fail
+// closed; response-stage failures are distinct and cannot rewrite validated
+// customer facts.
+function stagedModel(calls, mode) {
+  const base = directModel(calls);
+  return { complete: async request => {
+    const purpose = request.purpose;
+    if (mode === 'unavailable' && purpose === 'direct_semantics') { calls.push(1); const error = new Error('synthetic interpretation timeout'); error.code = 'ETIMEDOUT'; throw error; }
+    if (mode === 'rejected' && purpose === 'direct_semantics') { calls.push(1); return { text: 'not a typed interpretation' }; }
+    if (mode === 'response_unavailable' && purpose === undefined) { calls.push(1); const error = new Error('synthetic response timeout'); error.code = 'ETIMEDOUT'; throw error; }
+    if (mode === 'response_rejected' && purpose === undefined) { calls.push(1); return { text: 'Стоимость — $180 за группу. Подтверждаю бронь.' }; }
+    if (purpose === undefined) { calls.push(1); return { text: 'Какой формат поездки Вам ближе: групповой или индивидуальный?' }; }
+    return base.complete(request);
+  } };
 }
 const { quoteInputFrom } = src('instagram-v2/direct/catalog-selection');
 const { FALLBACK_TEXT } = src('instagram-v2/direct/fallback-policy');
 const REASK_PEOPLE = /сколько\s+(?:вас|человек|людей|гост|участник)|количеств\S*\s+(?:человек|гостей|участник)/iu;
 const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+)?(?:старт|выезж|поед|начин)|город\S*\s+(?:старта|отправлени|выезда)/iu;
 const REASK_DATE = /на\s+какие\s+даты|какого\s+числа|когда\s+(?:вы\s+)?(?:планиру|приезжа|прилета)/iu;
-// The real production turn failed in the model call itself (model_unavailable).
-const unavailableModel = calls => ({ complete: async () => { calls.push(1); const e = new Error('synthetic model timeout'); e.code = 'ETIMEDOUT'; throw e; } });
-const rejectedQualificationModel = calls => ({ complete: async () => { calls.push(1); return { text: 'Это 180 dollars за группу.' }; } });
 async function broadDateQualification({ message, model = 'qualification' }) {
-  const d = createDirect('broaddate', { model: model === 'unavailable' ? unavailableModel : model === 'rejected' ? rejectedQualificationModel : qualificationModel });
+  const d = createDirect('broaddate', { model: calls => stagedModel(calls, model) });
   try {
     const r = await deliverDirect(d, 'synthetic_event_1', message, {});
     const summary = directSummary(d, [r]);

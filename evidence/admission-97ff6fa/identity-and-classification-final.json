@@ -1,0 +1,102 @@
+{
+  "receipt": {
+    "version": "night-run-georgia-release-gate/v1",
+    "repo": "/root/georgia-rollout-97ff6fa-20261004/target",
+    "candidateSha": "97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9",
+    "candidateTree": "6d17fb3ba1b1f1a01d6a82dbd5af2b3fcf9cec64",
+    "profile": "georgia-direct-ux",
+    "profileSha256": "7cc0dc1635634e6336a8aedbc2074883fe49fb1512a7f0e7732b411d61166f7d",
+    "evalGate": {
+      "sha": "01481718909288ec0ce36a1fc8dc0adebda9d64d",
+      "tree": "165aa2e639e4ad0a630d0ce61840813db4297e41",
+      "depsSha256": "f2a4b9fdeaa66b3eaba38996d26e682dad98e77d81d803245777a0701a4015f3"
+    },
+    "nightRunSha": "f321fea7f6739dda92e4437b136dae66b0a7c554",
+    "unit": "night-run-release-gate-97ff6fa962cc-ac6a29",
+    "startedAt": "2026-10-04T15:57:58.226Z",
+    "finishedAt": "2026-10-04T15:59:28.742Z",
+    "outcome": "TEST_FAIL",
+    "outcomeDetail": "tests failed",
+    "exitCode": 1,
+    "nativeExit": "0",
+    "nativeResult": "PASS",
+    "eval": {
+      "NATIVE_EXIT_CODE": "0",
+      "GEORGIA_CANDIDATE_SHA": "97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9",
+      "EVAL_GATE_SHA": "01481718909288ec0ce36a1fc8dc0adebda9d64d",
+      "EVAL_GATE_TREE": "165aa2e639e4ad0a630d0ce61840813db4297e41",
+      "GEORGIA_CANDIDATE_TREE": "6d17fb3ba1b1f1a01d6a82dbd5af2b3fcf9cec64",
+      "CASE_COUNT": "58",
+      "INTEGRATION_CASE_COUNT": "28",
+      "MUTATION_PROOF_VERSION": "sha256:2e4d2580cee6435e26bc59b27f1120b82c736c0b125ab129589071c1a55f7841",
+      "EVAL_EXIT_CODE": "1",
+      "EVAL_RESULT": "REGRESSION"
+    },
+    "output": "/root/night-run/state/release-gates/georgia/97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9-2026-10-04T155758225Z-0bccee.log",
+    "outputSha256": "d8aa30097370ba6638f194d57bb3b4f8d5c94516488403727d12a2e67ac977b9"
+  },
+  "evalGateRepository": "Tiikou/eval-gate",
+  "evalGateSha": "01481718909288ec0ce36a1fc8dc0adebda9d64d",
+  "harnessAndCorpusSha": "01481718909288ec0ce36a1fc8dc0adebda9d64d (all tracked in same gate commit)",
+  "fileSha256": {
+    "georgia/run.py": "e3d74771b8cfba9cd12c6bc5321efdaad2f19406e9ac4e9b33ffc622492facf2",
+    "georgia/harness.cjs": "381c9158ccbbed1d311528924ae567f840fb25c8fd8674c5cb792a0febd61c43",
+    "georgia/integration.cjs": "cfafb32869f9eaffc478016bc3c470a962eb59594f1f56a6ffae9bf6d71aa4a8",
+    "georgia/cases.json": "f111dba982bdedde6615304cab2116f0660bd654efb85c78a1421489df0cc597",
+    "georgia/integration_cases.json": "d1d0641e19d1436e423f4cdc00a3753a2ddbc67d6937ea61b0cfa8614c6af806",
+    "georgia/baseline.json": "4f45ee64efeb9fdb0aae7a1f083fcdaca08546f08010dfbd8162fe68e8e894bd",
+    "evidence/mutation-proof.json": "2e4d2580cee6435e26bc59b27f1120b82c736c0b125ab129589071c1a55f7841"
+  },
+  "providerMode": "deterministic; mocked model/Graph/supplier/catalog boundaries; no real LLM",
+  "gateEnvironment": {
+    "PATH": "/usr/bin:/bin",
+    "HOME": "/tmp",
+    "TZ": "UTC",
+    "LANG": "C.UTF-8"
+  },
+  "harnessEnvironment": {
+    "PATH": "/bin:/usr/bin",
+    "TZ": "UTC"
+  },
+  "command": [
+    "/bin/bash",
+    "scripts/run-georgia-evals.sh",
+    "--source-root",
+    "/root/scratch/georgia-gate-rootcause-20261004/a/original/source"
+  ],
+  "interpreters": {
+    "/usr/bin/node": "v26.9.0",
+    "/usr/bin/python3": "Python 3.12.3"
+  },
+  "classification": [
+    {
+      "class": "HARNESS_MISMATCH",
+      "finding": "Mock complete ignores purpose direct_semantics and returns prose, not interpretation JSON; current default semantic builder rejects before catalog/delivery.",
+      "impact": "All 26 integration failures, including downstream absent pricing/delivery/CRM/qualification outcomes. 32/58 is structural aggregate, not live semantic score.",
+      "evidence": "integration.cjs directModel/qualificationModel/rejectedQualificationModel vs conversation-semantics.js interpretConversation/decode and builder.js createSemanticDirectReplyBuilder",
+      "requiredOutcome": "Typed independent scripted interpretation/review fixtures by purpose, exercised through current runtime; retain outcome invariants."
+    },
+    {
+      "class": "STALE_INTEGRATION_EXPECTATION",
+      "finding": "Unavailable-model scenarios demand deterministic qualification sends, parser-owned facts, AUTO; current semantic model-unavailable path intentionally has no deterministic conversational fallback.",
+      "impact": "Unavailable and rejected groups require explicit stage distinction and no unvalidated facts/send; fixed modelCalls and fallback statuses do not describe current contract.",
+      "evidence": "builder.js 1123-1124, 1015, 1053 vs integration_cases.json unavailable/review22 cases",
+      "requiredOutcome": "Assert fail-closed no fabricated facts/money/actions, no send/legacy fallback on interpretation unavailable; separately exercise response unavailable/rejected after valid interpretation. Keep valid healthy qualification cases."
+    }
+  ],
+  "rootcauseStatus": "Frozen before fixes; independent analysis pending; real product bug not yet established",
+  "originalAggregateMeaning": "58 deterministic structural cases total:30 leaf (all PASS, six legacy references),28 mocked runtime integration (2 comments PASS,26 Direct failures). Not a live LLM semantic evaluation.",
+  "failureGroups": {
+    "pricing_and_delivery_and_crm": 9,
+    "healthy_date_qualification": 12,
+    "interpretation_unavailable": 2,
+    "matrix_cases": 3
+  },
+  "PR104Comparison": {
+    "mergedSha": "97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9",
+    "primaryProfile": "57 UX/money tests and repository native suites PASS in saved original native receipt",
+    "deterministicEvidence": "PR104 unit+real adapter typed semantic mocks and native product safety tests; baseline-relative general-suite14 failures are different from pinned external gate26failures",
+    "cleanLiveClosure": "PR104 fresh live closure20cases/148native inferences, HARD0, providerfailures0; independent evaluator3313698... SHA. This external pinned gate instead uses a purpose-insensitive deterministic mock and zero real model/provider calls. Both observed results can hold."
+  },
+  "independentClassification": "Luna a_contract_analysis confirmed harness mismatch and stale deterministic fallback expectations before fixes."
+}

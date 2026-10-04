@@ -2,13 +2,18 @@
 
 This fork adapts [dbhavery/eval-gate](https://github.com/dbhavery/eval-gate) at
 `71b832630e76da7d1dbe0d91c0c35145db2847c6`. Upstream code is unchanged.
-It runs 58 anonymous contracts (52 production + 6 legacy reference) regenerated from
-Georgia source on every invocation, including 28 mocked-boundary integration scenarios
-through Georgia's own runtime entry points, and applies upstream structural JSON
-assertions, a 100% threshold and a reviewed baseline. It is not connected to deployment.
+It runs 78 anonymous contracts (72 production + 6 legacy reference) regenerated from
+Georgia source on every invocation. Its 48-case integration suite contains 30
+mocked scenarios through Georgia's own runtime entry points and 18 isolated
+HARD probes of the semantic/output/SQLite boundaries. It applies structural JSON
+assertions, a 100% threshold and a reviewed baseline. NIGHT RUN's native Georgia
+admission consumer uses a separately pinned version of this repository.
 
-**Verdict: READY_FOR_INTEGRATION** (for a separate, explicitly authorized Night Run/CI
-wiring task). See `evidence/PRICING_CONTRACT.md` for the verified production pricing contract.
+**Scope: isolated gate correction for exact Georgia main `97ff6fa`.** The installed
+NIGHT RUN pin is not changed by this branch. See
+`evidence/admission-97ff6fa/ROOT_CAUSE.md` for the reproduced external-gate failure,
+the reviewed contract migration and preserved original evidence; see
+`evidence/PRICING_CONTRACT.md` for the unchanged production pricing contract.
 
 **Production pricing contract (canonical 2ebaf59, verified in code, not prose):** money
 reaches a customer only in Direct, only from a validated quote: supplier price with
@@ -35,14 +40,14 @@ in this separate project once; no dependency install occurs during evaluation.
 python3 -m venv .venv
 .venv/bin/pip install -e '.[dev]'
 npm ci
-./scripts/run-georgia-evals.sh
 ./scripts/run-georgia-evals.sh --source-root /path/to/isolated/georgia/candidate
-./scripts/run-georgia-evals.sh --prove-mutations
+./scripts/run-georgia-evals.sh --source-root /path/to/isolated/georgia/candidate --prove-mutations
 ```
 
 Default source:
 `/root/georgia-pr97-integration-20261001-evidence/primary-release-build`.
-Override with `--source-root` or `GEORGIA_EVAL_SOURCE_ROOT`. Candidate source is
+This default is historical, not the current release candidate. Always bind an
+exact candidate archive with `--source-root` (or `GEORGIA_EVAL_SOURCE_ROOT`). Candidate source is
 read-only. A literal dependency closure and SQL schema/migrations are copied into
 one disposable directory. Each state case gets its own synthetic SQLite DB there.
 The source closure must contain only known local dependencies plus crypto, path,
@@ -108,11 +113,11 @@ uses a fresh runtime and compares all selected expected fields exactly; reached
 model-call counts distinguish outage coverage from pre-model handling. The
 existing broad-date acceptance corpus is unchanged. No new edge-case class is added.
 
-`georgia/integration_cases.json` holds layer-D scenarios (bounded 10+; total corpus 20-60).
+`georgia/integration_cases.json` holds layer-D scenarios (bounded 10+; total corpus 20-90).
 `georgia/cases.json` records ID, harness operation, anonymous input, selected
 expected fields, layer and provenance. Add a case for a real failure class and
 its positive control. Extend the finite dispatch in `harness.cjs` only with a
-reviewed pure module or fully mocked effect contract. The POC accepts 20-30 cases;
+reviewed pure module or fully mocked effect contract. The POC accepts 20-90 cases;
 raise that explicit bound as the corpus grows. Do not put customer data in cases.
 
 **Baseline must never be updated only to make a failing regression gate green.**

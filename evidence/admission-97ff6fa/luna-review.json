@@ -1,0 +1,20 @@
+{
+  "reviewerTask": "/root/a_hard_review",
+  "requestedModel": "gpt-6-luna",
+  "requestedEffort": "medium",
+  "scope": "Independent read-only source/diff review against0148171; corrected expectation contracts, mocked purpose stages, hard fixtures and source mutations",
+  "sourceFiles": {
+    "georgia/integration.cjs": "e242045f9474ebc0e5d7b4f5ed6fa8ca62508f7afd0e216175f851c0707dc4d4",
+    "georgia/integration_cases.json": "187982bbe703ed7df507422a53f36253915f14ee2f3459502ba5bfd90f97e668",
+    "georgia/hard-invariants.cjs": "5727e47aad0263f1ba0e705c751aee29c943b6f26ee1a7a48ca41a7f04a9390c",
+    "georgia/run.py": "7379640ffbc8d9b66d9503b9bbbf256478f49669ab850f9de174c27391e4861a"
+  },
+  "initialFindings": [
+    "Owner/revision proof conflated; split current-revision wrong owner and stale-revision same owner with separate mutations.",
+    "Positive factual-review fixture incorrectly reused fabricated draft; changed to genuinely safe draft.",
+    "Wrong date fixture only partial interval; added explicit different-date claim.",
+    "Old broad date/window and legacy intent/human-boundary proofs lacked explicit replacements; restored calendar mutations and current semantic availability/handoff mutations."
+  ],
+  "finalReviewClaim": "Coverage gap closed; no remaining concrete coverage omission or safety weakening found. Fresh exact-candidate mutation proof still required; reviewer did not independently run it.",
+  "verdictScope": "Source review only; not native admission, deployment permission or live model certification."
+}

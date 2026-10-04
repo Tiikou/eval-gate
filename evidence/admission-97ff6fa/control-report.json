@@ -880,7 +880,7 @@
     {
       "id": "int_broad_date_next_week_real",
       "question": "int_broad_date_next_week_real",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -901,7 +901,7 @@
     {
       "id": "int_broad_date_next_week_party_future",
       "question": "int_broad_date_next_week_party_future",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -922,7 +922,7 @@
     {
       "id": "int_broad_date_next_week_unrelated_question",
       "question": "int_broad_date_next_week_unrelated_question",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -943,7 +943,7 @@
     {
       "id": "int_broad_date_party_in_words",
       "question": "int_broad_date_party_in_words",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -964,7 +964,7 @@
     {
       "id": "int_broad_date_this_week",
       "question": "int_broad_date_this_week",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 3, \"startCity\": \"Тбилиси\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 3, \"startCity\": \"\u0422\u0431\u0438\u043b\u0438\u0441\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -985,7 +985,7 @@
     {
       "id": "int_broad_date_in_a_week",
       "question": "int_broad_date_in_a_week",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1006,7 +1006,7 @@
     {
       "id": "int_broad_date_about_two_weeks",
       "question": "int_broad_date_about_two_weeks",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 4, \"startCity\": \"Кутаиси\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 4, \"startCity\": \"\u041a\u0443\u0442\u0430\u0438\u0441\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1027,7 +1027,7 @@
     {
       "id": "int_broad_date_weekend",
       "question": "int_broad_date_weekend",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Тбилиси\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0422\u0431\u0438\u043b\u0438\u0441\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1048,7 +1048,7 @@
     {
       "id": "int_broad_date_late_month_named",
       "question": "int_broad_date_late_month_named",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1069,7 +1069,7 @@
     {
       "id": "int_broad_date_mid_month_named",
       "question": "int_broad_date_mid_month_named",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Тбилиси\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0422\u0431\u0438\u043b\u0438\u0441\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1090,7 +1090,7 @@
     {
       "id": "int_broad_date_next_week_near_weekend",
       "question": "int_broad_date_next_week_near_weekend",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1111,7 +1111,7 @@
     {
       "id": "int_broad_date_exact_control",
       "question": "int_broad_date_exact_control",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": true, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": true, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1174,7 +1174,7 @@
     {
       "id": "int_review22_participants",
       "question": "int_review22_participants",
-      "answer": "{\"results\": [{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}]}",
+      "answer": "{\"results\": [{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}]}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1195,7 +1195,7 @@
     {
       "id": "int_review22_son",
       "question": "int_review22_son",
-      "answer": "{\"results\": [{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}]}",
+      "answer": "{\"results\": [{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}]}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1237,7 +1237,7 @@
     {
       "id": "int_response_model_unavailable",
       "question": "int_response_model_unavailable",
-      "answer": "{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"modelCalls\": 2, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"modelCalls\": 2, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1258,7 +1258,7 @@
     {
       "id": "int_response_rejected_money",
       "question": "int_response_rejected_money",
-      "answer": "{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1659,12 +1659,11 @@
       ]
     }
   ],
-  "generated_at": "2026-10-04T17:02:18.695053+00:00",
+  "generated_at": "2026-10-04T17:02:59.685774+00:00",
   "gate": {
     "passed": true,
     "exit_code": 0,
     "reasons": [],
     "regressions": []
-  },
-  "contract_sha256": "33e8143d5ea9e180e0f675ba4e07458e0266341b87e4e31fe3772c595487fb18"
+  }
 }
