@@ -65,7 +65,7 @@ MUTATIONS = {
  'comments_money_guard_bypass': ('instagram-v2/comments/no-money.js', '  if (!value.trim()) return value;', '  return value;'),
  # Broad/relative-date qualification (real regression class, 2026-10-01).
 
- 'semantic_unproved_quote_inputs': ('instagram-v2/direct/conversation-semantics.js', '|| !quoteDerivable(update.field,', '|| false && !quoteDerivable(update.field,'),
+ 'semantic_unproved_quote_inputs': ('instagram-v2/direct/transaction-proof.js', '|| !quoteDerivable(update.field, update.value, update.quote, input.referenceAt, prior, text, before, input.lastOptionsAwaitingSelection === true)) return null;', '|| false && !quoteDerivable(update.field, update.value, update.quote, input.referenceAt, prior, text, before, input.lastOptionsAwaitingSelection === true)) return null;'),
  'semantic_stale_history': ('instagram-v2/direct/conversation-semantics.js', "if (update.source !== 'CURRENT_MESSAGE' && prior[update.field] != null", "if (false && update.source !== 'CURRENT_MESSAGE' && prior[update.field] != null"),
  'semantic_withdrawn_resurrection': ('instagram-v2/direct/conversation-semantics.js', 'if (supersededHistory(update, withdrawn, input.history)) continue;', 'if (false && supersededHistory(update, withdrawn, input.history)) continue;'),
  'semantic_stale_format': ('instagram-v2/direct/conversation-semantics.js', "if (format.source !== 'CURRENT_MESSAGE' && (prior.format || prior.formatOpen === true)", "if (false && format.source !== 'CURRENT_MESSAGE' && (prior.format || prior.formatOpen === true)"),

@@ -219,6 +219,36 @@ function seedSelection(runtime, facts = {}) {
   runtime.store.upsertConversationContextEnvelope({ accountId: ACCOUNT, conversationId: CONVERSATION, accountAlias: USERNAME, envelope: { leadFacts: { selectedExperienceId: PRODUCT, selectedRouteKey: 'kakheti', routeKey: 'kakheti', ...facts }, lastOptions: [] } });
 }
 
+// Establish the synthetic order facts through Georgia's current semantic
+// validator. Explicit current-message spans mint the deterministic quote
+// capability consumed by quoteInputFrom; fixtures must not seed raw facts.
+function validatedOrderFacts(order) {
+  const message = `Едем 4 человека ${order.datesText}`;
+  const proposal = {
+    format: { state: 'unknown', choice: null, source: null, quote: null },
+    updates: [
+      { field: 'people', value: 4, source: 'CURRENT_MESSAGE', quote: '4 человека' },
+      { field: 'datesText', value: order.datesText, source: 'CURRENT_MESSAGE', quote: order.datesText }
+    ],
+    requestKind: 'travel', availabilityRequested: false, action: 'answer', questions: ['price'],
+    correction: false, apologyWarranted: false, selection: null, releaseSelection: false,
+    topicSwitch: false, transitionEvidence: null
+  };
+  const validated = validateInterpretation(proposal, {
+    message, history: [], priorLeadFacts: {}, referenceAt: new Date().toISOString()
+  });
+  if (validated.leadFacts.people !== 4 || validated.leadFacts.datesText !== order.datesText
+    || validated.leadFacts.transactionProof?.people?.value !== 4
+    || validated.leadFacts.transactionProof?.datesText?.value !== order.datesText) {
+    throw new Error('synthetic_transaction_proof_not_established');
+  }
+  return {
+    people: validated.leadFacts.people,
+    datesText: validated.leadFacts.datesText,
+    transactionProof: validated.leadFacts.transactionProof
+  };
+}
+
 // Host boundary: the production disposition around V2 ownership.
 async function deliverDirect({ runtime, effects }, eventId, message, legacyState) {
   const event = { id: eventId, eventId, accountId: ACCOUNT, ownerAccountId: ACCOUNT, ownerAccountSource: 'graph_token_bound_account', conversationId: CONVERSATION, customerId: CUSTOMER, senderId: CUSTOMER, recipientId: CUSTOMER, message, incomingAt: isoAgo(1000), created_time: isoAgo(1000), history: [], admission: { status: 'ALLOWED', reason: 'synthetic' } };
@@ -270,8 +300,9 @@ const SCENARIOS = {
   // 1/10: concrete order -> live supplier quote EUR 210 x verified FX -> $320 per booking.
   async direct_exact_order_fx() {
     const order = futureOrder();
+    const customerOrderFacts = validatedOrderFacts(order);
     // Catalog: EUR 210/group (discovery $320); supplier now: EUR 250/booking -> $360.
-    const d = createDirect('exact', { row: eurGroupRow(), gateway: request => gatewayAnswer(request, { supplier_value: '250.00', supplier_payment_to_guide: '195.00' }) }); seedSelection(d.runtime, { people: 4, datesText: order.datesText });
+    const d = createDirect('exact', { row: eurGroupRow(), gateway: request => gatewayAnswer(request, { supplier_value: '250.00', supplier_payment_to_guide: '195.00' }) }); seedSelection(d.runtime, customerOrderFacts);
     try { const r = await deliverDirect(d, 'synthetic_event_1', 'Сколько будет стоить?', {}); return directSummary(d, [r]); }
     finally { d.runtime.store.close(); }
   },
@@ -327,8 +358,9 @@ const SCENARIOS = {
   // 4: a failed exact quote withholds money; no fallback to the discovery price.
   async direct_exact_quote_unavailable() {
     const order = futureOrder();
+    const customerOrderFacts = validatedOrderFacts(order);
     const d = createDirect('exactfail', { row: eurGroupRow(), gateway: () => ({ status: 'error', reason: 'SUPPLIER_TIMEOUT', detail: 'synthetic', calls: { options: 1, price: 0 }, timing: {} }) });
-    seedSelection(d.runtime, { people: 4, datesText: order.datesText });
+    seedSelection(d.runtime, customerOrderFacts);
     try { const r = await deliverDirect(d, 'synthetic_event_1', 'Сколько будет стоить?', {}); return directSummary(d, [r]); }
     finally { d.runtime.store.close(); }
   },
@@ -355,6 +387,7 @@ function stagedModel(calls, mode) {
   } };
 }
 const { quoteInputFrom } = src('instagram-v2/direct/catalog-selection');
+const { validateInterpretation } = src('instagram-v2/direct/conversation-semantics');
 const { FALLBACK_TEXT } = src('instagram-v2/direct/fallback-policy');
 const REASK_PEOPLE = /сколько\s+(?:вас|человек|людей|гост|участник)|количеств\S*\s+(?:человек|гостей|участник)/iu;
 const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+)?(?:старт|выезж|поед|начин)|город\S*\s+(?:старта|отправлени|выезда)/iu;
