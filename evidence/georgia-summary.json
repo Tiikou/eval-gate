@@ -1,10 +1,10 @@
 {
   "status": "OFFLINE_STRUCTURAL_PASS",
-  "scope_note": "Corrected external gate candidate for exact97ff6fa. Installed NIGHT RUN pin unchanged; native-equivalent diagnostic required separately. No deploy approval.",
-  "georgia_agent_source_head": "97ff6fa962cc9b5bb41c0d476bcd447b37d65fa9",
-  "georgia_agent_source_tree": "6d17fb3ba1b1f1a01d6a82dbd5af2b3fcf9cec64",
-  "upstream_tests": "97/97 PASS",
-  "adapter_tests": "6/6 PASS",
+  "scope_note": "Fixture-only Eval Gate refresh for the semantic/transaction-proof boundary. Installed pin unchanged; cases and expected outputs unchanged. No live model, Instagram delivery, deploy, or merge.",
+  "georgia_agent_source_head": "658e84e713ed77f672d91fe2397513e80fb74173",
+  "georgia_agent_source_tree": "a87b5d8f5e947ac12b55e5f5568c48db486e7864",
+  "upstream_tests": "not rerun (fixture-only Eval Gate refresh; Georgia source unchanged)",
+  "adapter_tests": "not rerun (fixture-only Eval Gate refresh; Georgia source unchanged)",
   "cases_total": 78,
   "cases_pass": 78,
   "production_contract_cases": "72/72",
@@ -14,19 +14,26 @@
   "mutations_caught": 39,
   "production_mutations": 36,
   "legacy_mutations": 3,
-  "mutation_semantics": "GREEN control -> one anchored source mutation -> exit1 and all named expected detectors fail -> fresh restoredGREEN0. Infrastructure/anchor errors never count.",
+  "mutation_semantics": "GREEN control -> one anchored source mutation -> exit1 and all named expected detectors fail -> fresh restored GREEN0. Infrastructure/anchor errors never count.",
   "provider": "deterministic (mocked model purposes)",
   "external_calls_real": 0,
   "real_messages_sent": 0,
   "real_crm_writes": 0,
   "live_llm": false,
   "commands": [
-    "env -i PATH=/usr/bin:/bin HOME=/tmp TZ=UTC LANG=C.UTF-8 .venv/bin/python -m georgia.run --source-root /root/scratch/georgia-gate-rootcause-20261004/a/original/source --record-baseline",
-    "env -i PATH=/usr/bin:/bin HOME=/tmp TZ=UTC LANG=C.UTF-8 PYTHONUNBUFFERED=1 .venv/bin/python -m georgia.run --source-root /root/scratch/georgia-gate-rootcause-20261004/a/original/source --prove-mutations"
+    "systemd-run --scope -p MemoryMax=2G -p MemorySwapMax=128M -p OOMPolicy=continue vps-heavy -- python3 -m georgia.run --source-root /root/work/georgia-fact-authority-20261005 --record-baseline",
+    "systemd-run --scope -p MemoryMax=2G -p MemorySwapMax=128M -p OOMPolicy=continue vps-heavy -- python3 -m georgia.run --source-root /root/work/georgia-fact-authority-20261005",
+    "systemd-run --scope -p MemoryMax=2G -p MemorySwapMax=128M -p OOMPolicy=continue vps-heavy -- python3 -m georgia.run --source-root /root/work/georgia-fact-authority-20261005 --prove-mutations"
   ],
   "artifact_sha256": {
-    "evidence/mutation-proof.json": "6e04442bc76324b4de4a1326f2c4dfb848623fdb9d51376b1bd988a6cf8aaf61",
+    "evidence/mutation-proof.json": "bc0998c9ce1a825a8e27fbc4d4d806c66adec7a7dc0c827d332481b291293e0e",
     "evidence/admission-97ff6fa/control-report.json": "82a825117e06a43b341e4dac3c96d3cd9af928bd9da73c525cee131b1b26c258",
-    "evidence/admission-97ff6fa/control-provenance.json": "2b8ebf25cf5eab5e36fc57e3a342d29a0fcfab8a08fbcf957ba120dbdd6433e8"
-  }
+    "evidence/admission-97ff6fa/control-provenance.json": "2b8ebf25cf5eab5e36fc57e3a342d29a0fcfab8a08fbcf957ba120dbdd6433e8",
+    "georgia/baseline.json": "d8ca6d4d24ef5d7d559a83dfeb7f1f570ae337e9372f321a74305c82f88b9f56",
+    "evidence/admission-transaction-proof-20261005/control-report.json": "d7daeb6cef31a5208c07e8d3ddae714e95daa3fabfd343a67e20f490906e7dad",
+    "evidence/admission-transaction-proof-20261005/control-provenance.json": "ca761f3384d5a05c0165973df89174ea4f41c6bba46434af4f472019774ea78e"
+  },
+  "eval_gate_contract_sha256": "4421b1dfd1eb82f34a706ae93588902c3db7210271a9f486267dbe73192bd695",
+  "native_dependency_version": "12.10.0",
+  "native_dependency_lock_sha256": "1430620b0e7ea7902acee79b16ecd67b9b2d14f2646839d7f364a373e2eac45f"
 }

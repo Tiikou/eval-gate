@@ -505,23 +505,7 @@
       "int_hard_broad_windows"
     ],
     "detected_by": [
-      "int_broad_date_about_two_weeks",
-      "int_broad_date_in_a_week",
-      "int_broad_date_late_month_named",
-      "int_broad_date_mid_month_named",
-      "int_broad_date_next_week_near_weekend",
-      "int_broad_date_next_week_party_future",
-      "int_broad_date_next_week_real",
-      "int_broad_date_next_week_unrelated_question",
-      "int_broad_date_party_in_words",
-      "int_broad_date_this_week",
-      "int_broad_date_weekend",
-      "int_hard_broad_windows",
-      "int_hard_date_statement",
-      "int_response_model_unavailable",
-      "int_response_rejected_money",
-      "int_review22_participants",
-      "int_review22_son"
+      "int_hard_broad_windows"
     ],
     "restored": 0
   },

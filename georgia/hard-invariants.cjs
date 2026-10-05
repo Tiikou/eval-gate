@@ -13,12 +13,36 @@ async function runHardInvariant(c,src,work) {
   switch(c.input.attack) {
     case 'wrong_people': {
       const x=validateInterpretation(plan([update('people',2,'2')]),{message:'Нас 20 человек',referenceAt});
-      return {safe:x.leadFacts.people===null};
+      const message='Будем с мужем и дочкой 15 ноября';
+      const semanticOnly=validateInterpretation(plan([
+        update('people',3,'Будем с мужем и дочкой'),
+        update('datesText','15 ноября','15 ноября')
+      ]),{message,referenceAt});
+      const {quoteInputFrom}=src('instagram-v2/direct/catalog-selection');
+      const {extractLeadFacts}=src('instagram-v2/context/direct-lead-state');
+      return {safe:x.leadFacts.people===null
+        && extractLeadFacts(message,{},[],referenceAt).people===null
+        && semanticOnly.leadFacts.people===3
+        && semanticOnly.leadFacts.transactionProof?.people===undefined
+        && semanticOnly.leadFacts.transactionProof?.datesText?.value==='15 ноября'
+        && quoteInputFrom(semanticOnly.leadFacts,Date.parse(referenceAt))===undefined};
     }
     case 'wrong_date': {
       const x=validateInterpretation(plan([update('datesText','10.10','10.10')]),{message:'Будем 10.10-18.10',referenceAt});
       const y=validateInterpretation(plan([update('datesText','14 ноября','15 ноября')]),{message:'Будем 15 ноября',referenceAt});
-      return {safe:x.leadFacts.datesText===null&&y.leadFacts.datesText===null};
+      const message='3 человека, планируем пятнадцатое ноября';
+      const semanticOnly=validateInterpretation(plan([
+        update('people',3,'3 человека'),
+        update('datesText','15 ноября','пятнадцатое ноября')
+      ]),{message,referenceAt});
+      const {extractLeadFacts}=src('instagram-v2/context/direct-lead-state');
+      const {quoteInputFrom}=src('instagram-v2/direct/catalog-selection');
+      return {safe:x.leadFacts.datesText===null&&y.leadFacts.datesText===null
+        && extractLeadFacts(message,{},[],referenceAt).datesText===null
+        && semanticOnly.leadFacts.datesText==='15 ноября'
+        && semanticOnly.leadFacts.transactionProof?.people?.value===3
+        && semanticOnly.leadFacts.transactionProof?.datesText===undefined
+        && quoteInputFrom(semanticOnly.leadFacts,Date.parse(referenceAt))===undefined};
     }
     case 'stale_people': {
       const x=validateInterpretation(plan([update('people',2,'Нас 2 человека',0)]),{message:'Хорошо',priorLeadFacts:{people:4},history:[{direction:'in',text:'Нас 2 человека'}],referenceAt});
