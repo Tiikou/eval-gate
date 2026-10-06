@@ -2,17 +2,22 @@
 
 This fork adapts [dbhavery/eval-gate](https://github.com/dbhavery/eval-gate) at
 `71b832630e76da7d1dbe0d91c0c35145db2847c6`. Upstream code is unchanged.
-It runs 78 anonymous contracts (72 production + 6 legacy reference) regenerated from
-Georgia source on every invocation. Its 48-case integration suite contains 30
+It runs 84 anonymous contracts (78 production + 6 legacy reference) regenerated from
+Georgia source on every invocation. Its 54-case integration suite contains 36
 mocked scenarios through Georgia's own runtime entry points and 18 isolated
 HARD probes of the semantic/output/SQLite boundaries. It applies structural JSON
 assertions, a 100% threshold and a reviewed baseline. NIGHT RUN's native Georgia
 admission consumer uses a separately pinned version of this repository.
 
-**Scope: isolated gate correction for exact Georgia main `97ff6fa`.** The installed
-NIGHT RUN pin is not changed by this branch. See
-`evidence/admission-97ff6fa/ROOT_CAUSE.md` for the reproduced external-gate failure,
-the reviewed contract migration and preserved original evidence; see
+**Scope: Direct manager-handoff lifecycle contract for Georgia PR #122
+(`4f93b5b`, base main `4f50cfa`).** The approved policy (AUTO / NOTIFY_MANAGER /
+MANUAL_HANDOFF, receipt-gated manager SENT, DELIVERY_UNKNOWN never replayed,
+one active attention episode, no black hole after human takeover) replaces the
+retired NEEDS_HUMAN-on-technical-failure contracts. See
+`evidence/admission-handoff-lifecycle-20261006/ADJUDICATION.md` for the per-case
+adjudication of the 9 migrated contracts, the 6 new lifecycle cases and mutations.
+Earlier scopes: `evidence/admission-97ff6fa/ROOT_CAUSE.md` (semantic Direct V2
+migration) and `evidence/admission-transaction-proof-20261005/`; see
 `evidence/PRICING_CONTRACT.md` for the unchanged production pricing contract.
 
 **Production pricing contract (canonical 2ebaf59, verified in code, not prose):** money

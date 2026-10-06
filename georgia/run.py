@@ -75,13 +75,24 @@ MUTATIONS = {
  'fabricated_availability': ('instagram-v2/direct/output-guard.js', 'if (factReason) return { text: null, reason: factReason };', 'if (false && factReason) return { text: null, reason: factReason };'),
  'stale_delivery_claim': ('instagram-v2/state-store.js', "if(!event||event.lease_owner!==claim.leaseOwner||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');", "if(!event||event.lease_owner!==claim.leaseOwner)throw new GeorgiaV2Error('event_claim_mismatch');"),
  'manual_stale_cas': ('instagram-v2/state-store.js', 'WHERE account_id=? AND conversation_id=? AND revision=?`).run(mode,reason,now,boundaryReceivedAt,boundaryEventId,now,text(accountId),text(conversationId),expectedRevision);', 'WHERE account_id=? AND conversation_id=? AND ? IS NOT NULL`).run(mode,reason,now,boundaryReceivedAt,boundaryEventId,now,text(accountId),text(conversationId),expectedRevision);'),
- 'interpretation_outage_fabricates_progress': ('instagram-v2/direct/builder.js', "catch (error) { return noFallbackNeedsHuman(error.message?.startsWith('semantic_') ? error.message : 'semantic_model_unavailable', { modelCalls: 1 }); }", "catch (error) { return {type:'reply',text:'Подскажите формат поездки?',leadFacts:{people:2},modelCalls:1}; }"),
+ 'interpretation_outage_fabricates_progress': ('instagram-v2/direct/builder.js', "catch (error) { return noFallbackNeedsHuman(error.message?.startsWith('semantic_') ? error.message : 'semantic_model_unavailable', {", "catch (error) { return {type:'reply',text:'Подскажите формат поездки?',leadFacts:{people:2},modelCalls:1}; noFallbackNeedsHuman(error.message?.startsWith('semantic_') ? error.message : 'semantic_model_unavailable', {"),
  'foreign_delivery_owner': ('instagram-v2/state-store.js', "if(!event||event.lease_owner!==claim.leaseOwner||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');", "if(!event||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');"),
  'overwrite_current_format': ('instagram-v2/direct/conversation-semantics.js', 'facts.format = choice;', "facts.format = 'group';"),
  'broad_date_dropped': ('instagram-v2/context/direct-lead-state.js', 'const broad=broadDateWindow(value,today);', 'const broad=null;'),
  'broad_window_collapsed_to_one_day': ('instagram-v2/context/direct-lead-state.js', 'if(sy===ey&&sm===em)return`${start.getUTCDate()}–${end.getUTCDate()} ${MONTH_NAMES[em]} ${ey}`;', 'if(sy===ey&&sm===em)return`${start.getUTCDate()} ${MONTH_NAMES[sm]} ${sy}`;'),
- 'semantic_week_statement_availability': ('instagram-v2/direct/conversation-semantics.js', 'return Object.freeze({ ...proposal, selection, droppedSelection, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });', "return Object.freeze({ ...proposal, availabilityRequested:true, questions:['date_availability'], selection, droppedSelection, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });"),
- 'semantic_human_boundary_bypass': ('instagram-v2/direct/builder.js', "let result = semantic.action === 'handoff' ? needsHuman('semantic_requires_human') : await buildReply(validated);", "let result = await buildReply({ ...validated, semanticInterpretation: {...semantic,action:'qualify'} });"),
+ 'semantic_week_statement_availability': ('instagram-v2/direct/conversation-semantics.js', 'return Object.freeze({ ...proposal, action, managerIntent, selection, droppedSelection, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });', "return Object.freeze({ ...proposal, action, managerIntent, availabilityRequested:true, questions:['date_availability'], selection, droppedSelection, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });"),
+ 'semantic_human_boundary_bypass': ('instagram-v2/direct/builder.js', "if (managerIntent?.outcome === 'MANUAL_HANDOFF') {", "if (false) {"),
+ # Direct handoff lifecycle (approved AUTO / NOTIFY_MANAGER / MANUAL_HANDOFF policy).
+ 'technical_hard_handoff': ('instagram-v2/direct/fallback-policy.js', "handoffOutcome: 'NOTIFY_MANAGER', handoffReason: 'technical_failure',", "handoffOutcome: 'MANUAL_HANDOFF', handoffReason: 'technical_failure',"),
+ 'complete_custom_brief_not_notified': ('instagram-v2/direct/handoff-policy.js', "if (intent.reason === 'custom_quote' && !customBriefComplete(facts, intent)) return null;", "if (intent.reason === 'custom_quote') return null;"),
+ 'incomplete_custom_brief_hard_handoff': ('instagram-v2/direct/handoff-policy.js', "if (intent.reason === 'custom_quote' && !customBriefComplete(facts, intent)) return null;", "if (intent.reason === 'custom_quote' && !customBriefComplete(facts, intent)) return { ...intent, outcome: 'MANUAL_HANDOFF' };"),
+ 'manager_sent_without_receipt': ('instagram-v2/outbox/auxiliary-delivery.js', "const id = String(result?.messageId || result?.message_id || '').trim();", "const id = String(result?.messageId || result?.message_id || 'assumed_receipt').trim();"),
+ 'manager_unknown_auto_replay': ('instagram-v2/outbox/auxiliary-delivery.js', "      store.markOutboxUnknown(job.claim);\n      return { status: 'delivery_unknown', id: job.id };", "      store.markOutboxRetry({ ...job.claim, nextAttemptAt: new Date(0).toISOString() });\n      return { status: 'retry', id: job.id };"),
+ 'post_handoff_inbound_dropped': ('instagram-v2/adapters/direct-polling-adapter.js', "      await mirrorTurnInbound(mirrorInbound, { event, accountId, conversationId, conversationMode: conversation.mode });\n      return { status: 'manual_or_needs_human' };", "      return { status: 'manual_or_needs_human' };"),
+ 'bot_fallback_as_human': ('instagram-v2/direct/human-takeover-guard.js', ".filter(row => !['direct', 'fallback'].some(channel =>", ".filter(row => !['direct'].some(channel =>"),
+ 'attention_episode_lost_per_inbound': ('instagram-v2/state-store.js', "if (Object.prototype.hasOwnProperty.call(priorPayload, 'managerAttention')) payload.managerAttention = priorPayload.managerAttention;", "/* active manager episode pointer not carried forward */"),
+ # The guard re-checks freshness after its in-flight history read (callback + store); dropping that re-check is one defect.
+ 'stale_bot_send_after_takeover': ('instagram-v2/direct/human-takeover-guard.js', "    await beforeGraphRequest?.();\n    if (!store.isConversationFresh({ accountId, conversationId, revision: snapshot.revision, mode: snapshot.mode })) {\n      throw blocked('DIRECT_SUPERSEDED_BEFORE_GRAPH');\n    }", "    // post-observation freshness re-check removed"),
 }
 # Named cases a mutation must turn RED (a subset of what fails). Every
 # production business invariant above has at least one end-to-end (int_) detector.
@@ -122,7 +133,16 @@ EXPECTED_DETECTORS = {
  'broad_date_dropped': {'int_hard_broad_windows'},
  'broad_window_collapsed_to_one_day': {'int_hard_broad_windows'},
  'semantic_week_statement_availability': {'int_hard_date_statement'},
- 'semantic_human_boundary_bypass': {'int_review22_boundaries'},
+ 'semantic_human_boundary_bypass': {'int_review22_boundaries', 'int_handoff_human_receipt_owned'},
+ 'technical_hard_handoff': {'int_model_unavailable_broad_date_real', 'int_response_model_unavailable'},
+ 'complete_custom_brief_not_notified': {'int_handoff_custom_complete_notify_once'},
+ 'incomplete_custom_brief_hard_handoff': {'int_handoff_custom_incomplete_auto'},
+ 'manager_sent_without_receipt': {'int_handoff_unknown_receipt_held'},
+ 'manager_unknown_auto_replay': {'int_handoff_unknown_receipt_held'},
+ 'post_handoff_inbound_dropped': {'int_handoff_human_receipt_owned'},
+ 'bot_fallback_as_human': {'int_handoff_unknown_receipt_held'},
+ 'attention_episode_lost_per_inbound': {'int_handoff_custom_complete_notify_once'},
+ 'stale_bot_send_after_takeover': {'int_handoff_takeover_before_send'},
 }
 
 def native_provenance():
