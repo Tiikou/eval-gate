@@ -344,7 +344,10 @@ function directSummary({ runtime, effects }, results) {
 // Manager-attention state through the store's public API: the one active
 // episode, its outbox row(s) and every Telegram transport call.
 function attentionSummary({ runtime, effects }) {
-  const attention = runtime.store.getDirectHandoffAttention({ accountId: ACCOUNT, conversationId: CONVERSATION });
+  // A source without the attention API cannot satisfy the contract: report no
+  // episode so the case fails as a regression rather than a harness error.
+  const attention = typeof runtime.store.getDirectHandoffAttention === 'function'
+    ? runtime.store.getDirectHandoffAttention({ accountId: ACCOUNT, conversationId: CONVERSATION }) : null;
   const rows = runtime.store.db.prepare("SELECT status, payload_json FROM operational_outbox WHERE kind='manager_notification' ORDER BY id").all();
   return {
     attentionOutcome: attention?.outcome || null,
