@@ -4,8 +4,10 @@
 // isolated snapshot: routing/ownership, V2 Direct runtime/adapter/builder,
 // catalog selection, discovery/exact pricing, money renderer/output guard,
 // SQLite claims and delivery states, CRM mirror records, Comments runtime and
-// its no-money guard. Mocked only: model, Graph send, supplier quote gateway,
-// collector XLSX row source, conversation resolution and CRM transport.
+// its no-money guard, durable manager notification outbox/receipt rules and
+// the before-send human-takeover guard. Mocked only: model, Graph send, Graph
+// history read, Telegram manager transport, supplier quote gateway, collector
+// XLSX row source, conversation resolution and CRM transport.
 // Any network/subprocess capability or filesystem read outside the snapshot,
 // the disposable work dir and the pinned SQLite binding is blocked and makes
 // the run an infrastructure error (exit 2), never a pass.
@@ -62,6 +64,7 @@ const { quoteOnDemand } = src('georgia-on-demand-quote');
 const { processDirectAtV2Boundary } = src('instagram-v2/integration/direct-entrypoint');
 const { runDirectOwnership } = src('instagram-v2/integration/ownership');
 const { createGeorgiaCommentsRuntime } = src('instagram-v2/runtime/comments-runtime');
+const { notifyManagerDurably, drainManagerNotifications } = src('instagram-v2/outbox/auxiliary-delivery');
 
 const ACCOUNT = 'synthetic_account';
 const USERNAME = 'georgiaforyou';
@@ -140,13 +143,29 @@ function directModel(calls) {
   };
 }
 
+const CUSTOM_INCOMPLETE = 'Хотим индивидуальный маршрут по винодельням, нас 3 человека';
+const CUSTOM_COMPLETE = 'Хотим индивидуальный маршрут по винодельням 12–15 ноября, нас 3 человека, старт из Тбилиси';
+// Authored typed manager intents (outcome, reason) with their evidence span.
+const MANAGER_INTENTS = [
+  [/позовите Никиту/u, 'MANUAL_HANDOFF', 'customer_requested_human'],
+  [/позовите менеджера/u, 'MANUAL_HANDOFF', 'customer_requested_human'],
+  [/хочу пожаловаться/u, 'MANUAL_HANDOFF', 'complaint_review'],
+  [/индивидуальный маршрут/u, 'NOTIFY_MANAGER', 'custom_quote']
+];
+
 // Purpose-typed offline model contract. These fixtures are authored decisions,
 // not outputs of Georgia's regex/parser; the runtime validates their evidence.
 function semanticFixture(request) {
   const data = JSON.parse(request.messages?.[1]?.content || '{}');
   const message = String(data.CURRENT_MESSAGE || '');
   const proposal = { format: { state: 'unknown', choice: null, source: null, quote: null }, updates: [], requestKind: 'travel', availabilityRequested: false, action: 'qualify', questions: [], correction: false, apologyWarranted: false, selection: null, releaseSelection: false, topicSwitch: false, transitionEvidence: null };
-  if (/позовите Никиту|пожаловаться/i.test(message)) proposal.action = 'handoff';
+  // The semantic contract requires a typed managerIntent with a verbatim
+  // current-message quote; a bare action:'handoff' is invalid model output.
+  const intent = MANAGER_INTENTS.find(([pattern]) => pattern.test(message));
+  if (intent) {
+    proposal.managerIntent = { outcome: intent[1], reason: intent[2], quote: message.match(intent[0])[0], ...(intent[2] === 'custom_quote' ? { formatRequired: false } : {}) };
+    if (intent[1] === 'MANUAL_HANDOFF') proposal.action = 'handoff';
+  }
   if (/сколько стоит|сколько будет стоить/i.test(message)) { proposal.action = 'answer'; proposal.questions = ['price']; }
   const facts = [
     ['Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми', '2', '2 человека', 'Батуми', 'На следующей неделе'],
@@ -164,19 +183,38 @@ function semanticFixture(request) {
     ['Нас 2 участника на следующей неделе в Батуми', '2', '2 участника', 'Батуми', 'на следующей неделе'],
     ['Нас двое с сыном на следующей неделе в Батуми', '3', 'двое с сыном', 'Батуми', 'на следующей неделе'],
     ['Нас два с сыном на следующей неделе в Батуми', '3', 'два с сыном', 'Батуми', 'на следующей неделе'],
-    ['Нас 2 с сыном на следующей неделе в Батуми', '3', '2 с сыном', 'Батуми', 'на следующей неделе']
+    ['Нас 2 с сыном на следующей неделе в Батуми', '3', '2 с сыном', 'Батуми', 'на следующей неделе'],
+    [CUSTOM_COMPLETE, '3', 'нас 3 человека', 'Тбилиси', '12–15 ноября']
   ].find(row => row[0] === message);
   if (facts) {
     for (const [field, value, quote] of [['datesText', facts[4], message], ['people', Number(facts[1]), message], ['startCity', facts[3], message]]) {
       proposal.updates.push({ field, value, source: 'CURRENT_MESSAGE', quote });
     }
   }
+  if (message === CUSTOM_INCOMPLETE) proposal.updates.push({ field: 'people', value: 3, source: 'CURRENT_MESSAGE', quote: 'нас 3 человека' });
+  if (message === CUSTOM_INCOMPLETE || message === CUSTOM_COMPLETE) proposal.updates.push({ field: 'interests', value: ['винодельни'], source: 'CURRENT_MESSAGE', quote: 'маршрут по винодельням' });
   return proposal;
 }
 
-function createDirect(name, { row = authorityRow(), gateway = null, send = null, model = null } = {}) {
+// Telegram manager transport modes: a valid Telegram receipt, an accepted
+// call without any receipt (ambiguous), or a receipt while a human operator
+// takes the conversation over in the CRM before the bot acts on it.
+function managerTransport(effects, mode, takeover) {
+  return async () => {
+    effects.managerCards.push(mode);
+    if (mode === 'takeover') takeover();
+    if (mode === 'no_receipt') return { ok: true };
+    return { ok: true, result: { message_id: 7000 + effects.managerCards.length } };
+  };
+}
+
+function createDirect(name, { row = authorityRow(), gateway = null, send = null, model = null, manager = 'receipt' } = {}) {
   const root = fs.mkdtempSync(path.join(WORK, `${name}-`));
-  const effects = { sends: [], modelCalls: [], gatewayRequests: [], crm: [], managerTasks: [], needsHuman: [], legacyCalls: 0, retries: 0, cards: [] };
+  const effects = { sends: [], modelCalls: [], gatewayRequests: [], crm: [], managerTasks: [], hostAttention: [], managerCards: [], legacyCalls: 0, retries: 0, cards: [], inbound: [], history: [], historyReads: 0, takeoverDuringHistory: false };
+  let runtime = null;
+  const takeover = () => runtime.store.setConversationMode({ accountId: ACCOUNT, conversationId: CONVERSATION, mode: 'MANUAL', reason: 'telegram_crm_manual_reply' });
+  effects.setManager = mode => { effects.manager = mode; };
+  effects.manager = manager;
   const catalog = createDirectCatalogProvider({
     siteProvider: async () => ({ ok: true, cards: [] }),
     hybridProvider: async () => ({ ok: true, rawCards: [{ tripster_id: PRODUCT }], cards: [], mode: 'SYNTHETIC' }),
@@ -190,7 +228,7 @@ function createDirect(name, { row = authorityRow(), gateway = null, send = null,
     for (const card of result?.cards || []) effects.cards.push({ id: card.id, sellPriceUsd: card.sellPriceUsd || null, priceBasis: card.priceBasis || null, quoteStatus: card.quoteStatus || null, source: card.source || null });
     return result;
   };
-  const runtime = createGeorgiaDirectRuntime({
+  runtime = createGeorgiaDirectRuntime({
     storeOptions: { privateRoot: root, dbPath: path.join(root, 'state.sqlite') },
     expectedIdentity: { accountId: ACCOUNT, username: USERNAME },
     resolveTokenIdentity: async () => ({ accountId: ACCOUNT, username: USERNAME, enabled: true }),
@@ -200,14 +238,27 @@ function createDirect(name, { row = authorityRow(), gateway = null, send = null,
     sendInstagram: async input => {
       if (input.beforeGraphRequest) await input.beforeGraphRequest();
       effects.sends.push({ eventId: String(input.eventId), text: input.text });
-      if (send) return send(input, effects.sends.length);
-      return { ok: true, delivered: true, deliveryId: `synthetic_delivery_${effects.sends.length}`, recipientId: input.recipientId };
+      const result = send ? await send(input, effects.sends.length)
+        : { ok: true, delivered: true, deliveryId: `synthetic_delivery_${effects.sends.length}`, recipientId: input.recipientId };
+      if (result?.deliveryId) effects.history.push({ id: result.deliveryId, direction: 'out', at: new Date().toISOString() });
+      return result;
+    },
+    // Synthetic Graph history (production wires the real reader): customer
+    // inbound plus the bot's own delivered messages; optionally a human
+    // operator takes over while this observational read is in flight.
+    getConversationHistorySince: async () => {
+      effects.historyReads++;
+      if (effects.takeoverDuringHistory) { effects.takeoverDuringHistory = false; takeover(); }
+      return { complete: true, messages: [...effects.inbound, ...effects.history] };
     },
     // Real CRM record builders; only the Telegram bridge transport is mocked.
     mirrorInbound: async input => { effects.crm.push({ kind: 'inbound', record: buildDirectInboundCrmMirrorRecord(input) }); return { ok: true }; },
     mirrorTurn: async input => { effects.crm.push({ kind: 'turn', record: buildDirectCrmMirrorRecord(input) }); return { ok: true }; },
     mirrorStatus: async input => { effects.crm.push({ kind: 'status', record: buildDirectStatusCrmMirrorRecord(input) }); return { ok: true }; },
-    notifyManager: async () => ({ ok: true }),
+    // Production composition: the durable outbox notifier with the real
+    // receipt rules; only the Telegram transport is mocked.
+    notifyManager: input => notifyManagerDurably({ store: runtime.store, accountId: input.accountId, conversationId: input.conversationId,
+      eventId: input.managerEventId || (input.episodeId ? `direct-handoff:${input.episodeId}` : `direct:${input.eventId}`), reason: input.reason || 'direct_handoff', send: async (...args) => managerTransport(effects, effects.manager, takeover)(...args) }),
     resolveConversationRecipient: async () => CUSTOMER,
     env: DIRECT_ENV,
     systemPrompt: 'Synthetic Georgia system prompt.'
@@ -250,15 +301,16 @@ function validatedOrderFacts(order) {
 }
 
 // Host boundary: the production disposition around V2 ownership.
-async function deliverDirect({ runtime, effects }, eventId, message, legacyState) {
-  const event = { id: eventId, eventId, accountId: ACCOUNT, ownerAccountId: ACCOUNT, ownerAccountSource: 'graph_token_bound_account', conversationId: CONVERSATION, customerId: CUSTOMER, senderId: CUSTOMER, recipientId: CUSTOMER, message, incomingAt: isoAgo(1000), created_time: isoAgo(1000), history: [], admission: { status: 'ALLOWED', reason: 'synthetic' } };
+async function deliverDirect({ runtime, effects }, eventId, message, legacyState, at = isoAgo(1000)) {
+  const event = { id: eventId, eventId, accountId: ACCOUNT, ownerAccountId: ACCOUNT, ownerAccountSource: 'graph_token_bound_account', conversationId: CONVERSATION, customerId: CUSTOMER, senderId: CUSTOMER, recipientId: CUSTOMER, message, incomingAt: at, created_time: at, history: [], admission: { status: 'ALLOWED', reason: 'synthetic' } };
+  if (!effects.inbound.some(row => row.id === eventId)) effects.inbound.push({ id: eventId, direction: 'in', at });
   return processDirectAtV2Boundary({
     message: event, legacyState,
     runV2: m => runDirectOwnership({ env: DIRECT_ENV, event: m, getRuntime: async () => runtime, sendEnabled: true }),
     runLegacy: async () => { effects.legacyCalls++; return { status: 'legacy' }; },
     markSeen: () => {}, scheduleRetry: () => { effects.retries++; },
     createManagerTask: task => effects.managerTasks.push(task.reason),
-    mirrorInbound: () => {}, markNeedsHuman: item => effects.needsHuman.push(item.reason)
+    mirrorInbound: () => {}, notifyManager: item => effects.hostAttention.push(item.reason)
   });
 }
 
@@ -286,6 +338,23 @@ function directSummary({ runtime, effects }, results) {
     crmSentTurns: turns.filter(r => r.status === 'SENT').length,
     crmTurnMatchesDelivery: turns.length === 1 ? (turns[0].outgoing === lastSent && String(turns[0].deliveryId) === 'synthetic_delivery_1' && turns[0].source === 'georgia_v2_direct' && turns[0].actorType === 'agent' && turns[0].conversationId === CONVERSATION) : false,
     crmInboundWrites: effects.crm.filter(x => x.kind === 'inbound').length
+  };
+}
+
+// Manager-attention state through the store's public API: the one active
+// episode, its outbox row(s) and every Telegram transport call.
+function attentionSummary({ runtime, effects }) {
+  // A source without the attention API cannot satisfy the contract: report no
+  // episode so the case fails as a regression rather than a harness error.
+  const attention = typeof runtime.store.getDirectHandoffAttention === 'function'
+    ? runtime.store.getDirectHandoffAttention({ accountId: ACCOUNT, conversationId: CONVERSATION }) : null;
+  const rows = runtime.store.db.prepare("SELECT status, payload_json FROM operational_outbox WHERE kind='manager_notification' ORDER BY id").all();
+  return {
+    attentionOutcome: attention?.outcome || null,
+    attentionReason: attention?.reason || null,
+    attentionStatus: attention?.status || null,
+    managerOutbox: rows.map(r => r.status),
+    managerCards: effects.managerCards.length
   };
 }
 
@@ -391,6 +460,7 @@ const { validateInterpretation } = src('instagram-v2/direct/conversation-semanti
 const { FALLBACK_TEXT } = src('instagram-v2/direct/fallback-policy');
 const REASK_PEOPLE = /сколько\s+(?:вас|человек|людей|гост|участник)|количеств\S*\s+(?:человек|гостей|участник)/iu;
 const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+)?(?:старт|выезж|поед|начин)|город\S*\s+(?:старта|отправлени|выезда)/iu;
+const EXTERNAL_ACTION = /подтверждаю\s+бронь|бронь\s+подтвержден|забронировал[аи]?(?![а-я])|оформил[аи]?\s+бронь/iu;
 const REASK_DATE = /на\s+какие\s+даты|какого\s+числа|когда\s+(?:вы\s+)?(?:планиру|приезжа|прилета)/iu;
 async function broadDateQualification({ message, model = 'qualification' }) {
   const d = createDirect('broaddate', { model: calls => stagedModel(calls, model) });
@@ -405,6 +475,8 @@ async function broadDateQualification({ message, model = 'qualification' }) {
       managerTasks: summary.managerTasks, legacyCalls: summary.legacyCalls,
       handoffReason: String(conversation.needs_human_reason || ''),
       conversationMode: String(conversation.mode || ''),
+      modeReason: String(conversation.mode_reason || ''),
+      ...attentionSummary(d),
       genericFallback: d.effects.sends.some(x => String(x.text).trim() === FALLBACK_TEXT),
       modelCalls: d.effects.modelCalls.length,
       people: Number.isInteger(facts.people) ? facts.people : null,
@@ -414,6 +486,7 @@ async function broadDateQualification({ message, model = 'qualification' }) {
       reaskPeople: REASK_PEOPLE.test(last),
       reaskStartCity: REASK_CITY.test(last),
       reaskDate: REASK_DATE.test(last),
+      externalActionClaimed: EXTERNAL_ACTION.test(d.effects.sends.map(x => x.text).join('\n')),
       gatewayRequests: summary.gatewayRequests,
       renderedMoney: summary.renderedMoney
     };
@@ -427,6 +500,44 @@ SCENARIOS.direct_broad_date_matrix = async c => {
     results.push(Object.fromEntries(Object.keys(c.expected.results[results.length]).map(key => [key, output[key]])));
   }
   return { results };
+};
+
+// Multi-turn handoff lifecycle in one conversation through the same runtime:
+// each turn may switch the manager transport, simulate a human takeover during
+// the before-send history read, or drain the manager outbox as the auxiliary
+// tick does. Each turn reports the cumulative customer/manager effects.
+const PROMISES_MANAGER = /(?:менеджер\S*|Никит\S*|он|она)\s+(?:Вам\s+)?(?:ответит|свяжется|напишет)|передам\s+менеджер|передал[аи]?\s+менеджер/iu;
+const PENDING_UNCONFIRMED = /не\s+могу\s+подтвердить,?\s+что\s+менеджер/iu;
+SCENARIOS.direct_handoff_lifecycle = async c => {
+  const d = createDirect('handoff', { model: calls => stagedModel(calls, 'qualification'), manager: c.input.manager || 'receipt' });
+  try {
+    const results = [];
+    for (const [index, turn] of c.input.turns.entries()) {
+      if (turn.manager) d.effects.setManager(turn.manager);
+      if (turn.takeoverDuringHistory) d.effects.takeoverDuringHistory = true;
+      const sendsBefore = d.effects.sends.length;
+      const r = turn.drain
+        ? { status: 'drained', drained: await drainManagerNotifications({ store: d.runtime.store, accountId: ACCOUNT, send: async (...args) => managerTransport(d.effects, d.effects.manager, () => {})(...args) }) }
+        : await deliverDirect(d, `synthetic_event_${index + 1}`, turn.message, {}, isoAgo(600000 - index * 60000));
+      const conversation = d.runtime.store.getConversation(ACCOUNT, CONVERSATION) || {};
+      const last = d.effects.sends.length > sendsBefore ? String(d.effects.sends[d.effects.sends.length - 1].text || '') : '';
+      const output = {
+        status: String(r.status || ''),
+        conversationMode: String(conversation.mode || ''),
+        modeReason: String(conversation.mode_reason || ''),
+        sends: d.effects.sends.length,
+        crmInboundWrites: d.effects.crm.filter(x => x.kind === 'inbound').length,
+        ...attentionSummary(d),
+        customerReplied: d.effects.sends.length > sendsBefore,
+        promisesManager: PROMISES_MANAGER.test(last),
+        pendingUnconfirmed: PENDING_UNCONFIRMED.test(last),
+        renderedMoney: moneyTokens(last),
+        drained: turn.drain ? r.drained.map(x => x.status) : null
+      };
+      results.push(Object.fromEntries(Object.keys(c.expected.results[results.length]).map(key => [key, output[key]])));
+    }
+    return { results };
+  } finally { d.runtime.store.close(); }
 };
 
 async function comments(name, reply, policy = 'Synthetic policy.') {

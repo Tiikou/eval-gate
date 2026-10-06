@@ -257,8 +257,8 @@
         "delivery_unknown"
       ],
       "actions": [
-        "manager_handoff",
-        "manager_handoff"
+        "notify_manager",
+        "notify_manager"
       ],
       "sends": 1,
       "managerTasks": 2,
@@ -283,7 +283,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct: Graph response without delivery id is DELIVERY_UNKNOWN; replay does not resend; no SENT CRM turn; manager handoff, no retry (scenarios 3, 9)."
+    "provenance": "Direct: Graph response without delivery id is DELIVERY_UNKNOWN; replay does not resend; no SENT CRM turn; manager handoff, no retry (scenarios 3, 9). Migrated 2026-10-06: the host disposition for DELIVERY_UNKNOWN requests manager attention (action notify_manager) instead of a permanent manager_handoff; send count, no resend, no retry, no SENT CRM turn, money and manager task count are unchanged."
   },
   {
     "id": "int_direct_delivery_timeout_unknown",
@@ -296,8 +296,8 @@
         "delivery_unknown"
       ],
       "actions": [
-        "manager_handoff",
-        "manager_handoff"
+        "notify_manager",
+        "notify_manager"
       ],
       "sends": 1,
       "managerTasks": 2,
@@ -322,7 +322,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct: transport timeout after request is DELIVERY_UNKNOWN; same no-resend/no-success semantics (scenarios 3, 9)."
+    "provenance": "Direct: transport timeout after request is DELIVERY_UNKNOWN; same no-resend/no-success semantics (scenarios 3, 9). Migrated 2026-10-06: the host disposition for DELIVERY_UNKNOWN requests manager attention (action notify_manager) instead of a permanent manager_handoff; send count, no resend, no retry, no SENT CRM turn, money and manager task count are unchanged."
   },
   {
     "id": "int_comments_money_suppressed",
@@ -788,16 +788,16 @@
     },
     "expected": {
       "statuses": [
-        "needs_human_without_fallback"
+        "sent"
       ],
       "actions": [
         "consumed"
       ],
-      "sends": 0,
+      "sends": 1,
       "eventStates": [
-        "FAILED"
+        "SENT"
       ],
-      "conversationMode": "NEEDS_HUMAN",
+      "conversationMode": "AUTO",
       "genericFallback": false,
       "managerTasks": 0,
       "legacyCalls": 0,
@@ -809,9 +809,16 @@
       "reaskStartCity": false,
       "reaskDate": false,
       "gatewayRequests": 0,
-      "renderedMoney": []
+      "renderedMoney": [],
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1
     },
-    "provenance": "Exact production path of the real regression (2026-10-01T18:43:53Z, error_code=model_unavailable after ~128 s): the model call failed on the first ordinary qualification turn and the builder sent the generic manager fallback. Owner decision 2026-10-01: ordinary qualification makes deterministic progress when the model is unavailable (no money, no availability claim, known facts not re-asked)."
+    "provenance": "Exact production path of the real regression (2026-10-01T18:43:53Z, error_code=model_unavailable after ~128 s): the model call failed on the first ordinary qualification turn and the builder sent the generic manager fallback. Owner decision 2026-10-01: ordinary qualification makes deterministic progress when the model is unavailable (no money, no availability claim, known facts not re-asked). Migrated 2026-10-06 (Georgia PR #122, approved handoff policy): technical model/builder/review failure alone never silences the bot or transfers ownership; after the bounded recovery the bot stays AUTO, sends one honest safe reply and opens one NOTIFY_MANAGER technical_failure episode delivered with a Telegram receipt. Unchanged: no money, no unvalidated facts persisted, no re-ask, no legacy path, no host manager task."
   },
   {
     "id": "int_model_unavailable_exact_date",
@@ -823,16 +830,16 @@
     },
     "expected": {
       "statuses": [
-        "needs_human_without_fallback"
+        "sent"
       ],
       "actions": [
         "consumed"
       ],
-      "sends": 0,
+      "sends": 1,
       "eventStates": [
-        "FAILED"
+        "SENT"
       ],
-      "conversationMode": "NEEDS_HUMAN",
+      "conversationMode": "AUTO",
       "genericFallback": false,
       "managerTasks": 0,
       "legacyCalls": 0,
@@ -844,9 +851,16 @@
       "reaskStartCity": false,
       "reaskDate": false,
       "gatewayRequests": 0,
-      "renderedMoney": []
+      "renderedMoney": [],
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1
     },
-    "provenance": "Model-unavailable control with an exact date: ordinary qualification still makes deterministic progress and the exact date stays a concrete quote date."
+    "provenance": "Model-unavailable control with an exact date: ordinary qualification still makes deterministic progress and the exact date stays a concrete quote date. Migrated 2026-10-06 (Georgia PR #122, approved handoff policy): technical model/builder/review failure alone never silences the bot or transfers ownership; after the bounded recovery the bot stays AUTO, sends one honest safe reply and opens one NOTIFY_MANAGER technical_failure episode delivered with a Telegram receipt. Unchanged: no money, no unvalidated facts persisted, no re-ask, no legacy path, no host manager task."
   },
   {
     "id": "int_review22_participants",
@@ -872,16 +886,16 @@
       "results": [
         {
           "statuses": [
-            "needs_human_without_fallback"
+            "sent"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 0,
+          "sends": 1,
           "eventStates": [
-            "FAILED"
+            "SENT"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "AUTO",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -893,20 +907,27 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": []
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
-            "needs_human_without_fallback"
+            "sent"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 0,
+          "sends": 1,
           "eventStates": [
-            "FAILED"
+            "SENT"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "AUTO",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -918,7 +939,14 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": []
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
@@ -948,7 +976,7 @@
         }
       ]
     },
-    "provenance": "Bounded matrix of the approved participants review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
+    "provenance": "Bounded matrix of the approved participants review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries. Outage/rejected turns migrated 2026-10-06 to the approved technical-failure contract (AUTO, honest safe reply, one NOTIFY_MANAGER technical_failure episode); qualification turns unchanged."
   },
   {
     "id": "int_review22_son",
@@ -998,16 +1026,16 @@
       "results": [
         {
           "statuses": [
-            "needs_human_without_fallback"
+            "sent"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 0,
+          "sends": 1,
           "eventStates": [
-            "FAILED"
+            "SENT"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "AUTO",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -1019,20 +1047,27 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": []
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
-            "needs_human_without_fallback"
+            "sent"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 0,
+          "sends": 1,
           "eventStates": [
-            "FAILED"
+            "SENT"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "AUTO",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -1044,20 +1079,27 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": []
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
-            "needs_human_without_fallback"
+            "sent"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 0,
+          "sends": 1,
           "eventStates": [
-            "FAILED"
+            "SENT"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "AUTO",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -1069,20 +1111,27 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": []
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
-            "needs_human_without_fallback"
+            "sent"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 0,
+          "sends": 1,
           "eventStates": [
-            "FAILED"
+            "SENT"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "AUTO",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -1094,20 +1143,27 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": []
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
-            "needs_human_without_fallback"
+            "sent"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 0,
+          "sends": 1,
           "eventStates": [
-            "FAILED"
+            "SENT"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "AUTO",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -1119,20 +1175,27 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": []
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
-            "needs_human_without_fallback"
+            "sent"
           ],
           "actions": [
             "consumed"
           ],
-          "sends": 0,
+          "sends": 1,
           "eventStates": [
-            "FAILED"
+            "SENT"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "AUTO",
           "genericFallback": false,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -1144,7 +1207,14 @@
           "reaskStartCity": false,
           "reaskDate": false,
           "gatewayRequests": 0,
-          "renderedMoney": []
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
@@ -1226,7 +1296,7 @@
         }
       ]
     },
-    "provenance": "Bounded matrix of the approved son review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries."
+    "provenance": "Bounded matrix of the approved son review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries. Outage/rejected turns migrated 2026-10-06 to the approved technical-failure contract (AUTO, honest safe reply, one NOTIFY_MANAGER technical_failure episode); qualification turns unchanged."
   },
   {
     "id": "int_review22_boundaries",
@@ -1248,7 +1318,7 @@
       "results": [
         {
           "statuses": [
-            "fallback_sent"
+            "manual_handoff"
           ],
           "actions": [
             "consumed"
@@ -1258,7 +1328,7 @@
             "SENT",
             "FAILED"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "MANUAL",
           "genericFallback": true,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -1271,11 +1341,19 @@
           "reaskDate": false,
           "gatewayRequests": 0,
           "renderedMoney": [],
-          "handoffReason": "semantic_requires_human"
+          "handoffReason": "",
+          "modeReason": "manager_handoff:customer_requested_human",
+          "attentionOutcome": "MANUAL_HANDOFF",
+          "attentionReason": "customer_requested_human",
+          "attentionStatus": "OWNED",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         },
         {
           "statuses": [
-            "fallback_sent"
+            "manual_handoff"
           ],
           "actions": [
             "consumed"
@@ -1285,7 +1363,7 @@
             "SENT",
             "FAILED"
           ],
-          "conversationMode": "NEEDS_HUMAN",
+          "conversationMode": "MANUAL",
           "genericFallback": true,
           "managerTasks": 0,
           "legacyCalls": 0,
@@ -1298,11 +1376,19 @@
           "reaskDate": false,
           "gatewayRequests": 0,
           "renderedMoney": [],
-          "handoffReason": "semantic_requires_human"
+          "handoffReason": "",
+          "modeReason": "manager_handoff:complaint_review",
+          "attentionOutcome": "MANUAL_HANDOFF",
+          "attentionReason": "complaint_review",
+          "attentionStatus": "OWNED",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
         }
       ]
     },
-    "provenance": "Typed semantic handoff for explicit human request and complaint, with existing safe acknowledgement and NEEDS_HUMAN state; never treats a broad date alone as handoff."
+    "provenance": "Typed semantic handoff for explicit human request and complaint, with existing safe acknowledgement and NEEDS_HUMAN state; never treats a broad date alone as handoff. Migrated 2026-10-06: the semantic fixture now emits the current typed managerIntent (MANUAL_HANDOFF with a verbatim current-message quote); explicit human request and complaint are MANUAL_HANDOFF, committed to MANUAL only after the manager card has a valid Telegram receipt (attention OWNED). The NEEDS_HUMAN mode/semantic_requires_human reason are retired."
   },
   {
     "id": "int_response_model_unavailable",
@@ -1314,16 +1400,16 @@
     },
     "expected": {
       "statuses": [
-        "needs_human_without_fallback"
+        "sent"
       ],
       "actions": [
         "consumed"
       ],
-      "sends": 0,
+      "sends": 1,
       "eventStates": [
-        "FAILED"
+        "SENT"
       ],
-      "conversationMode": "NEEDS_HUMAN",
+      "conversationMode": "AUTO",
       "genericFallback": false,
       "managerTasks": 0,
       "legacyCalls": 0,
@@ -1335,9 +1421,17 @@
       "reaskStartCity": false,
       "reaskDate": false,
       "gatewayRequests": 0,
-      "renderedMoney": []
+      "renderedMoney": [],
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1,
+      "externalActionClaimed": false
     },
-    "provenance": "Typed Direct V2 interpretation is valid first; generated customer response then fails/untrusted. No send, money, or external action is allowed."
+    "provenance": "Typed Direct V2 interpretation is valid first; generated customer response then fails/untrusted. No send, money, or external action is allowed. Migrated 2026-10-06 (Georgia PR #122, approved handoff policy): technical model/builder/review failure alone never silences the bot or transfers ownership; after the bounded recovery the bot stays AUTO, sends one honest safe reply and opens one NOTIFY_MANAGER technical_failure episode delivered with a Telegram receipt. Unchanged: no money, no unvalidated facts persisted, no re-ask, no legacy path, no host manager task. The rejected malicious answer ($180, false booking) never reaches the customer (externalActionClaimed=false, renderedMoney=[])."
   },
   {
     "id": "int_response_rejected_money",
@@ -1349,16 +1443,16 @@
     },
     "expected": {
       "statuses": [
-        "needs_human_without_fallback"
+        "sent"
       ],
       "actions": [
         "consumed"
       ],
-      "sends": 0,
+      "sends": 1,
       "eventStates": [
-        "FAILED"
+        "SENT"
       ],
-      "conversationMode": "NEEDS_HUMAN",
+      "conversationMode": "AUTO",
       "genericFallback": false,
       "managerTasks": 0,
       "legacyCalls": 0,
@@ -1370,9 +1464,17 @@
       "reaskStartCity": false,
       "reaskDate": false,
       "gatewayRequests": 0,
-      "renderedMoney": []
+      "renderedMoney": [],
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1,
+      "externalActionClaimed": false
     },
-    "provenance": "Valid semantic interpretation followed by a malicious answer containing unsupported USD and false booking action; output guards must prevent any unsupported customer money or action."
+    "provenance": "Valid semantic interpretation followed by a malicious answer containing unsupported USD and false booking action; output guards must prevent any unsupported customer money or action. Migrated 2026-10-06 (Georgia PR #122, approved handoff policy): technical model/builder/review failure alone never silences the bot or transfers ownership; after the bounded recovery the bot stays AUTO, sends one honest safe reply and opens one NOTIFY_MANAGER technical_failure episode delivered with a Telegram receipt. Unchanged: no money, no unvalidated facts persisted, no re-ask, no legacy path, no host manager task. The rejected malicious answer ($180, false booking) never reaches the customer (externalActionClaimed=false, renderedMoney=[])."
   },
   {
     "id": "int_hard_wrong_people",
@@ -1589,5 +1691,235 @@
       "safe": true
     },
     "provenance": "Validated model interpretation of a broad date statement does not acquire availability intent, questions or human boundary through code."
+  },
+  {
+    "id": "int_handoff_custom_incomplete_auto",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Хотим индивидуальный маршрут по винодельням, нас 3 человека"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "sent",
+          "conversationMode": "AUTO",
+          "attentionOutcome": null,
+          "managerOutbox": [],
+          "managerCards": 0,
+          "customerReplied": true,
+          "promisesManager": false,
+          "renderedMoney": []
+        }
+      ]
+    },
+    "provenance": "Approved policy B: an incomplete custom-route brief (no dates/start city) keeps AUTO qualification even when the model proposes NOTIFY_MANAGER/custom_quote; no manager card."
+  },
+  {
+    "id": "int_handoff_custom_complete_notify_once",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Хотим индивидуальный маршрут по винодельням 12–15 ноября, нас 3 человека, старт из Тбилиси"
+        },
+        {
+          "message": "А индивидуальный маршрут можно с дегустацией?"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "sent",
+          "conversationMode": "AUTO",
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "custom_quote",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1,
+          "customerReplied": true,
+          "promisesManager": false,
+          "renderedMoney": []
+        },
+        {
+          "status": "sent",
+          "conversationMode": "AUTO",
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1,
+          "customerReplied": true,
+          "promisesManager": false,
+          "renderedMoney": []
+        }
+      ]
+    },
+    "provenance": "Approved policy C/J: a complete custom brief (dates, people, start city, interests) notifies the manager once with a receipted card while the bot keeps AUTO and answers; a later attention-worthy inbound reuses the active episode (no second card)."
+  },
+  {
+    "id": "int_handoff_human_receipt_owned",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Добрый день, позовите менеджера, пожалуйста"
+        },
+        {
+          "message": "Вы здесь?"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "manual_handoff",
+          "conversationMode": "MANUAL",
+          "modeReason": "manager_handoff:customer_requested_human",
+          "attentionOutcome": "MANUAL_HANDOFF",
+          "attentionStatus": "OWNED",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1,
+          "sends": 1,
+          "customerReplied": true,
+          "renderedMoney": []
+        },
+        {
+          "status": "manual_or_needs_human",
+          "conversationMode": "MANUAL",
+          "sends": 1,
+          "crmInboundWrites": 2,
+          "managerCards": 1,
+          "customerReplied": false
+        }
+      ]
+    },
+    "provenance": "Approved policy D/F/H: explicit human request is MANUAL_HANDOFF; ownership commits only after a valid Telegram receipt (SENT); later customer inbound is durably mirrored to the CRM, the bot stays silent and no new manager ping is created."
+  },
+  {
+    "id": "int_handoff_unknown_receipt_held",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "manager": "no_receipt",
+      "turns": [
+        {
+          "message": "Добрый день, позовите менеджера, пожалуйста"
+        },
+        {
+          "drain": true,
+          "manager": "receipt"
+        },
+        {
+          "message": "Есть новости?"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "manual_handoff_pending",
+          "conversationMode": "AUTO",
+          "attentionOutcome": "MANUAL_HANDOFF",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "DELIVERY_UNKNOWN"
+          ],
+          "managerCards": 1,
+          "sends": 1,
+          "customerReplied": true,
+          "promisesManager": false,
+          "pendingUnconfirmed": true
+        },
+        {
+          "drained": [],
+          "conversationMode": "AUTO",
+          "managerOutbox": [
+            "DELIVERY_UNKNOWN"
+          ],
+          "managerCards": 1,
+          "sends": 1
+        },
+        {
+          "status": "manual_handoff_pending",
+          "conversationMode": "AUTO",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "DELIVERY_UNKNOWN"
+          ],
+          "managerCards": 1,
+          "sends": 2,
+          "crmInboundWrites": 2,
+          "customerReplied": true,
+          "promisesManager": false,
+          "pendingUnconfirmed": true
+        }
+      ]
+    },
+    "provenance": "Approved policy G/H/I: a manager transport result without a Telegram receipt is DELIVERY_UNKNOWN, never SENT; ownership stays AUTO with an honest no-promise status; the auxiliary drain does not replay it; the bot's own fallback acknowledgement in Graph history is not human provenance, so the next inbound is mirrored and answered with the honest pending status without a new manager card."
+  },
+  {
+    "id": "int_handoff_takeover_before_send",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+          "takeoverDuringHistory": true
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "rejected_before_delivery",
+          "conversationMode": "MANUAL",
+          "modeReason": "telegram_crm_manual_reply",
+          "sends": 0,
+          "crmInboundWrites": 1,
+          "customerReplied": false
+        }
+      ]
+    },
+    "provenance": "Approved policy K: a human CRM takeover while the before-send Graph history read is in flight supersedes the stale bot reply before any Graph request."
+  },
+  {
+    "id": "int_handoff_takeover_during_manager",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "manager": "takeover",
+      "turns": [
+        {
+          "message": "Добрый день, позовите менеджера, пожалуйста"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "conversationMode": "MANUAL",
+          "modeReason": "telegram_crm_manual_reply",
+          "attentionStatus": "STALE",
+          "sends": 0,
+          "crmInboundWrites": 1,
+          "customerReplied": false
+        }
+      ]
+    },
+    "provenance": "Approved policy K: a human takeover while the manager card is being delivered fences the episode (STALE); the bot cannot commit ownership over it or send its automatic handoff acknowledgement."
   }
 ]
