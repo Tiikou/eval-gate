@@ -1972,5 +1972,49 @@
       ]
     },
     "provenance": "Approved policy K: a human takeover while the manager card is being delivered fences the episode (STALE); the bot cannot commit ownership over it or send its automatic handoff acknowledgement."
+  },
+  {
+    "id": "int_comments_context_retry_exhaustion_handoff",
+    "scenario": "comments_context_retry_exhaustion",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "retryStatus": "retry_wait",
+      "retryStage": "context",
+      "exhaustedStatus": "needs_human",
+      "exhaustedTerminal": true,
+      "managerNotifications": 1,
+      "managerOutboxStatuses": [
+        "SENT"
+      ],
+      "replayStatus": "needs_human",
+      "publicSends": 0,
+      "privateSends": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "supplierTextLeaked": false
+    },
+    "provenance": "Synthetic Comments context response stays unavailable through retry exhaustion; the terminal handoff is receipted once, replay is deduplicated, and no customer text is sent."
+  },
+  {
+    "id": "int_comments_context_available_positive_control",
+    "scenario": "comments_context_available_control",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicState": "SENT",
+      "privateState": "SENT",
+      "publicSends": 1,
+      "privateSends": 1,
+      "replayStatus": "already_sent",
+      "managerNotifications": 1,
+      "managerOutboxStatuses": [
+        "SENT"
+      ],
+      "renderedMoney": [],
+      "percentRendered": false,
+      "supplierTextLeaked": false
+    },
+    "provenance": "Synthetic available Comments context control: safe replies are delivered once, replay does not duplicate them, and no manager notice is created."
   }
 ]

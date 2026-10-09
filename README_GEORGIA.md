@@ -154,12 +154,12 @@ failing cases, then runs a fresh unmodified GREEN control after EVERY mutation.
 Original source is never edited. A surviving mutation, error exit 2, missing or
 ambiguous anchor, or failed restoration makes the proof unsuccessful.
 
-The proof covers 27 mutations (24 on Georgia modules, 3 on the legacy
+The proof covers 51 mutations (48 on Georgia modules, 3 on the legacy
 reference): wrong calculated amount/currency, wrong rendered amount/currency, discovery
 and exact-quote FX bypass, rounding, duplicate send, UNKNOWN as success, UNKNOWN resent on
 replay, duplicate/incorrect CRM write, CRM source-evidence bypass, unverified/stale price
 accepted, failed exact quote falling back to catalog money, renderer bypass and Comments
-money-guard bypass, broad-date extraction/classification/window preservation, reached
+money-guard bypass, Comments retry exhaustion bypass, broad-date extraction/classification/window preservation, reached
 model-unavailable handoff and rejected-output human-boundary bypass. Each mutation
 must also fail its named `EXPECTED_DETECTORS`.
 Earlier POC history: ten behavioral defects were covered: legacy +25/rounding/EUR label, current FX

@@ -65,6 +65,7 @@ MUTATIONS = {
  'comments_money_guard_bypass': ('instagram-v2/comments/no-money.js', '  if (!value.trim()) return value;', '  return value;'),
  'comments_supplier_word_check_disabled': ('instagram-v2/customer-output-boundary.js', 'if (SUPPLIER_WORDS.test(normalized)', 'if (false && SUPPLIER_WORDS.test(normalized)'),
  'comments_customer_output_boundary_noop': ('instagram-v2/customer-output-boundary.js', "if (!text.trim()) return 'empty_customer_text';", "if (!text.trim()) return 'empty_customer_text'; return null;"),
+ 'comments_retry_exhaustion_bypassed': ('instagram-v2/comments/builder.js', 'if (input.retryExhausted === true && !exhaustedModelRetry) {', 'if (false && input.retryExhausted === true && !exhaustedModelRetry) {'),
  # Broad/relative-date qualification (real regression class, 2026-10-01).
 
  'semantic_unproved_quote_inputs': ('instagram-v2/direct/transaction-proof.js', '|| !quoteDerivable(update.field, update.value, update.quote, input.referenceAt, prior, text, before, input.lastOptionsAwaitingSelection === true)) return null;', '|| false && !quoteDerivable(update.field, update.value, update.quote, input.referenceAt, prior, text, before, input.lastOptionsAwaitingSelection === true)) return null;'),
@@ -119,6 +120,7 @@ EXPECTED_DETECTORS = {
  'comments_money_guard_bypass': {'int_comments_money_suppressed', 'int_comments_unverified_price_no_supplier_word'},
  'comments_supplier_word_check_disabled': {'int_comments_unverified_source_price'},
  'comments_customer_output_boundary_noop': {'int_comments_supplier_url_blocked', 'int_comments_unverified_source_price'},
+ 'comments_retry_exhaustion_bypassed': {'int_comments_context_retry_exhaustion_handoff'},
  'crm_without_evidence': {'crm_insufficient_evidence'},
 
  'semantic_unproved_quote_inputs': {'int_hard_wrong_people', 'int_hard_wrong_date'},
