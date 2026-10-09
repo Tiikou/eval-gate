@@ -436,7 +436,12 @@ const SCENARIOS = {
   // 5/6/7: Comments have no pricing authority. The model echoes legacy/source
   // money in EUR, USD and GEL plus a prepayment share; nothing reaches Graph.
   async comments_money_suppressed() { return comments('money', { publicReply: 'Тур в Кахетию от 70 € с человека, подробности в Direct.', privateReply: 'Здравствуйте! Экскурсия стоит $130, предоплата 30%, ещё дегустация 50 лари. Напишите, пожалуйста, даты.' }); },
-  async comments_unverified_source_price() { return comments('source', { publicReply: 'Наша цена 80$ за человека.', privateReply: 'Здравствуйте! По каталогу: Наша цена 80 USD, а у поставщика 46 евро. На какие даты планируете?' }, 'Каталог (без подтверждения цены): Кахетия — Наша цена: 80$; у поставщика 46 EUR.'); }
+  async comments_unverified_source_price() { return comments('source', { publicReply: 'Наша цена 80$ за человека.', privateReply: 'Здравствуйте! По каталогу: Наша цена 80 USD, а у поставщика 46 евро. На какие даты планируете?' }, 'Каталог (без подтверждения цены): Кахетия — Наша цена: 80$; у поставщика 46 EUR.'); },
+  // Source-isolation boundary (customer-output-boundary): supplier-internal wording
+  // makes the whole comment decision unsendable; it is withheld and retried, never sanitised.
+  async comments_unverified_price_no_supplier_word() { return comments('nosupplier', { publicReply: 'Наша цена 80$ за человека.', privateReply: 'Здравствуйте! По каталогу: Наша цена 80 USD. На какие даты планируете?' }, 'Каталог (без подтверждения цены): Кахетия — Наша цена: 80$.'); },
+  async comments_first_party_link_delivered() { return comments('firstparty', { publicReply: 'Подробности отправили в Direct.', privateReply: 'Здравствуйте! Экскурсии по Грузии есть в каталоге: https://georgiaforyou.ru/tours — на какие даты планируете?' }); },
+  async comments_supplier_url_blocked() { return comments('supplierurl', { publicReply: 'Подробности отправили в Direct.', privateReply: 'Здравствуйте! Смотрите вариант: https://sputnik8.com/ru/tbilisi/activities/12345 — на какие даты планируете?' }); }
 };
 
 // These cases vary the actual semantic-model stage, then let the same typed

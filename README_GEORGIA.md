@@ -16,6 +16,11 @@ one active attention episode, no black hole after human takeover) replaces the
 retired NEEDS_HUMAN-on-technical-failure contracts. See
 `evidence/admission-handoff-lifecycle-20261006/ADJUDICATION.md` for the per-case
 adjudication of the 9 migrated contracts, the 6 new lifecycle cases and mutations.
+**Scope addendum (2026-10-09): Comments customer-output boundary.** Georgia `8425b24`
+(PR #132) rejects supplier-internal wording and unapproved/supplier URLs in customer
+text fail-closed; a Comments decision that trips it is withheld and retried, never
+sanitised and sent. One case was migrated and three added (84 -> 87 contracts,
+integration 54 -> 57); see `evidence/admission-comments-output-boundary-20261009/ADJUDICATION.md`.
 Earlier scopes: `evidence/admission-97ff6fa/ROOT_CAUSE.md` (semantic Direct V2
 migration) and `evidence/admission-transaction-proof-20261005/`; see
 `evidence/PRICING_CONTRACT.md` for the unchanged production pricing contract.
