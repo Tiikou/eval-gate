@@ -16,6 +16,11 @@ one active attention episode, no black hole after human takeover) replaces the
 retired NEEDS_HUMAN-on-technical-failure contracts. See
 `evidence/admission-handoff-lifecycle-20261006/ADJUDICATION.md` for the per-case
 adjudication of the 9 migrated contracts, the 6 new lifecycle cases and mutations.
+**Scope addendum (2026-10-09): Comments customer-output boundary.** Georgia `8425b24`
+(PR #132) rejects supplier-internal wording and unapproved/supplier URLs in customer
+text fail-closed; a Comments decision that trips it is withheld and retried, never
+sanitised and sent. One case was migrated and three added (84 -> 87 contracts,
+integration 54 -> 57); see `evidence/admission-comments-output-boundary-20261009/ADJUDICATION.md`.
 Earlier scopes: `evidence/admission-97ff6fa/ROOT_CAUSE.md` (semantic Direct V2
 migration) and `evidence/admission-transaction-proof-20261005/`; see
 `evidence/PRICING_CONTRACT.md` for the unchanged production pricing contract.
@@ -149,12 +154,12 @@ failing cases, then runs a fresh unmodified GREEN control after EVERY mutation.
 Original source is never edited. A surviving mutation, error exit 2, missing or
 ambiguous anchor, or failed restoration makes the proof unsuccessful.
 
-The proof covers 27 mutations (24 on Georgia modules, 3 on the legacy
+The proof covers 51 mutations (48 on Georgia modules, 3 on the legacy
 reference): wrong calculated amount/currency, wrong rendered amount/currency, discovery
 and exact-quote FX bypass, rounding, duplicate send, UNKNOWN as success, UNKNOWN resent on
 replay, duplicate/incorrect CRM write, CRM source-evidence bypass, unverified/stale price
 accepted, failed exact quote falling back to catalog money, renderer bypass and Comments
-money-guard bypass, broad-date extraction/classification/window preservation, reached
+money-guard bypass, Comments retry exhaustion bypass, broad-date extraction/classification/window preservation, reached
 model-unavailable handoff and rejected-output human-boundary bypass. Each mutation
 must also fail its named `EXPECTED_DETECTORS`.
 Earlier POC history: ten behavioral defects were covered: legacy +25/rounding/EUR label, current FX

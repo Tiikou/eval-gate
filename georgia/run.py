@@ -63,6 +63,9 @@ MUTATIONS = {
  'exact_failure_falls_back_to_catalog_price': ('instagram-v2/providers/tripster-hybrid-catalog-provider.js', 'return { ok: false, code: result.code, card: withoutCustomerMoney(card), metrics: result.metrics };', 'return { ok: false, code: result.code, card, metrics: result.metrics };'),
  'exact_quote_ignores_fx': ('georgia-on-demand-quote.js', 'const unitUsd = convertToUsd(moneyText(facts.unit), facts.currency, facts.fx.rate);', 'const unitUsd = moneyText(facts.unit);'),
  'comments_money_guard_bypass': ('instagram-v2/comments/no-money.js', '  if (!value.trim()) return value;', '  return value;'),
+ 'comments_supplier_word_check_disabled': ('instagram-v2/customer-output-boundary.js', 'if (SUPPLIER_WORDS.test(normalized)', 'if (false && SUPPLIER_WORDS.test(normalized)'),
+ 'comments_customer_output_boundary_noop': ('instagram-v2/customer-output-boundary.js', "if (!text.trim()) return 'empty_customer_text';", "if (!text.trim()) return 'empty_customer_text'; return null;"),
+ 'comments_retry_exhaustion_bypassed': ('instagram-v2/comments/builder.js', 'if (input.retryExhausted === true && !exhaustedModelRetry) {', 'if (false && input.retryExhausted === true && !exhaustedModelRetry) {'),
  # Broad/relative-date qualification (real regression class, 2026-10-01).
 
  'semantic_unproved_quote_inputs': ('instagram-v2/direct/transaction-proof.js', '|| !quoteDerivable(update.field, update.value, update.quote, input.referenceAt, prior, text, before, input.lastOptionsAwaitingSelection === true)) return null;', '|| false && !quoteDerivable(update.field, update.value, update.quote, input.referenceAt, prior, text, before, input.lastOptionsAwaitingSelection === true)) return null;'),
@@ -75,12 +78,12 @@ MUTATIONS = {
  'fabricated_availability': ('instagram-v2/direct/output-guard.js', 'if (factReason) return { text: null, reason: factReason };', 'if (false && factReason) return { text: null, reason: factReason };'),
  'stale_delivery_claim': ('instagram-v2/state-store.js', "if(!event||event.lease_owner!==claim.leaseOwner||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');", "if(!event||event.lease_owner!==claim.leaseOwner)throw new GeorgiaV2Error('event_claim_mismatch');"),
  'manual_stale_cas': ('instagram-v2/state-store.js', 'WHERE account_id=? AND conversation_id=? AND revision=?`).run(mode,reason,now,boundaryReceivedAt,boundaryEventId,now,text(accountId),text(conversationId),expectedRevision);', 'WHERE account_id=? AND conversation_id=? AND ? IS NOT NULL`).run(mode,reason,now,boundaryReceivedAt,boundaryEventId,now,text(accountId),text(conversationId),expectedRevision);'),
- 'interpretation_outage_fabricates_progress': ('instagram-v2/direct/builder.js', "catch (error) { return noFallbackNeedsHuman(error.message?.startsWith('semantic_') ? error.message : 'semantic_model_unavailable', {", "catch (error) { return {type:'reply',text:'Подскажите формат поездки?',leadFacts:{people:2},modelCalls:1}; noFallbackNeedsHuman(error.message?.startsWith('semantic_') ? error.message : 'semantic_model_unavailable', {"),
+ 'interpretation_outage_fabricates_progress': ('instagram-v2/direct/builder.js', "catch (error) { return contextualTechnicalReply(noFallbackNeedsHuman(error.message?.startsWith('semantic_') ? error.message : 'semantic_model_unavailable', {", "catch (error) { return {type:'reply',text:'Подскажите формат поездки?',leadFacts:{people:2},modelCalls:1}; contextualTechnicalReply(noFallbackNeedsHuman(error.message?.startsWith('semantic_') ? error.message : 'semantic_model_unavailable', {"),
  'foreign_delivery_owner': ('instagram-v2/state-store.js', "if(!event||event.lease_owner!==claim.leaseOwner||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');", "if(!event||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');"),
  'overwrite_current_format': ('instagram-v2/direct/conversation-semantics.js', 'facts.format = choice;', "facts.format = 'group';"),
  'broad_date_dropped': ('instagram-v2/context/direct-lead-state.js', 'const broad=broadDateWindow(value,today);', 'const broad=null;'),
  'broad_window_collapsed_to_one_day': ('instagram-v2/context/direct-lead-state.js', 'if(sy===ey&&sm===em)return`${start.getUTCDate()}–${end.getUTCDate()} ${MONTH_NAMES[em]} ${ey}`;', 'if(sy===ey&&sm===em)return`${start.getUTCDate()} ${MONTH_NAMES[sm]} ${sy}`;'),
- 'semantic_week_statement_availability': ('instagram-v2/direct/conversation-semantics.js', 'return Object.freeze({ ...proposal, action, managerIntent, selection, droppedSelection, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });', "return Object.freeze({ ...proposal, action, managerIntent, availabilityRequested:true, questions:['date_availability'], selection, droppedSelection, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });"),
+ 'semantic_week_statement_availability': ('instagram-v2/direct/conversation-semantics.js', 'proposedAction, managerIntent, selection, droppedSelection, qualificationDeferral, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });', "proposedAction, managerIntent, availabilityRequested:true, questions:['date_availability'], selection, droppedSelection, qualificationDeferral, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });"),
  'semantic_human_boundary_bypass': ('instagram-v2/direct/builder.js', "if (managerIntent?.outcome === 'MANUAL_HANDOFF') {", "if (false) {"),
  # Direct handoff lifecycle (approved AUTO / NOTIFY_MANAGER / MANUAL_HANDOFF policy).
  'technical_hard_handoff': ('instagram-v2/direct/fallback-policy.js', "handoffOutcome: 'NOTIFY_MANAGER', handoffReason: 'technical_failure',", "handoffOutcome: 'MANUAL_HANDOFF', handoffReason: 'technical_failure',"),
@@ -114,7 +117,10 @@ EXPECTED_DETECTORS = {
  'unverified_price_accepted': {'int_direct_unverified_price'},
  'stale_price_accepted': {'int_direct_stale_price_evidence'},
  'exact_failure_falls_back_to_catalog_price': {'int_direct_exact_quote_unavailable'},
- 'comments_money_guard_bypass': {'int_comments_money_suppressed', 'int_comments_unverified_source_price'},
+ 'comments_money_guard_bypass': {'int_comments_money_suppressed', 'int_comments_unverified_price_no_supplier_word'},
+ 'comments_supplier_word_check_disabled': {'int_comments_unverified_source_price'},
+ 'comments_customer_output_boundary_noop': {'int_comments_supplier_url_blocked', 'int_comments_unverified_source_price'},
+ 'comments_retry_exhaustion_bypassed': {'int_comments_context_retry_exhaustion_handoff'},
  'crm_without_evidence': {'crm_insufficient_evidence'},
 
  'semantic_unproved_quote_inputs': {'int_hard_wrong_people', 'int_hard_wrong_date'},

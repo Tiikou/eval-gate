@@ -436,7 +436,21 @@ const SCENARIOS = {
   // 5/6/7: Comments have no pricing authority. The model echoes legacy/source
   // money in EUR, USD and GEL plus a prepayment share; nothing reaches Graph.
   async comments_money_suppressed() { return comments('money', { publicReply: 'Тур в Кахетию от 70 € с человека, подробности в Direct.', privateReply: 'Здравствуйте! Экскурсия стоит $130, предоплата 30%, ещё дегустация 50 лари. Напишите, пожалуйста, даты.' }); },
-  async comments_unverified_source_price() { return comments('source', { publicReply: 'Наша цена 80$ за человека.', privateReply: 'Здравствуйте! По каталогу: Наша цена 80 USD, а у поставщика 46 евро. На какие даты планируете?' }, 'Каталог (без подтверждения цены): Кахетия — Наша цена: 80$; у поставщика 46 EUR.'); }
+  async comments_unverified_source_price() { return comments('source', { publicReply: 'Наша цена 80$ за человека.', privateReply: 'Здравствуйте! По каталогу: Наша цена 80 USD, а у поставщика 46 евро. На какие даты планируете?' }, 'Каталог (без подтверждения цены): Кахетия — Наша цена: 80$; у поставщика 46 EUR.'); },
+  // Source-isolation boundary (customer-output-boundary): supplier-internal wording
+  // makes the whole comment decision unsendable; it is withheld and retried, never sanitised.
+  async comments_unverified_price_no_supplier_word() { return comments('nosupplier', { publicReply: 'Наша цена 80$ за человека.', privateReply: 'Здравствуйте! По каталогу: Наша цена 80 USD. На какие даты планируете?' }, 'Каталог (без подтверждения цены): Кахетия — Наша цена: 80$.'); },
+  async comments_first_party_link_delivered() { return comments('firstparty', { publicReply: 'Подробности отправили в Direct.', privateReply: 'Здравствуйте! Экскурсии по Грузии есть в каталоге: https://georgiaforyou.ru/tours — на какие даты планируете?' }); },
+  async comments_supplier_url_blocked() { return comments('supplierurl', { publicReply: 'Подробности отправили в Direct.', privateReply: 'Здравствуйте! Смотрите вариант: https://sputnik8.com/ru/tbilisi/activities/12345 — на какие даты планируете?' }); },
+  async comments_context_retry_exhaustion() {
+    return comments('context-exhaustion', {}, 'Synthetic policy.', { withheldContext: true, retryExhaustion: true });
+  },
+  async comments_context_available_control() {
+    return comments('context-available', {
+      publicReply: 'Подробности отправили в Direct.',
+      privateReply: 'Здравствуйте! Уточню детали и отвечу Вам.'
+    });
+  }
 };
 
 // These cases vary the actual semantic-model stage, then let the same typed
@@ -540,9 +554,9 @@ SCENARIOS.direct_handoff_lifecycle = async c => {
   } finally { d.runtime.store.close(); }
 };
 
-async function comments(name, reply, policy = 'Synthetic policy.') {
+async function comments(name, reply, policy = 'Synthetic policy.', options = {}) {
   const root = fs.mkdtempSync(path.join(WORK, `comments-${name}-`));
-  const publicCalls = []; const privateCalls = []; let modelCalls = 0;
+  const publicCalls = []; const privateCalls = []; let modelCalls = 0; let managerCalls = 0;
   const runtime = createGeorgiaCommentsRuntime({
     storeOptions: { privateRoot: root, dbPath: path.join(root, 'comments.sqlite') }, expectedAccountId: ACCOUNT, env: COMMENTS_ENV,
     resolveTokenIdentity: async () => ({ accountId: ACCOUNT, username: USERNAME }),
@@ -550,16 +564,34 @@ async function comments(name, reply, policy = 'Synthetic policy.') {
     verifyConversation: async () => ({ status: 'EXISTING_AUTO', mode: 'AUTO', verified: true, conversationId: CONVERSATION, revision: 1 }),
     builderOptions: {
       modelClient: { completeStructured: async () => { modelCalls++; return { intent: 'lead', ...reply }; } },
-      knowledgeProvider: async () => ({ systemPrompt: 'Synthetic system.', developerPolicy: policy })
+      knowledgeProvider: async () => {
+        if (options.withheldContext) {
+          throw Object.assign(new Error('SYNTHETIC_SUPPLIER_ONLY $901 and 80%'), { code: 'PROVIDER_TIMEOUT' });
+        }
+        return { systemPrompt: 'Synthetic system.', developerPolicy: policy };
+      }
     },
     sendPublicReply: async input => { publicCalls.push(input.text); return { ok: true, deliveryId: `public:${input.commentId}`, recipientId: input.commentId }; },
-    sendPrivateReply: async input => { privateCalls.push(input.text); return { ok: true, deliveryId: `private:${input.commentId}`, recipientId: input.userId }; }
+    sendPrivateReply: async input => { privateCalls.push(input.text); return { ok: true, deliveryId: `private:${input.commentId}`, recipientId: input.userId }; },
+    notifyManager: async () => { managerCalls++; return { ok: true, result: { message_id: 7000 + managerCalls } }; }
   });
   const body = id => ({ entry: [{ id: ACCOUNT, changes: [{ field: 'comments', value: { id, from: { id: CUSTOMER, username: 'synthetic_user' }, text: 'Сколько стоит тур в Кахетию?', media: { id: 'synthetic_media' }, timestamp: Math.floor(Date.now() / 1000) - 5 } }] }] });
   try {
     const [first] = await runtime.processWebhook(body('synthetic_comment_1'));
-    const [replay] = await runtime.processWebhook(body('synthetic_comment_1'));
+    let exhausted = null;
+    let replay;
+    if (options.retryExhaustion) {
+      [exhausted] = await runtime.processWebhook(body('synthetic_comment_1'), {
+        retryExhausted: true, retryStage: 'context', retryErrorCode: 'PROVIDER_TIMEOUT'
+      });
+      [replay] = await runtime.processWebhook(body('synthetic_comment_1'), {
+        retryExhausted: true, retryStage: 'context', retryErrorCode: 'PROVIDER_TIMEOUT'
+      });
+    } else {
+      [replay] = await runtime.processWebhook(body('synthetic_comment_1'));
+    }
     const texts = [...publicCalls, ...privateCalls];
+    const managerOutboxStatuses = runtime.store.db.prepare("SELECT status FROM operational_outbox WHERE kind='manager_notification' ORDER BY id").all().map(row => row.status);
     return {
       modelCalls,
       publicSends: publicCalls.length,
@@ -569,7 +601,14 @@ async function comments(name, reply, policy = 'Synthetic policy.') {
       replayStatus: String(replay?.status || ''),
       renderedMoney: texts.flatMap(moneyTokens),
       percentRendered: texts.some(percentPresent),
-      nonEmptyPrivate: privateCalls.every(t => String(t).trim().length > 0)
+      nonEmptyPrivate: privateCalls.every(t => String(t).trim().length > 0),
+      retryStatus: String(first?.status || ''),
+      retryStage: String(first?.retryStage || ''),
+      exhaustedStatus: String(exhausted?.status || ''),
+      exhaustedTerminal: exhausted?.terminal === true,
+      managerNotifications: managerCalls,
+      managerOutboxStatuses,
+      supplierTextLeaked: texts.some(text => String(text).includes('SYNTHETIC_SUPPLIER_ONLY'))
     };
   } finally { runtime.store.close(); }
 }

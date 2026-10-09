@@ -347,6 +347,23 @@
     "layer": "D",
     "input": {},
     "expected": {
+      "publicSends": 0,
+      "privateSends": 0,
+      "publicState": "",
+      "privateState": "",
+      "replayStatus": "retry_wait",
+      "renderedMoney": [],
+      "percentRendered": false,
+      "nonEmptyPrivate": true
+    },
+    "provenance": "Comments: supplier-internal wording in a knowledge-sourced unverified-price reply makes the whole decision unsendable at the customer-output boundary (8425b24); it is withheld under the comments retry policy and nothing reaches Graph (scenario 7, migrated from sanitise-and-send)."
+  },
+  {
+    "id": "int_comments_unverified_price_no_supplier_word",
+    "scenario": "comments_unverified_price_no_supplier_word",
+    "layer": "D",
+    "input": {},
+    "expected": {
       "publicSends": 1,
       "privateSends": 1,
       "publicState": "SENT",
@@ -356,7 +373,41 @@
       "percentRendered": false,
       "nonEmptyPrivate": true
     },
-    "provenance": "Comments: knowledge source with unverified legacy price (Наша цена 80$, 46 EUR) never becomes customer money (scenario 7)."
+    "provenance": "Comments: knowledge source with unverified legacy price and no supplier wording; the comments money guard (not the supplier-word boundary) must keep it from becoming customer money (scenario 7, money-guard coverage)."
+  },
+  {
+    "id": "int_comments_first_party_link_delivered",
+    "scenario": "comments_first_party_link_delivered",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicSends": 1,
+      "privateSends": 1,
+      "publicState": "SENT",
+      "privateState": "SENT",
+      "replayStatus": "already_sent",
+      "renderedMoney": [],
+      "percentRendered": false,
+      "nonEmptyPrivate": true
+    },
+    "provenance": "Comments negative control: an approved first-party catalog link is still delivered once and not replayed."
+  },
+  {
+    "id": "int_comments_supplier_url_blocked",
+    "scenario": "comments_supplier_url_blocked",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicSends": 0,
+      "privateSends": 0,
+      "publicState": "",
+      "privateState": "",
+      "replayStatus": "retry_wait",
+      "renderedMoney": [],
+      "percentRendered": false,
+      "nonEmptyPrivate": true
+    },
+    "provenance": "Comments: a supplier URL never reaches Graph; the decision is withheld under the comments retry policy."
   },
   {
     "id": "int_broad_date_next_week_real",
@@ -1921,5 +1972,49 @@
       ]
     },
     "provenance": "Approved policy K: a human takeover while the manager card is being delivered fences the episode (STALE); the bot cannot commit ownership over it or send its automatic handoff acknowledgement."
+  },
+  {
+    "id": "int_comments_context_retry_exhaustion_handoff",
+    "scenario": "comments_context_retry_exhaustion",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "retryStatus": "retry_wait",
+      "retryStage": "context",
+      "exhaustedStatus": "needs_human",
+      "exhaustedTerminal": true,
+      "managerNotifications": 1,
+      "managerOutboxStatuses": [
+        "SENT"
+      ],
+      "replayStatus": "needs_human",
+      "publicSends": 0,
+      "privateSends": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "supplierTextLeaked": false
+    },
+    "provenance": "Synthetic Comments context response stays unavailable through retry exhaustion; the terminal handoff is receipted once, replay is deduplicated, and no customer text is sent."
+  },
+  {
+    "id": "int_comments_context_available_positive_control",
+    "scenario": "comments_context_available_control",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicState": "SENT",
+      "privateState": "SENT",
+      "publicSends": 1,
+      "privateSends": 1,
+      "replayStatus": "already_sent",
+      "managerNotifications": 1,
+      "managerOutboxStatuses": [
+        "SENT"
+      ],
+      "renderedMoney": [],
+      "percentRendered": false,
+      "supplierTextLeaked": false
+    },
+    "provenance": "Synthetic available Comments context control: safe replies are delivered once, replay does not duplicate them, and no manager notice is created."
   }
 ]

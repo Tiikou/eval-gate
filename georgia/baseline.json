@@ -3,10 +3,10 @@
   "provider": "deterministic",
   "threshold": 1.0,
   "pass_rate": 1.0,
-  "n_cases": 84,
-  "n_passed": 84,
-  "total_checks": 84,
-  "passed_checks": 84,
+  "n_cases": 89,
+  "n_passed": 89,
+  "total_checks": 89,
+  "passed_checks": 89,
   "cases": [
     {
       "id": "legacy_eur36",
@@ -838,7 +838,7 @@
     {
       "id": "int_comments_money_suppressed",
       "question": "int_comments_money_suppressed",
-      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true}",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"sent\", \"retryStage\": \"\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -859,7 +859,72 @@
     {
       "id": "int_comments_unverified_source_price",
       "question": "int_comments_unverified_source_price",
-      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true}",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 0, \"privateSends\": 0, \"publicState\": \"\", \"privateState\": \"\", \"replayStatus\": \"retry_wait\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"retry_wait\", \"retryStage\": \"model\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 0, \"managerOutboxStatuses\": [], \"supplierTextLeaked\": false}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_comments_unverified_price_no_supplier_word",
+      "question": "int_comments_unverified_price_no_supplier_word",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"sent\", \"retryStage\": \"\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
+      "passed": true,
+      "retrieved_ids": [
+        "scope"
+      ],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_comments_first_party_link_delivered",
+      "question": "int_comments_first_party_link_delivered",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"sent\", \"retryStage\": \"\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_comments_supplier_url_blocked",
+      "question": "int_comments_supplier_url_blocked",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 0, \"privateSends\": 0, \"publicState\": \"\", \"privateState\": \"\", \"replayStatus\": \"retry_wait\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"retry_wait\", \"retryStage\": \"model\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 0, \"managerOutboxStatuses\": [], \"supplierTextLeaked\": false}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1783,14 +1848,56 @@
           }
         }
       ]
+    },
+    {
+      "id": "int_comments_context_retry_exhaustion_handoff",
+      "question": "int_comments_context_retry_exhaustion_handoff",
+      "answer": "{\"modelCalls\": 0, \"publicSends\": 0, \"privateSends\": 0, \"publicState\": \"\", \"privateState\": \"\", \"replayStatus\": \"needs_human\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"retry_wait\", \"retryStage\": \"context\", \"exhaustedStatus\": \"needs_human\", \"exhaustedTerminal\": true, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "int_comments_context_available_positive_control",
+      "question": "int_comments_context_available_positive_control",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"sent\", \"retryStage\": \"\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
+      "passed": true,
+      "retrieved_ids": [],
+      "relevant_ids": [],
+      "check_types": [
+        "json_schema"
+      ],
+      "checks": [
+        {
+          "check_type": "json_schema",
+          "passed": true,
+          "message": "answer is valid JSON matching schema",
+          "detail": {
+            "errors": []
+          }
+        }
+      ]
     }
   ],
-  "generated_at": "2026-10-06T10:22:41.943840+00:00",
+  "generated_at": "2026-10-09T17:19:29.830967+00:00",
   "gate": {
     "passed": true,
     "exit_code": 0,
     "reasons": [],
     "regressions": []
   },
-  "contract_sha256": "7f34a76e4f095f05c3f29ce75cae59a7344d036905b89f346e29e6ce03962e87"
+  "contract_sha256": "f3a834d3af0ccfee6922f90332dff95baa98f6e22b5d3844f5ed73af58192f14"
 }
