@@ -48,6 +48,7 @@ const load = Module._load;
 Module._load = function guardedLoad(request, parent, isMain) {
   if (request === 'better-sqlite3') return load.call(this, path.join(NATIVE, 'better-sqlite3'), parent, isMain);
   const name = String(request).replace(/^node:/, '');
+  if (name === 'os') return Object.freeze({ tmpdir: () => WORK });
   if (DENIED.has(name)) {
     return new Proxy({}, { get: (_, key) => (key === '__esModule' ? false : () => { blocked.push(`${name}.${String(key)}`); throw new Error(`EXTERNAL_CALL_BLOCKED:${name}`); }) });
   }
@@ -64,6 +65,7 @@ const { quoteOnDemand } = src('georgia-on-demand-quote');
 const { processDirectAtV2Boundary } = src('instagram-v2/integration/direct-entrypoint');
 const { runDirectOwnership } = src('instagram-v2/integration/ownership');
 const { createGeorgiaCommentsRuntime } = src('instagram-v2/runtime/comments-runtime');
+const { productFactsForCanonicalRow } = src('instagram-v2/direct/product-facts');
 const { notifyManagerDurably, drainManagerNotifications } = src('instagram-v2/outbox/auxiliary-delivery');
 
 const ACCOUNT = 'synthetic_account';
@@ -135,7 +137,7 @@ function directModel(calls) {
     complete: async input => {
       calls.push(1);
       if (input.purpose === 'direct_semantics') return { text: JSON.stringify(semanticFixture(input)) };
-      if (input.purpose === 'direct_response_semantics') return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: [] }) };
+      if (input.purpose === 'direct_response_semantics') return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: [], productClaims: [] }) };
       const prompt = JSON.stringify(input);
       const slot = prompt.match(/Price authority: «[^»]*» = (\[\[PRICE:\d+\]\])/);
       return { text: slot ? `Стоимость экскурсии «${TITLE}» — ${slot[1]}. Подходит Вам этот вариант?` : 'Точную стоимость сейчас подтвердить не могу.' };
@@ -215,11 +217,13 @@ function createDirect(name, { row = authorityRow(), gateway = null, send = null,
   const takeover = () => runtime.store.setConversationMode({ accountId: ACCOUNT, conversationId: CONVERSATION, mode: 'MANUAL', reason: 'telegram_crm_manual_reply' });
   effects.setManager = mode => { effects.manager = mode; };
   effects.manager = manager;
+  const findFacts = ({listingId}) => Number(listingId) === PRODUCT ? productFactsForCanonicalRow({listingId:PRODUCT,row:{...row,tripster_id:String(PRODUCT),source_row:2,start_city:'Тбилиси'},source:{path:path.join(root,'synthetic-canonical.xlsx'),sha256:'c'.repeat(64)}}) : null;
   const catalog = createDirectCatalogProvider({
     siteProvider: async () => ({ ok: true, cards: [] }),
     hybridProvider: async () => ({ ok: true, rawCards: [{ tripster_id: PRODUCT }], cards: [], mode: 'SYNTHETIC' }),
-    rebindCard: (card, options) => rebindHybridCard(card, { ...options, findExactCard: () => row }),
+    rebindCard: (card, options) => rebindHybridCard(card, { ...options, findExactCard: () => row, findFacts }),
     findExactCard: () => row,
+    findFacts,
     onDemandQuote: gateway ? async ({ exact, input }) => quoteOnDemand({ exact, input, gateway: async request => { effects.gatewayRequests.push(request); return gateway(request); } }) : null,
     env: {}
   });
@@ -465,7 +469,7 @@ function stagedModel(calls, mode) {
     if (mode === 'rejected' && purpose === 'direct_semantics') { calls.push(1); return { text: 'not a typed interpretation' }; }
     if (mode === 'response_unavailable' && purpose === undefined) { calls.push(1); const error = new Error('synthetic response timeout'); error.code = 'ETIMEDOUT'; throw error; }
     if (mode === 'response_rejected' && purpose === undefined) { calls.push(1); return { text: 'Стоимость — $180 за группу. Подтверждаю бронь.' }; }
-    if (purpose === undefined) { calls.push(1); return { text: 'Какой формат поездки Вам ближе: групповой или индивидуальный?' }; }
+    if (purpose === undefined) { calls.push(1); return { text: 'Подскажите Ваши пожелания к поездке.' }; }
     return base.complete(request);
   } };
 }

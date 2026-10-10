@@ -35,7 +35,7 @@ INTEGRATION_ENTRIES = ['instagram-v2/runtime/direct-runtime.js', 'instagram-v2/p
                        'georgia-on-demand-quote.js', 'instagram-v2/integration/direct-entrypoint.js', 'instagram-v2/integration/ownership.js',
                        'instagram-v2/runtime/comments-runtime.js']
 LEAF_CAPABILITIES = {'node:fs','node:path','node:crypto','better-sqlite3'}
-INTEGRATION_CAPABILITIES = LEAF_CAPABILITIES | {'fs','path','crypto','node:url','child_process','node:child_process','node:net','node:dns'}
+INTEGRATION_CAPABILITIES = LEAF_CAPABILITIES | {'fs','path','crypto','os','node:os','node:url','child_process','node:child_process','node:net','node:dns','node:https','node:stream','node:util'}
 DEFAULT_SOURCE = '/root/georgia-pr97-integration-20261001-evidence/primary-release-build'
 BASELINE = ROOT / 'georgia/baseline.json'
 CASE_FILES = [ROOT/'georgia/cases.json', ROOT/'georgia/integration_cases.json']
