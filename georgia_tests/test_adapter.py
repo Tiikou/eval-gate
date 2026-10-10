@@ -49,3 +49,38 @@ def test_sql_symlink_escape_is_rejected(tmp_path,monkeypatch):
     (source/'instagram-v2/state-schema.sql').symlink_to(outside)
     with pytest.raises(ValueError,match='SQL asset escapes source root'):
         run.isolated_source(source,tmp_path/'snapshot')
+
+
+def test_unknown_integration_capability_still_rejected(tmp_path,monkeypatch):
+    source=tmp_path/'source';source.mkdir()
+    (source/'integration.js').write_text("require('inspector');")
+    monkeypatch.setattr(run,'ENTRIES',[])
+    monkeypatch.setattr(run,'INTEGRATION_ENTRIES',['integration.js'])
+    with pytest.raises(ValueError,match='unsupported capability inspector'):
+        run.isolated_source(source,tmp_path/'snapshot')
+
+
+
+def integration_bootstrap(tmp_path, body):
+    source=tmp_path/'source';work=tmp_path/'work'
+    (source/'instagram-v2/runtime').mkdir(parents=True);work.mkdir()
+    (source/'instagram-v2/runtime/direct-runtime.js').write_text(body)
+    cases=work/'cases.json';cases.write_text('[]')
+    return subprocess.run(['/usr/bin/node',str(run.ROOT/'georgia/integration.cjs'),str(source),str(work),str(run.ROOT),str(cases)],capture_output=True,text=True)
+
+
+def test_supported_https_import_cannot_make_a_network_call(tmp_path):
+    assert 'node:https' in run.INTEGRATION_CAPABILITIES
+    result=integration_bootstrap(tmp_path, "require('node:https').request('https://example.invalid');")
+    assert result.returncode != 0
+    assert 'EXTERNAL_CALL_BLOCKED:https' in result.stderr
+
+
+def test_os_facade_exposes_only_disposable_work_root(tmp_path):
+    expected=str(tmp_path/'work')
+    body="const os=require('node:os');if(os.tmpdir()!=="+json.dumps(expected)+")throw new Error('WRONG_TMP_ROOT');if(os.networkInterfaces!==undefined)throw new Error('OS_HOST_CAPABILITY_LEAK');throw new Error('SCOPED_TMPDIR_CONTROL');"
+    result=integration_bootstrap(tmp_path,body)
+    assert result.returncode != 0
+    assert 'SCOPED_TMPDIR_CONTROL' in result.stderr
+    assert '\nError: WRONG_TMP_ROOT\n' not in result.stderr
+    assert '\nError: OS_HOST_CAPABILITY_LEAK\n' not in result.stderr

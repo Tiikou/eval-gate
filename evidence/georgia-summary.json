@@ -1,32 +1,39 @@
 {
-  "status": "READY_FOR_INTEGRATION",
-  "poc_verdict": "READY_FOR_INTEGRATION",
-  "scope_note": "Ready for a separate, explicitly authorized task to wire into Night Run/CI. Not connected to any deploy gate here.",
-  "georgia_agent_source_head": "2ebaf59d78fb8adddc4aa035f63184a751a08f97",
-  "georgia_agent_source_tree": "cc4900582f585e070a632809817bf502da476313",
-  "gateway_companion_inspected": "263f9baef218fbc2d8b1c1f56525b1641f3c4337",
-  "sources_verified": [
-    "default release build == git archive 2ebaf59 (diff -rq: only .git differs)",
-    "live Direct/webhook cwd = releases/git-2ebaf59...-aux-combined-v1; 485 runtime .js/.cjs/.mjs/.sql/.json files byte-identical to 2ebaf59"
-  ],
-  "upstream_sha": "71b832630e76da7d1dbe0d91c0c35145db2847c6",
-  "upstream_tests": "97/97 PASS",
-  "adapter_tests": "6/6 PASS",
-  "cases_total": 41,
-  "cases_pass": 41,
-  "production_contract_cases": "35/35",
-  "integration_cases": "11/11",
+  "status": "OFFLINE_STRUCTURAL_PASS",
+  "scope_note": "Fixture-only Eval Gate refresh for the semantic/transaction-proof boundary. Installed pin unchanged; cases and expected outputs unchanged. No live model, Instagram delivery, deploy, or merge.",
+  "georgia_agent_source_head": "658e84e713ed77f672d91fe2397513e80fb74173",
+  "georgia_agent_source_tree": "a87b5d8f5e947ac12b55e5f5568c48db486e7864",
+  "upstream_tests": "not rerun (fixture-only Eval Gate refresh; Georgia source unchanged)",
+  "adapter_tests": "not rerun (fixture-only Eval Gate refresh; Georgia source unchanged)",
+  "cases_total": 78,
+  "cases_pass": 78,
+  "production_contract_cases": "72/72",
+  "integration_cases": "48/48 (30runtime +18HARD boundary probes)",
   "legacy_reference_only_cases": "6/6 (not production guarantees)",
-  "mutations_total": 22,
-  "mutations_caught": 22,
-  "mutation_semantics": "GREEN control -> one anchored source mutation -> exit 1 with named expected detectors failing -> fresh unmodified GREEN control; exit 2/anchor errors are never catches",
+  "mutations_total": 39,
+  "mutations_caught": 39,
+  "production_mutations": 36,
+  "legacy_mutations": 3,
+  "mutation_semantics": "GREEN control -> one anchored source mutation -> exit1 and all named expected detectors fail -> fresh restored GREEN0. Infrastructure/anchor errors never count.",
+  "provider": "deterministic (mocked model purposes)",
   "external_calls_real": 0,
   "real_messages_sent": 0,
   "real_crm_writes": 0,
   "live_llm": false,
-  "exit_codes": {
-    "0": "PASS",
-    "1": "REGRESSION",
-    "2": "CONFIG/INFRASTRUCTURE"
-  }
+  "commands": [
+    "systemd-run --scope -p MemoryMax=2G -p MemorySwapMax=128M -p OOMPolicy=continue vps-heavy -- python3 -m georgia.run --source-root /root/work/georgia-fact-authority-20261005 --record-baseline",
+    "systemd-run --scope -p MemoryMax=2G -p MemorySwapMax=128M -p OOMPolicy=continue vps-heavy -- python3 -m georgia.run --source-root /root/work/georgia-fact-authority-20261005",
+    "systemd-run --scope -p MemoryMax=2G -p MemorySwapMax=128M -p OOMPolicy=continue vps-heavy -- python3 -m georgia.run --source-root /root/work/georgia-fact-authority-20261005 --prove-mutations"
+  ],
+  "artifact_sha256": {
+    "evidence/mutation-proof.json": "bc0998c9ce1a825a8e27fbc4d4d806c66adec7a7dc0c827d332481b291293e0e",
+    "evidence/admission-97ff6fa/control-report.json": "82a825117e06a43b341e4dac3c96d3cd9af928bd9da73c525cee131b1b26c258",
+    "evidence/admission-97ff6fa/control-provenance.json": "2b8ebf25cf5eab5e36fc57e3a342d29a0fcfab8a08fbcf957ba120dbdd6433e8",
+    "georgia/baseline.json": "d8ca6d4d24ef5d7d559a83dfeb7f1f570ae337e9372f321a74305c82f88b9f56",
+    "evidence/admission-transaction-proof-20261005/control-report.json": "d7daeb6cef31a5208c07e8d3ddae714e95daa3fabfd343a67e20f490906e7dad",
+    "evidence/admission-transaction-proof-20261005/control-provenance.json": "ca761f3384d5a05c0165973df89174ea4f41c6bba46434af4f472019774ea78e"
+  },
+  "eval_gate_contract_sha256": "4421b1dfd1eb82f34a706ae93588902c3db7210271a9f486267dbe73192bd695",
+  "native_dependency_version": "12.10.0",
+  "native_dependency_lock_sha256": "1430620b0e7ea7902acee79b16ecd67b9b2d14f2646839d7f364a373e2eac45f"
 }

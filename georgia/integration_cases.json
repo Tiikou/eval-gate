@@ -117,7 +117,7 @@
     "input": {},
     "expected": {
       "statuses": [
-        "fallback_sent"
+        "sent"
       ],
       "actions": [
         "consumed"
@@ -125,8 +125,7 @@
       "sends": 1,
       "managerTasks": 0,
       "eventStates": [
-        "SENT",
-        "FAILED"
+        "SENT"
       ],
       "calculatedPriceUsd": null,
       "calculatedBasis": "PER_GROUP",
@@ -141,7 +140,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct exact order: supplier timeout withholds money; no fallback to discovery/stale price (scenario 4)."
+    "provenance": "Direct exact order: supplier timeout withholds money; no fallback to discovery/stale price (scenario 4). Valid current behavior with unavailable/untrusted price is one grounded no-price response; money and price authority remain absent."
   },
   {
     "id": "int_direct_unverified_price",
@@ -150,7 +149,7 @@
     "input": {},
     "expected": {
       "statuses": [
-        "fallback_sent"
+        "sent"
       ],
       "actions": [
         "consumed"
@@ -158,8 +157,7 @@
       "sends": 1,
       "managerTasks": 0,
       "eventStates": [
-        "SENT",
-        "FAILED"
+        "SENT"
       ],
       "calculatedPriceUsd": null,
       "calculatedBasis": null,
@@ -174,7 +172,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct: collector row without verified price evidence has no customer money; fabricated amount refused (scenario 4)."
+    "provenance": "Direct: collector row without verified price evidence has no customer money; fabricated amount refused (scenario 4). Valid current behavior with unavailable/untrusted price is one grounded no-price response; money and price authority remain absent."
   },
   {
     "id": "int_direct_stale_price_evidence",
@@ -183,7 +181,7 @@
     "input": {},
     "expected": {
       "statuses": [
-        "fallback_sent"
+        "sent"
       ],
       "actions": [
         "consumed"
@@ -191,8 +189,7 @@
       "sends": 1,
       "managerTasks": 0,
       "eventStates": [
-        "SENT",
-        "FAILED"
+        "SENT"
       ],
       "calculatedPriceUsd": null,
       "calculatedBasis": null,
@@ -207,7 +204,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct: stale price evidence (30 days) is not authority (scenario 4)."
+    "provenance": "Direct: stale price evidence (30 days) is not authority (scenario 4). Valid current behavior with unavailable/untrusted price is one grounded no-price response; money and price authority remain absent."
   },
   {
     "id": "int_direct_duplicate_inbound",
@@ -245,7 +242,7 @@
       "retriesScheduled": 0,
       "percentRendered": false,
       "crmInboundWrites": 1,
-      "modelCalls": 1
+      "generationNotRepeated": true
     },
     "provenance": "Direct: the same inbound event twice -> one generation, one send, one CRM turn (scenario 2)."
   },
@@ -260,8 +257,8 @@
         "delivery_unknown"
       ],
       "actions": [
-        "manager_handoff",
-        "manager_handoff"
+        "notify_manager",
+        "notify_manager"
       ],
       "sends": 1,
       "managerTasks": 2,
@@ -286,7 +283,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct: Graph response without delivery id is DELIVERY_UNKNOWN; replay does not resend; no SENT CRM turn; manager handoff, no retry (scenarios 3, 9)."
+    "provenance": "Direct: Graph response without delivery id is DELIVERY_UNKNOWN; replay does not resend; no SENT CRM turn; manager handoff, no retry (scenarios 3, 9). Migrated 2026-10-06: the host disposition for DELIVERY_UNKNOWN requests manager attention (action notify_manager) instead of a permanent manager_handoff; send count, no resend, no retry, no SENT CRM turn, money and manager task count are unchanged."
   },
   {
     "id": "int_direct_delivery_timeout_unknown",
@@ -299,8 +296,8 @@
         "delivery_unknown"
       ],
       "actions": [
-        "manager_handoff",
-        "manager_handoff"
+        "notify_manager",
+        "notify_manager"
       ],
       "sends": 1,
       "managerTasks": 2,
@@ -325,7 +322,7 @@
       "percentRendered": false,
       "crmInboundWrites": 1
     },
-    "provenance": "Direct: transport timeout after request is DELIVERY_UNKNOWN; same no-resend/no-success semantics (scenarios 3, 9)."
+    "provenance": "Direct: transport timeout after request is DELIVERY_UNKNOWN; same no-resend/no-success semantics (scenarios 3, 9). Migrated 2026-10-06: the host disposition for DELIVERY_UNKNOWN requests manager attention (action notify_manager) instead of a permanent manager_handoff; send count, no resend, no retry, no SENT CRM turn, money and manager task count are unchanged."
   },
   {
     "id": "int_comments_money_suppressed",
@@ -350,6 +347,23 @@
     "layer": "D",
     "input": {},
     "expected": {
+      "publicSends": 0,
+      "privateSends": 0,
+      "publicState": "",
+      "privateState": "",
+      "replayStatus": "retry_wait",
+      "renderedMoney": [],
+      "percentRendered": false,
+      "nonEmptyPrivate": true
+    },
+    "provenance": "Comments: supplier-internal wording in a knowledge-sourced unverified-price reply makes the whole decision unsendable at the customer-output boundary (8425b24); it is withheld under the comments retry policy and nothing reaches Graph (scenario 7, migrated from sanitise-and-send)."
+  },
+  {
+    "id": "int_comments_unverified_price_no_supplier_word",
+    "scenario": "comments_unverified_price_no_supplier_word",
+    "layer": "D",
+    "input": {},
+    "expected": {
       "publicSends": 1,
       "privateSends": 1,
       "publicState": "SENT",
@@ -359,6 +373,1648 @@
       "percentRendered": false,
       "nonEmptyPrivate": true
     },
-    "provenance": "Comments: knowledge source with unverified legacy price (Наша цена 80$, 46 EUR) never becomes customer money (scenario 7)."
+    "provenance": "Comments: knowledge source with unverified legacy price and no supplier wording; the comments money guard (not the supplier-word boundary) must keep it from becoming customer money (scenario 7, money-guard coverage)."
+  },
+  {
+    "id": "int_comments_first_party_link_delivered",
+    "scenario": "comments_first_party_link_delivered",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicSends": 1,
+      "privateSends": 1,
+      "publicState": "SENT",
+      "privateState": "SENT",
+      "replayStatus": "already_sent",
+      "renderedMoney": [],
+      "percentRendered": false,
+      "nonEmptyPrivate": true
+    },
+    "provenance": "Comments negative control: an approved first-party catalog link is still delivered once and not replayed."
+  },
+  {
+    "id": "int_comments_supplier_url_blocked",
+    "scenario": "comments_supplier_url_blocked",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicSends": 0,
+      "privateSends": 0,
+      "publicState": "",
+      "privateState": "",
+      "replayStatus": "retry_wait",
+      "renderedMoney": [],
+      "percentRendered": false,
+      "nonEmptyPrivate": true
+    },
+    "provenance": "Comments: a supplier URL never reaches Graph; the decision is withheld under the comments retry policy."
+  },
+  {
+    "id": "int_broad_date_next_week_real",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Real production regression (2026-10): «на следующей неделе» + 2 people + Batumi got the generic manager fallback (semantic_supplier_confirmation, conversation NEEDS_HUMAN) because the broad date was dropped from lead facts and the statement was classified as an availability question."
+  },
+  {
+    "id": "int_broad_date_next_week_party_future",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе приезжаем, нас будет 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: a future-tense party statement («нас будет 2 человека») after a relative week is still qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
+    "id": "int_broad_date_next_week_unrelated_question",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе будем в Батуми, нас 2 человека, что посоветуете?"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: a relative-week timing statement followed by an unrelated recommendation question is still qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
+    "id": "int_broad_date_party_in_words",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! Нас будет два человека на следующей неделе в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Variant of the real regression: party size written in words before a relative week («будет два человека … на следующей неделе») is qualification, not an availability question (independent review finding, 2026-10-01)."
+  },
+  {
+    "id": "int_broad_date_this_week",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Добрый день, мы на этой неделе будем в Грузии, нас 3 человека, стартуем из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 3,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: current calendar week."
+  },
+  {
+    "id": "int_broad_date_in_a_week",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте, приезжаем через неделю, 2 человека, будем жить в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: approximate relative offset (через неделю) stays a window, never one day."
+  },
+  {
+    "id": "int_broad_date_about_two_weeks",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Примерно через две недели прилетаем в Кутаиси, нас 4 человека"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 4,
+      "startCity": "Кутаиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: hedged relative offset (примерно через две недели)."
+  },
+  {
+    "id": "int_broad_date_weekend",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Хотим поехать на выходных, 2 человека, из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: weekend."
+  },
+  {
+    "id": "int_broad_date_late_month_named",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Планируем в конце ноября, 2 человека, старт из Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: part of a named month (end)."
+  },
+  {
+    "id": "int_broad_date_mid_month_named",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Будем в середине ноября, нас 2 человека, из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: part of a named month (middle)."
+  },
+  {
+    "id": "int_broad_date_next_week_near_weekend",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "На следующей неделе ближе к выходным, 2 человека, мы в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Broad-date class: relative week refined toward the weekend; still a window."
+  },
+  {
+    "id": "int_broad_date_exact_control",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! 4 ноября приезжаем, 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": true,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "provenance": "Positive control: the same turn with an exact date stays an ordinary sent qualification reply and remains a concrete quote date."
+  },
+  {
+    "id": "int_model_unavailable_broad_date_real",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "unavailable"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1
+    },
+    "provenance": "Exact production path of the real regression (2026-10-01T18:43:53Z, error_code=model_unavailable after ~128 s): the model call failed on the first ordinary qualification turn and the builder sent the generic manager fallback. Owner decision 2026-10-01: ordinary qualification makes deterministic progress when the model is unavailable (no money, no availability claim, known facts not re-asked). Migrated 2026-10-06 (Georgia PR #122, approved handoff policy): technical model/builder/review failure alone never silences the bot or transfers ownership; after the bounded recovery the bot stays AUTO, sends one honest safe reply and opens one NOTIFY_MANAGER technical_failure episode delivered with a Telegram receipt. Unchanged: no money, no unvalidated facts persisted, no re-ask, no legacy path, no host manager task."
+  },
+  {
+    "id": "int_model_unavailable_exact_date",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! 4 ноября приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "unavailable"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1
+    },
+    "provenance": "Model-unavailable control with an exact date: ordinary qualification still makes deterministic progress and the exact date stays a concrete quote date. Migrated 2026-10-06 (Georgia PR #122, approved handoff policy): technical model/builder/review failure alone never silences the bot or transfers ownership; after the bounded recovery the bot stays AUTO, sends one honest safe reply and opens one NOTIFY_MANAGER technical_failure episode delivered with a Telegram receipt. Unchanged: no money, no unvalidated facts persisted, no re-ask, no legacy path, no host manager task."
+  },
+  {
+    "id": "int_review22_participants",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "qualification"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 2,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
+        }
+      ]
+    },
+    "provenance": "Bounded matrix of the approved participants review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries. Outage/rejected turns migrated 2026-10-06 to the approved technical-failure contract (AUTO, honest safe reply, one NOTIFY_MANAGER technical_failure episode); qualification turns unchanged."
+  },
+  {
+    "id": "int_review22_son",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "qualification"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "qualification"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "qualification"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "technical_failure",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": []
+        }
+      ]
+    },
+    "provenance": "Bounded matrix of the approved son review closure; every turn uses a fresh mocked runtime. Exact nested fields constrain reached model calls, persisted facts, send count and handoff boundaries. Outage/rejected turns migrated 2026-10-06 to the approved technical-failure contract (AUTO, honest safe reply, one NOTIFY_MANAGER technical_failure episode); qualification turns unchanged."
+  },
+  {
+    "id": "int_review22_boundaries",
+    "scenario": "direct_broad_date_matrix",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "На следующей неделе позовите Никиту",
+          "model": "qualification"
+        },
+        {
+          "message": "На этой неделе хочу пожаловаться",
+          "model": "qualification"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "manual_handoff"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT",
+            "FAILED"
+          ],
+          "conversationMode": "MANUAL",
+          "genericFallback": true,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "handoffReason": "",
+          "modeReason": "manager_handoff:customer_requested_human",
+          "attentionOutcome": "MANUAL_HANDOFF",
+          "attentionReason": "customer_requested_human",
+          "attentionStatus": "OWNED",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        },
+        {
+          "statuses": [
+            "manual_handoff"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT",
+            "FAILED"
+          ],
+          "conversationMode": "MANUAL",
+          "genericFallback": true,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "handoffReason": "",
+          "modeReason": "manager_handoff:complaint_review",
+          "attentionOutcome": "MANUAL_HANDOFF",
+          "attentionReason": "complaint_review",
+          "attentionStatus": "OWNED",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1
+        }
+      ]
+    },
+    "provenance": "Typed semantic handoff for explicit human request and complaint, with existing safe acknowledgement and NEEDS_HUMAN state; never treats a broad date alone as handoff. Migrated 2026-10-06: the semantic fixture now emits the current typed managerIntent (MANUAL_HANDOFF with a verbatim current-message quote); explicit human request and complaint are MANUAL_HANDOFF, committed to MANUAL only after the manager card has a valid Telegram receipt (attention OWNED). The NEEDS_HUMAN mode/semantic_requires_human reason are retired."
+  },
+  {
+    "id": "int_response_model_unavailable",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "response_unavailable"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1,
+      "externalActionClaimed": false
+    },
+    "provenance": "Typed Direct V2 interpretation is valid first; generated customer response then fails/untrusted. No send, money, or external action is allowed. Migrated 2026-10-06 (Georgia PR #122, approved handoff policy): technical model/builder/review failure alone never silences the bot or transfers ownership; after the bounded recovery the bot stays AUTO, sends one honest safe reply and opens one NOTIFY_MANAGER technical_failure episode delivered with a Telegram receipt. Unchanged: no money, no unvalidated facts persisted, no re-ask, no legacy path, no host manager task. The rejected malicious answer ($180, false booking) never reaches the customer (externalActionClaimed=false, renderedMoney=[])."
+  },
+  {
+    "id": "int_response_rejected_money",
+    "scenario": "direct_broad_date_qualification",
+    "layer": "D",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "response_rejected"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1,
+      "externalActionClaimed": false
+    },
+    "provenance": "Valid semantic interpretation followed by a malicious answer containing unsupported USD and false booking action; output guards must prevent any unsupported customer money or action. Migrated 2026-10-06 (Georgia PR #122, approved handoff policy): technical model/builder/review failure alone never silences the bot or transfers ownership; after the bounded recovery the bot stays AUTO, sends one honest safe reply and opens one NOTIFY_MANAGER technical_failure episode delivered with a Telegram receipt. Unchanged: no money, no unvalidated facts persisted, no re-ask, no legacy path, no host manager task. The rejected malicious answer ($180, false booking) never reaches the customer (externalActionClaimed=false, renderedMoney=[])."
+  },
+  {
+    "id": "int_hard_wrong_people",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "wrong_people"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_wrong_date",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "wrong_date"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_stale_people",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "stale_people"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_withdrawn_people",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "withdrawn_people"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_wrong_format",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "wrong_format"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_topic_as_customer",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "topic_as_customer"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_valid_customer",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "valid_customer"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_product_fact",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "product_fact"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_external_action",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "external_action"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_false_prior",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "false_prior"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_valid_review",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "valid_review"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_availability",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "availability"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_claim_cas",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "claim_cas"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_manual_cas",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "manual_cas"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent adversarial fixture through current semantic evidence/output/state boundary; valid controls prevent universal rejection."
+  },
+  {
+    "id": "int_hard_claim_owner",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "claim_owner"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Current revision but wrong lease owner cannot commit delivery; separate owner-only source mutation required."
+  },
+  {
+    "id": "int_hard_current_format",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "current_format"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Validated current private preference must replace older group preference; source mutation forces wrong current format."
+  },
+  {
+    "id": "int_hard_broad_windows",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "broad_windows"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Independent fixed calendar windows stay bounded, are not dropped, and cannot become exact quote dates; parser is evidence, not oracle or conversational authority."
+  },
+  {
+    "id": "int_hard_date_statement",
+    "scenario": "hard_invariant",
+    "layer": "D",
+    "input": {
+      "attack": "date_statement"
+    },
+    "expected": {
+      "safe": true
+    },
+    "provenance": "Validated model interpretation of a broad date statement does not acquire availability intent, questions or human boundary through code."
+  },
+  {
+    "id": "int_handoff_custom_incomplete_auto",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Хотим индивидуальный маршрут по винодельням, нас 3 человека"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "sent",
+          "conversationMode": "AUTO",
+          "attentionOutcome": null,
+          "managerOutbox": [],
+          "managerCards": 0,
+          "customerReplied": true,
+          "promisesManager": false,
+          "renderedMoney": []
+        }
+      ]
+    },
+    "provenance": "Approved policy B: an incomplete custom-route brief (no dates/start city) keeps AUTO qualification even when the model proposes NOTIFY_MANAGER/custom_quote; no manager card."
+  },
+  {
+    "id": "int_handoff_custom_complete_notify_once",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Хотим индивидуальный маршрут по винодельням 12–15 ноября, нас 3 человека, старт из Тбилиси"
+        },
+        {
+          "message": "А индивидуальный маршрут можно с дегустацией?"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "sent",
+          "conversationMode": "AUTO",
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionReason": "custom_quote",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1,
+          "customerReplied": true,
+          "promisesManager": false,
+          "renderedMoney": []
+        },
+        {
+          "status": "sent",
+          "conversationMode": "AUTO",
+          "attentionOutcome": "NOTIFY_MANAGER",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1,
+          "customerReplied": true,
+          "promisesManager": false,
+          "renderedMoney": []
+        }
+      ]
+    },
+    "provenance": "Approved policy C/J: a complete custom brief (dates, people, start city, interests) notifies the manager once with a receipted card while the bot keeps AUTO and answers; a later attention-worthy inbound reuses the active episode (no second card)."
+  },
+  {
+    "id": "int_handoff_human_receipt_owned",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Добрый день, позовите менеджера, пожалуйста"
+        },
+        {
+          "message": "Вы здесь?"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "manual_handoff",
+          "conversationMode": "MANUAL",
+          "modeReason": "manager_handoff:customer_requested_human",
+          "attentionOutcome": "MANUAL_HANDOFF",
+          "attentionStatus": "OWNED",
+          "managerOutbox": [
+            "SENT"
+          ],
+          "managerCards": 1,
+          "sends": 1,
+          "customerReplied": true,
+          "renderedMoney": []
+        },
+        {
+          "status": "manual_or_needs_human",
+          "conversationMode": "MANUAL",
+          "sends": 1,
+          "crmInboundWrites": 2,
+          "managerCards": 1,
+          "customerReplied": false
+        }
+      ]
+    },
+    "provenance": "Approved policy D/F/H: explicit human request is MANUAL_HANDOFF; ownership commits only after a valid Telegram receipt (SENT); later customer inbound is durably mirrored to the CRM, the bot stays silent and no new manager ping is created."
+  },
+  {
+    "id": "int_handoff_unknown_receipt_held",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "manager": "no_receipt",
+      "turns": [
+        {
+          "message": "Добрый день, позовите менеджера, пожалуйста"
+        },
+        {
+          "drain": true,
+          "manager": "receipt"
+        },
+        {
+          "message": "Есть новости?"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "manual_handoff_pending",
+          "conversationMode": "AUTO",
+          "attentionOutcome": "MANUAL_HANDOFF",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "DELIVERY_UNKNOWN"
+          ],
+          "managerCards": 1,
+          "sends": 1,
+          "customerReplied": true,
+          "promisesManager": false,
+          "pendingUnconfirmed": true
+        },
+        {
+          "drained": [],
+          "conversationMode": "AUTO",
+          "managerOutbox": [
+            "DELIVERY_UNKNOWN"
+          ],
+          "managerCards": 1,
+          "sends": 1
+        },
+        {
+          "status": "manual_handoff_pending",
+          "conversationMode": "AUTO",
+          "attentionStatus": "ACTIVE",
+          "managerOutbox": [
+            "DELIVERY_UNKNOWN"
+          ],
+          "managerCards": 1,
+          "sends": 2,
+          "crmInboundWrites": 2,
+          "customerReplied": true,
+          "promisesManager": false,
+          "pendingUnconfirmed": true
+        }
+      ]
+    },
+    "provenance": "Approved policy G/H/I: a manager transport result without a Telegram receipt is DELIVERY_UNKNOWN, never SENT; ownership stays AUTO with an honest no-promise status; the auxiliary drain does not replay it; the bot's own fallback acknowledgement in Graph history is not human provenance, so the next inbound is mirrored and answered with the honest pending status without a new manager card."
+  },
+  {
+    "id": "int_handoff_takeover_before_send",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "turns": [
+        {
+          "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+          "takeoverDuringHistory": true
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "status": "rejected_before_delivery",
+          "conversationMode": "MANUAL",
+          "modeReason": "telegram_crm_manual_reply",
+          "sends": 0,
+          "crmInboundWrites": 1,
+          "customerReplied": false
+        }
+      ]
+    },
+    "provenance": "Approved policy K: a human CRM takeover while the before-send Graph history read is in flight supersedes the stale bot reply before any Graph request."
+  },
+  {
+    "id": "int_handoff_takeover_during_manager",
+    "scenario": "direct_handoff_lifecycle",
+    "layer": "D",
+    "input": {
+      "manager": "takeover",
+      "turns": [
+        {
+          "message": "Добрый день, позовите менеджера, пожалуйста"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "conversationMode": "MANUAL",
+          "modeReason": "telegram_crm_manual_reply",
+          "attentionStatus": "STALE",
+          "sends": 0,
+          "crmInboundWrites": 1,
+          "customerReplied": false
+        }
+      ]
+    },
+    "provenance": "Approved policy K: a human takeover while the manager card is being delivered fences the episode (STALE); the bot cannot commit ownership over it or send its automatic handoff acknowledgement."
+  },
+  {
+    "id": "int_comments_context_retry_exhaustion_handoff",
+    "scenario": "comments_context_retry_exhaustion",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "retryStatus": "retry_wait",
+      "retryStage": "context",
+      "exhaustedStatus": "needs_human",
+      "exhaustedTerminal": true,
+      "managerNotifications": 1,
+      "managerOutboxStatuses": [
+        "SENT"
+      ],
+      "replayStatus": "needs_human",
+      "publicSends": 0,
+      "privateSends": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "supplierTextLeaked": false
+    },
+    "provenance": "Synthetic Comments context response stays unavailable through retry exhaustion; the terminal handoff is receipted once, replay is deduplicated, and no customer text is sent."
+  },
+  {
+    "id": "int_comments_context_available_positive_control",
+    "scenario": "comments_context_available_control",
+    "layer": "D",
+    "input": {},
+    "expected": {
+      "publicState": "SENT",
+      "privateState": "SENT",
+      "publicSends": 1,
+      "privateSends": 1,
+      "replayStatus": "already_sent",
+      "managerNotifications": 1,
+      "managerOutboxStatuses": [
+        "SENT"
+      ],
+      "renderedMoney": [],
+      "percentRendered": false,
+      "supplierTextLeaked": false
+    },
+    "provenance": "Synthetic available Comments context control: safe replies are delivered once, replay does not duplicate them, and no manager notice is created."
   }
 ]

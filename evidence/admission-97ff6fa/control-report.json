@@ -3,10 +3,10 @@
   "provider": "deterministic",
   "threshold": 1.0,
   "pass_rate": 1.0,
-  "n_cases": 89,
-  "n_passed": 89,
-  "total_checks": 89,
-  "passed_checks": 89,
+  "n_cases": 78,
+  "n_passed": 78,
+  "total_checks": 78,
+  "passed_checks": 78,
   "cases": [
     {
       "id": "legacy_eur36",
@@ -796,7 +796,7 @@
     {
       "id": "int_direct_delivery_unknown",
       "question": "int_direct_delivery_unknown",
-      "answer": "{\"statuses\": [\"delivery_unknown\", \"delivery_unknown\"], \"actions\": [\"notify_manager\", \"notify_manager\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 2, \"eventStates\": [\"DELIVERY_UNKNOWN\"], \"calculatedPriceUsd\": \"130.00\", \"calculatedBasis\": \"PER_PERSON\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"130\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 0, \"crmSentTurns\": 0, \"crmTurnMatchesDelivery\": false, \"crmInboundWrites\": 1}",
+      "answer": "{\"statuses\": [\"delivery_unknown\", \"delivery_unknown\"], \"actions\": [\"manager_handoff\", \"manager_handoff\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 2, \"eventStates\": [\"DELIVERY_UNKNOWN\"], \"calculatedPriceUsd\": \"130.00\", \"calculatedBasis\": \"PER_PERSON\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"130\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 0, \"crmSentTurns\": 0, \"crmTurnMatchesDelivery\": false, \"crmInboundWrites\": 1}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -817,7 +817,7 @@
     {
       "id": "int_direct_delivery_timeout_unknown",
       "question": "int_direct_delivery_timeout_unknown",
-      "answer": "{\"statuses\": [\"delivery_unknown\", \"delivery_unknown\"], \"actions\": [\"notify_manager\", \"notify_manager\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 2, \"eventStates\": [\"DELIVERY_UNKNOWN\"], \"calculatedPriceUsd\": \"130.00\", \"calculatedBasis\": \"PER_PERSON\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"130\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 0, \"crmSentTurns\": 0, \"crmTurnMatchesDelivery\": false, \"crmInboundWrites\": 1}",
+      "answer": "{\"statuses\": [\"delivery_unknown\", \"delivery_unknown\"], \"actions\": [\"manager_handoff\", \"manager_handoff\"], \"sends\": 1, \"legacyCalls\": 0, \"retriesScheduled\": 0, \"managerTasks\": 2, \"eventStates\": [\"DELIVERY_UNKNOWN\"], \"calculatedPriceUsd\": \"130.00\", \"calculatedBasis\": \"PER_PERSON\", \"quoteSource\": \"XLSX_AUTHORITY\", \"gatewayRequests\": 0, \"renderedMoney\": [{\"amount\": \"130\", \"currency\": \"USD\"}], \"percentRendered\": false, \"crmTurnWrites\": 0, \"crmSentTurns\": 0, \"crmTurnMatchesDelivery\": false, \"crmInboundWrites\": 1}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -838,7 +838,7 @@
     {
       "id": "int_comments_money_suppressed",
       "question": "int_comments_money_suppressed",
-      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"sent\", \"retryStage\": \"\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -859,72 +859,7 @@
     {
       "id": "int_comments_unverified_source_price",
       "question": "int_comments_unverified_source_price",
-      "answer": "{\"modelCalls\": 2, \"publicSends\": 0, \"privateSends\": 0, \"publicState\": \"\", \"privateState\": \"\", \"replayStatus\": \"retry_wait\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"retry_wait\", \"retryStage\": \"model\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 0, \"managerOutboxStatuses\": [], \"supplierTextLeaked\": false}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_comments_unverified_price_no_supplier_word",
-      "question": "int_comments_unverified_price_no_supplier_word",
-      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"sent\", \"retryStage\": \"\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
-      "passed": true,
-      "retrieved_ids": [
-        "scope"
-      ],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_comments_first_party_link_delivered",
-      "question": "int_comments_first_party_link_delivered",
-      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"sent\", \"retryStage\": \"\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_comments_supplier_url_blocked",
-      "question": "int_comments_supplier_url_blocked",
-      "answer": "{\"modelCalls\": 2, \"publicSends\": 0, \"privateSends\": 0, \"publicState\": \"\", \"privateState\": \"\", \"replayStatus\": \"retry_wait\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"retry_wait\", \"retryStage\": \"model\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 0, \"managerOutboxStatuses\": [], \"supplierTextLeaked\": false}",
+      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -945,7 +880,7 @@
     {
       "id": "int_broad_date_next_week_real",
       "question": "int_broad_date_next_week_real",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -966,7 +901,7 @@
     {
       "id": "int_broad_date_next_week_party_future",
       "question": "int_broad_date_next_week_party_future",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -987,7 +922,7 @@
     {
       "id": "int_broad_date_next_week_unrelated_question",
       "question": "int_broad_date_next_week_unrelated_question",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1008,7 +943,7 @@
     {
       "id": "int_broad_date_party_in_words",
       "question": "int_broad_date_party_in_words",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1029,7 +964,7 @@
     {
       "id": "int_broad_date_this_week",
       "question": "int_broad_date_this_week",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 3, \"startCity\": \"Тбилиси\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 3, \"startCity\": \"\u0422\u0431\u0438\u043b\u0438\u0441\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1050,7 +985,7 @@
     {
       "id": "int_broad_date_in_a_week",
       "question": "int_broad_date_in_a_week",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1071,7 +1006,7 @@
     {
       "id": "int_broad_date_about_two_weeks",
       "question": "int_broad_date_about_two_weeks",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 4, \"startCity\": \"Кутаиси\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 4, \"startCity\": \"\u041a\u0443\u0442\u0430\u0438\u0441\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1092,7 +1027,7 @@
     {
       "id": "int_broad_date_weekend",
       "question": "int_broad_date_weekend",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Тбилиси\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0422\u0431\u0438\u043b\u0438\u0441\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1113,7 +1048,7 @@
     {
       "id": "int_broad_date_late_month_named",
       "question": "int_broad_date_late_month_named",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1134,7 +1069,7 @@
     {
       "id": "int_broad_date_mid_month_named",
       "question": "int_broad_date_mid_month_named",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Тбилиси\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0422\u0431\u0438\u043b\u0438\u0441\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1155,7 +1090,7 @@
     {
       "id": "int_broad_date_next_week_near_weekend",
       "question": "int_broad_date_next_week_near_weekend",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1176,7 +1111,7 @@
     {
       "id": "int_broad_date_exact_control",
       "question": "int_broad_date_exact_control",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": null, \"attentionReason\": null, \"attentionStatus\": null, \"managerOutbox\": [], \"managerCards\": 0, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": true, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": true, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1197,7 +1132,7 @@
     {
       "id": "int_model_unavailable_broad_date_real",
       "question": "int_model_unavailable_broad_date_real",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1, \"genericFallback\": false, \"modelCalls\": 1, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"modelCalls\": 1, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1218,7 +1153,7 @@
     {
       "id": "int_model_unavailable_exact_date",
       "question": "int_model_unavailable_exact_date",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1, \"genericFallback\": false, \"modelCalls\": 1, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"modelCalls\": 1, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1239,7 +1174,7 @@
     {
       "id": "int_review22_participants",
       "question": "int_review22_participants",
-      "answer": "{\"results\": [{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}]}",
+      "answer": "{\"results\": [{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}]}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1260,7 +1195,7 @@
     {
       "id": "int_review22_son",
       "question": "int_review22_son",
-      "answer": "{\"results\": [{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}]}",
+      "answer": "{\"results\": [{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}, {\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"conversationMode\": \"AUTO\", \"handoffReason\": \"\", \"genericFallback\": false, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": 3, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}]}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1281,7 +1216,7 @@
     {
       "id": "int_review22_boundaries",
       "question": "int_review22_boundaries",
-      "answer": "{\"results\": [{\"statuses\": [\"manual_handoff\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\", \"FAILED\"], \"conversationMode\": \"MANUAL\", \"genericFallback\": true, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"handoffReason\": \"\", \"modeReason\": \"manager_handoff:customer_requested_human\", \"attentionOutcome\": \"MANUAL_HANDOFF\", \"attentionReason\": \"customer_requested_human\", \"attentionStatus\": \"OWNED\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}, {\"statuses\": [\"manual_handoff\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\", \"FAILED\"], \"conversationMode\": \"MANUAL\", \"genericFallback\": true, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"handoffReason\": \"\", \"modeReason\": \"manager_handoff:complaint_review\", \"attentionOutcome\": \"MANUAL_HANDOFF\", \"attentionReason\": \"complaint_review\", \"attentionStatus\": \"OWNED\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1}]}",
+      "answer": "{\"results\": [{\"statuses\": [\"fallback_sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\", \"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": true, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"handoffReason\": \"semantic_requires_human\"}, {\"statuses\": [\"fallback_sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\", \"FAILED\"], \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": true, \"managerTasks\": 0, \"legacyCalls\": 0, \"people\": null, \"startCity\": null, \"datePersisted\": false, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": [], \"handoffReason\": \"semantic_requires_human\"}]}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1302,7 +1237,7 @@
     {
       "id": "int_response_model_unavailable",
       "question": "int_response_model_unavailable",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1, \"genericFallback\": false, \"modelCalls\": 2, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"modelCalls\": 2, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1323,7 +1258,7 @@
     {
       "id": "int_response_rejected_money",
       "question": "int_response_rejected_money",
-      "answer": "{\"statuses\": [\"sent\"], \"actions\": [\"consumed\"], \"sends\": 1, \"eventStates\": [\"SENT\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"AUTO\", \"modeReason\": \"\", \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"technical_failure\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1, \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"Батуми\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"externalActionClaimed\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
+      "answer": "{\"statuses\": [\"needs_human_without_fallback\"], \"actions\": [\"consumed\"], \"sends\": 0, \"eventStates\": [\"FAILED\"], \"managerTasks\": 0, \"legacyCalls\": 0, \"handoffReason\": \"\", \"conversationMode\": \"NEEDS_HUMAN\", \"genericFallback\": false, \"modelCalls\": 3, \"people\": 2, \"startCity\": \"\u0411\u0430\u0442\u0443\u043c\u0438\", \"datePersisted\": true, \"exactQuoteDate\": false, \"reaskPeople\": false, \"reaskStartCity\": false, \"reaskDate\": false, \"gatewayRequests\": 0, \"renderedMoney\": []}",
       "passed": true,
       "retrieved_ids": [],
       "relevant_ids": [],
@@ -1722,182 +1657,13 @@
           }
         }
       ]
-    },
-    {
-      "id": "int_handoff_custom_incomplete_auto",
-      "question": "int_handoff_custom_incomplete_auto",
-      "answer": "{\"results\": [{\"status\": \"sent\", \"conversationMode\": \"AUTO\", \"attentionOutcome\": null, \"managerOutbox\": [], \"managerCards\": 0, \"customerReplied\": true, \"promisesManager\": false, \"renderedMoney\": []}]}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_handoff_custom_complete_notify_once",
-      "question": "int_handoff_custom_complete_notify_once",
-      "answer": "{\"results\": [{\"status\": \"sent\", \"conversationMode\": \"AUTO\", \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionReason\": \"custom_quote\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1, \"customerReplied\": true, \"promisesManager\": false, \"renderedMoney\": []}, {\"status\": \"sent\", \"conversationMode\": \"AUTO\", \"attentionOutcome\": \"NOTIFY_MANAGER\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1, \"customerReplied\": true, \"promisesManager\": false, \"renderedMoney\": []}]}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_handoff_human_receipt_owned",
-      "question": "int_handoff_human_receipt_owned",
-      "answer": "{\"results\": [{\"status\": \"manual_handoff\", \"conversationMode\": \"MANUAL\", \"modeReason\": \"manager_handoff:customer_requested_human\", \"attentionOutcome\": \"MANUAL_HANDOFF\", \"attentionStatus\": \"OWNED\", \"managerOutbox\": [\"SENT\"], \"managerCards\": 1, \"sends\": 1, \"customerReplied\": true, \"renderedMoney\": []}, {\"status\": \"manual_or_needs_human\", \"conversationMode\": \"MANUAL\", \"sends\": 1, \"crmInboundWrites\": 2, \"managerCards\": 1, \"customerReplied\": false}]}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_handoff_unknown_receipt_held",
-      "question": "int_handoff_unknown_receipt_held",
-      "answer": "{\"results\": [{\"status\": \"manual_handoff_pending\", \"conversationMode\": \"AUTO\", \"attentionOutcome\": \"MANUAL_HANDOFF\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"DELIVERY_UNKNOWN\"], \"managerCards\": 1, \"sends\": 1, \"customerReplied\": true, \"promisesManager\": false, \"pendingUnconfirmed\": true}, {\"drained\": [], \"conversationMode\": \"AUTO\", \"managerOutbox\": [\"DELIVERY_UNKNOWN\"], \"managerCards\": 1, \"sends\": 1}, {\"status\": \"manual_handoff_pending\", \"conversationMode\": \"AUTO\", \"attentionStatus\": \"ACTIVE\", \"managerOutbox\": [\"DELIVERY_UNKNOWN\"], \"managerCards\": 1, \"sends\": 2, \"crmInboundWrites\": 2, \"customerReplied\": true, \"promisesManager\": false, \"pendingUnconfirmed\": true}]}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_handoff_takeover_before_send",
-      "question": "int_handoff_takeover_before_send",
-      "answer": "{\"results\": [{\"status\": \"rejected_before_delivery\", \"conversationMode\": \"MANUAL\", \"modeReason\": \"telegram_crm_manual_reply\", \"sends\": 0, \"crmInboundWrites\": 1, \"customerReplied\": false}]}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_handoff_takeover_during_manager",
-      "question": "int_handoff_takeover_during_manager",
-      "answer": "{\"results\": [{\"conversationMode\": \"MANUAL\", \"modeReason\": \"telegram_crm_manual_reply\", \"attentionStatus\": \"STALE\", \"sends\": 0, \"crmInboundWrites\": 1, \"customerReplied\": false}]}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_comments_context_retry_exhaustion_handoff",
-      "question": "int_comments_context_retry_exhaustion_handoff",
-      "answer": "{\"modelCalls\": 0, \"publicSends\": 0, \"privateSends\": 0, \"publicState\": \"\", \"privateState\": \"\", \"replayStatus\": \"needs_human\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"retry_wait\", \"retryStage\": \"context\", \"exhaustedStatus\": \"needs_human\", \"exhaustedTerminal\": true, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
-    },
-    {
-      "id": "int_comments_context_available_positive_control",
-      "question": "int_comments_context_available_positive_control",
-      "answer": "{\"modelCalls\": 2, \"publicSends\": 1, \"privateSends\": 1, \"publicState\": \"SENT\", \"privateState\": \"SENT\", \"replayStatus\": \"already_sent\", \"renderedMoney\": [], \"percentRendered\": false, \"nonEmptyPrivate\": true, \"retryStatus\": \"sent\", \"retryStage\": \"\", \"exhaustedStatus\": \"\", \"exhaustedTerminal\": false, \"managerNotifications\": 1, \"managerOutboxStatuses\": [\"SENT\"], \"supplierTextLeaked\": false}",
-      "passed": true,
-      "retrieved_ids": [],
-      "relevant_ids": [],
-      "check_types": [
-        "json_schema"
-      ],
-      "checks": [
-        {
-          "check_type": "json_schema",
-          "passed": true,
-          "message": "answer is valid JSON matching schema",
-          "detail": {
-            "errors": []
-          }
-        }
-      ]
     }
   ],
-  "generated_at": "2026-10-09T17:19:29.830967+00:00",
+  "generated_at": "2026-10-04T17:02:59.685774+00:00",
   "gate": {
     "passed": true,
     "exit_code": 0,
     "reasons": [],
     "regressions": []
-  },
-  "contract_sha256": "272537a3b19d78ed4d8902be9c9288addfe67705c8cdf97c34cd96ceb7a9c58b"
+  }
 }
