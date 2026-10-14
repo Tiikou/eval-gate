@@ -2,13 +2,28 @@
 
 This fork adapts [dbhavery/eval-gate](https://github.com/dbhavery/eval-gate) at
 `71b832630e76da7d1dbe0d91c0c35145db2847c6`. Upstream code is unchanged.
-It runs 41 anonymous contracts (35 production + 6 legacy reference) regenerated from
-Georgia source on every invocation, including 11 mocked-boundary integration scenarios
-through Georgia's own runtime entry points, and applies upstream structural JSON
-assertions, a 100% threshold and a reviewed baseline. It is not connected to deployment.
+It runs 84 anonymous contracts (78 production + 6 legacy reference) regenerated from
+Georgia source on every invocation. Its 54-case integration suite contains 36
+mocked scenarios through Georgia's own runtime entry points and 18 isolated
+HARD probes of the semantic/output/SQLite boundaries. It applies structural JSON
+assertions, a 100% threshold and a reviewed baseline. NIGHT RUN's native Georgia
+admission consumer uses a separately pinned version of this repository.
 
-**Verdict: READY_FOR_INTEGRATION** (for a separate, explicitly authorized Night Run/CI
-wiring task). See `evidence/PRICING_CONTRACT.md` for the verified production pricing contract.
+**Scope: Direct manager-handoff lifecycle contract for Georgia PR #122
+(`4f93b5b`, base main `4f50cfa`).** The approved policy (AUTO / NOTIFY_MANAGER /
+MANUAL_HANDOFF, receipt-gated manager SENT, DELIVERY_UNKNOWN never replayed,
+one active attention episode, no black hole after human takeover) replaces the
+retired NEEDS_HUMAN-on-technical-failure contracts. See
+`evidence/admission-handoff-lifecycle-20261006/ADJUDICATION.md` for the per-case
+adjudication of the 9 migrated contracts, the 6 new lifecycle cases and mutations.
+**Scope addendum (2026-10-09): Comments customer-output boundary.** Georgia `8425b24`
+(PR #132) rejects supplier-internal wording and unapproved/supplier URLs in customer
+text fail-closed; a Comments decision that trips it is withheld and retried, never
+sanitised and sent. One case was migrated and three added (84 -> 87 contracts,
+integration 54 -> 57); see `evidence/admission-comments-output-boundary-20261009/ADJUDICATION.md`.
+Earlier scopes: `evidence/admission-97ff6fa/ROOT_CAUSE.md` (semantic Direct V2
+migration) and `evidence/admission-transaction-proof-20261005/`; see
+`evidence/PRICING_CONTRACT.md` for the unchanged production pricing contract.
 
 **Production pricing contract (canonical 2ebaf59, verified in code, not prose):** money
 reaches a customer only in Direct, only from a validated quote: supplier price with
@@ -35,14 +50,14 @@ in this separate project once; no dependency install occurs during evaluation.
 python3 -m venv .venv
 .venv/bin/pip install -e '.[dev]'
 npm ci
-./scripts/run-georgia-evals.sh
 ./scripts/run-georgia-evals.sh --source-root /path/to/isolated/georgia/candidate
-./scripts/run-georgia-evals.sh --prove-mutations
+./scripts/run-georgia-evals.sh --source-root /path/to/isolated/georgia/candidate --prove-mutations
 ```
 
 Default source:
 `/root/georgia-pr97-integration-20261001-evidence/primary-release-build`.
-Override with `--source-root` or `GEORGIA_EVAL_SOURCE_ROOT`. Candidate source is
+This default is historical, not the current release candidate. Always bind an
+exact candidate archive with `--source-root` (or `GEORGIA_EVAL_SOURCE_ROOT`). Candidate source is
 read-only. A literal dependency closure and SQL schema/migrations are copied into
 one disposable directory. Each state case gets its own synthetic SQLite DB there.
 The source closure must contain only known local dependencies plus crypto, path,
@@ -101,11 +116,18 @@ unit/integration tests as independent required gates.
 
 ## Cases and baseline
 
-`georgia/integration_cases.json` holds layer-D scenarios (bounded 10+; total corpus 20-60).
+The bounded review closure adds three matrix contracts within the existing 20–60
+corpus limit. They cover “2 участника” and “двое/два/2 с сыном” on throwing and
+rejected-model paths, plus existing human/complaint controls. Every matrix turn
+uses a fresh runtime and compares all selected expected fields exactly; reached
+model-call counts distinguish outage coverage from pre-model handling. The
+existing broad-date acceptance corpus is unchanged. No new edge-case class is added.
+
+`georgia/integration_cases.json` holds layer-D scenarios (bounded 10+; total corpus 20-90).
 `georgia/cases.json` records ID, harness operation, anonymous input, selected
 expected fields, layer and provenance. Add a case for a real failure class and
 its positive control. Extend the finite dispatch in `harness.cjs` only with a
-reviewed pure module or fully mocked effect contract. The POC accepts 20-30 cases;
+reviewed pure module or fully mocked effect contract. The POC accepts 20-90 cases;
 raise that explicit bound as the corpus grows. Do not put customer data in cases.
 
 **Baseline must never be updated only to make a failing regression gate green.**
@@ -132,12 +154,14 @@ failing cases, then runs a fresh unmodified GREEN control after EVERY mutation.
 Original source is never edited. A surviving mutation, error exit 2, missing or
 ambiguous anchor, or failed restoration makes the proof unsuccessful.
 
-The final proof covers 22 mutations (19 on canonical Georgia modules, 3 on the legacy
+The proof covers 51 mutations (48 on Georgia modules, 3 on the legacy
 reference): wrong calculated amount/currency, wrong rendered amount/currency, discovery
 and exact-quote FX bypass, rounding, duplicate send, UNKNOWN as success, UNKNOWN resent on
 replay, duplicate/incorrect CRM write, CRM source-evidence bypass, unverified/stale price
 accepted, failed exact quote falling back to catalog money, renderer bypass and Comments
-money-guard bypass. Each mutation must also fail its named `EXPECTED_DETECTORS`.
+money-guard bypass, Comments retry exhaustion bypass, broad-date extraction/classification/window preservation, reached
+model-unavailable handoff and rejected-output human-boundary bypass. Each mutation
+must also fail its named `EXPECTED_DETECTORS`.
 Earlier POC history: ten behavioral defects were covered: legacy +25/rounding/EUR label, current FX
 and rounding, duplicate claims, UNKNOWN as success, CRM source-evidence bypass,
 complete money-renderer bypass, and corruption of a validated rendered amount/currency. The first narrow residual-money-check

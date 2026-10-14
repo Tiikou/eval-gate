@@ -1,0 +1,2018 @@
+[
+  {
+    "id": "int_direct_priced_discovery",
+    "scenario": "direct_priced_discovery",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT"
+      ],
+      "calculatedPriceUsd": "130.00",
+      "calculatedBasis": "PER_PERSON",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 1
+    }
+  },
+  {
+    "id": "int_direct_discovery_eur_fx",
+    "scenario": "direct_discovery_eur_fx",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT"
+      ],
+      "calculatedPriceUsd": "320.00",
+      "calculatedBasis": "PER_GROUP",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "320",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 1
+    }
+  },
+  {
+    "id": "int_direct_exact_order_fx",
+    "scenario": "direct_exact_order_fx",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT"
+      ],
+      "calculatedPriceUsd": "360.00",
+      "calculatedBasis": "PER_BOOKING",
+      "quoteSource": "ON_DEMAND_SUPPLIER_QUOTE",
+      "gatewayRequests": 1,
+      "renderedMoney": [
+        {
+          "amount": "360",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 1
+    }
+  },
+  {
+    "id": "int_direct_exact_quote_unavailable",
+    "scenario": "direct_exact_quote_unavailable",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "fallback_sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT",
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": "PER_GROUP",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 1,
+      "renderedMoney": [],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 1
+    }
+  },
+  {
+    "id": "int_direct_unverified_price",
+    "scenario": "direct_unverified_price",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "fallback_sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT",
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 1
+    }
+  },
+  {
+    "id": "int_direct_stale_price_evidence",
+    "scenario": "direct_stale_price_evidence",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "fallback_sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT",
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 1
+    }
+  },
+  {
+    "id": "int_direct_duplicate_inbound",
+    "scenario": "direct_duplicate_inbound",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "sent",
+        "already_sent"
+      ],
+      "actions": [
+        "consumed",
+        "consumed"
+      ],
+      "sends": 1,
+      "managerTasks": 0,
+      "eventStates": [
+        "SENT"
+      ],
+      "calculatedPriceUsd": "130.00",
+      "calculatedBasis": "PER_PERSON",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 1,
+      "crmSentTurns": 1,
+      "crmTurnMatchesDelivery": true,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1,
+      "modelCalls": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback",
+        "manual_or_needs_human"
+      ],
+      "actions": [
+        "consumed",
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 2,
+      "modelCalls": 1
+    }
+  },
+  {
+    "id": "int_direct_delivery_unknown",
+    "scenario": "direct_delivery_unknown",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "delivery_unknown",
+        "delivery_unknown"
+      ],
+      "actions": [
+        "manager_handoff",
+        "manager_handoff"
+      ],
+      "sends": 1,
+      "managerTasks": 2,
+      "eventStates": [
+        "DELIVERY_UNKNOWN"
+      ],
+      "calculatedPriceUsd": "130.00",
+      "calculatedBasis": "PER_PERSON",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback",
+        "manual_or_needs_human"
+      ],
+      "actions": [
+        "consumed",
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 2
+    }
+  },
+  {
+    "id": "int_direct_delivery_timeout_unknown",
+    "scenario": "direct_delivery_timeout_unknown",
+    "input": {},
+    "expected": {
+      "statuses": [
+        "delivery_unknown",
+        "delivery_unknown"
+      ],
+      "actions": [
+        "manager_handoff",
+        "manager_handoff"
+      ],
+      "sends": 1,
+      "managerTasks": 2,
+      "eventStates": [
+        "DELIVERY_UNKNOWN"
+      ],
+      "calculatedPriceUsd": "130.00",
+      "calculatedBasis": "PER_PERSON",
+      "quoteSource": "XLSX_AUTHORITY",
+      "gatewayRequests": 0,
+      "renderedMoney": [
+        {
+          "amount": "130",
+          "currency": "USD"
+        }
+      ],
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "percentRendered": false,
+      "crmInboundWrites": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback",
+        "manual_or_needs_human"
+      ],
+      "actions": [
+        "consumed",
+        "consumed"
+      ],
+      "sends": 0,
+      "legacyCalls": 0,
+      "retriesScheduled": 0,
+      "managerTasks": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "calculatedPriceUsd": null,
+      "calculatedBasis": null,
+      "quoteSource": null,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "percentRendered": false,
+      "crmTurnWrites": 0,
+      "crmSentTurns": 0,
+      "crmTurnMatchesDelivery": false,
+      "crmInboundWrites": 2
+    }
+  },
+  {
+    "id": "int_broad_date_next_week_real",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_next_week_party_future",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "На следующей неделе приезжаем, нас будет 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_next_week_unrelated_question",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "На следующей неделе будем в Батуми, нас 2 человека, что посоветуете?"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_party_in_words",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Здравствуйте! Нас будет два человека на следующей неделе в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_this_week",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Добрый день, мы на этой неделе будем в Грузии, нас 3 человека, стартуем из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 3,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_in_a_week",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Здравствуйте, приезжаем через неделю, 2 человека, будем жить в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_about_two_weeks",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Примерно через две недели прилетаем в Кутаиси, нас 4 человека"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 4,
+      "startCity": "Кутаиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_weekend",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Хотим поехать на выходных, 2 человека, из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_late_month_named",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Планируем в конце ноября, 2 человека, старт из Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_mid_month_named",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Будем в середине ноября, нас 2 человека, из Тбилиси"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Тбилиси",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_next_week_near_weekend",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "На следующей неделе ближе к выходным, 2 человека, мы в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_broad_date_exact_control",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Здравствуйте! 4 ноября приезжаем, 2 человека, мы прилетаем в Батуми"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": true,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_model_unavailable_broad_date_real",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Здравствуйте! На следующей неделе приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "unavailable"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "modelCalls": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_model_unavailable_exact_date",
+    "scenario": "direct_broad_date_qualification",
+    "input": {
+      "message": "Здравствуйте! 4 ноября приезжаем, 2 человека, мы прилетаем в Батуми",
+      "model": "unavailable"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "conversationMode": "AUTO",
+      "handoffReason": "",
+      "genericFallback": false,
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "people": 2,
+      "startCity": "Батуми",
+      "datePersisted": true,
+      "exactQuoteDate": true,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": [],
+      "modelCalls": 1
+    },
+    "actual": {
+      "statuses": [
+        "needs_human_without_fallback"
+      ],
+      "actions": [
+        "consumed"
+      ],
+      "sends": 0,
+      "eventStates": [
+        "FAILED"
+      ],
+      "managerTasks": 0,
+      "legacyCalls": 0,
+      "handoffReason": "",
+      "conversationMode": "NEEDS_HUMAN",
+      "genericFallback": false,
+      "modelCalls": 1,
+      "people": null,
+      "startCity": null,
+      "datePersisted": false,
+      "exactQuoteDate": false,
+      "reaskPeople": false,
+      "reaskStartCity": false,
+      "reaskDate": false,
+      "gatewayRequests": 0,
+      "renderedMoney": []
+    }
+  },
+  {
+    "id": "int_review22_participants",
+    "scenario": "direct_broad_date_matrix",
+    "input": {
+      "turns": [
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас 2 участника на следующей неделе в Батуми",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 2,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 2,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "actual": {
+      "results": [
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "int_review22_son",
+    "scenario": "direct_broad_date_matrix",
+    "input": {
+      "turns": [
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас двое с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас два с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "unavailable"
+        },
+        {
+          "message": "Нас 2 с сыном на следующей неделе в Батуми",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT"
+          ],
+          "conversationMode": "AUTO",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": 3,
+          "startCity": "Батуми",
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "actual": {
+      "results": [
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "int_review22_boundaries",
+    "scenario": "direct_broad_date_matrix",
+    "input": {
+      "turns": [
+        {
+          "message": "На следующей неделе позовите Никиту",
+          "model": "rejected"
+        },
+        {
+          "message": "На этой неделе хочу пожаловаться",
+          "model": "rejected"
+        }
+      ]
+    },
+    "expected": {
+      "results": [
+        {
+          "statuses": [
+            "fallback_sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT",
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "model_invalid_output_after_repair",
+          "genericFallback": true,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        },
+        {
+          "statuses": [
+            "fallback_sent"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 1,
+          "eventStates": [
+            "SENT",
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "model_invalid_output_after_repair",
+          "genericFallback": true,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": true,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 2
+        }
+      ]
+    },
+    "actual": {
+      "results": [
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        },
+        {
+          "statuses": [
+            "needs_human_without_fallback"
+          ],
+          "actions": [
+            "consumed"
+          ],
+          "sends": 0,
+          "eventStates": [
+            "FAILED"
+          ],
+          "conversationMode": "NEEDS_HUMAN",
+          "handoffReason": "",
+          "genericFallback": false,
+          "managerTasks": 0,
+          "legacyCalls": 0,
+          "people": null,
+          "startCity": null,
+          "datePersisted": false,
+          "exactQuoteDate": false,
+          "reaskPeople": false,
+          "reaskStartCity": false,
+          "reaskDate": false,
+          "gatewayRequests": 0,
+          "renderedMoney": [],
+          "modelCalls": 1
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "native-release-gate.json": "ab888211885871bb133539698ec8e8d3bd0289f5ae3ea4d31ff78fb72ab00bca",
+  "native-release-gate.log": "d8aa30097370ba6638f194d57bb3b4f8d5c94516488403727d12a2e67ac977b9",
+  "gate.tar": "b41631f7aa4a6ba0a1a9e297c71bc67a36208fa47c4262dfc8f8ab243975334c",
+  "candidate.tar": "accdf872601bce1dd39d738363377aa9f8b2cbdf033831f66fd5bd896c92ce47",
+  "reproduction.log": "1488cb311687cd577134d2d887fa27fef2e2d8dba429452b511b07eedfe2f3b4",
+  "failures-frozen.json": "a251013a926b5819cfbbc3dc5e5b59b1bea1d9c89c29f8b724bbf60e573aef75",
+  "gate/reports/georgia/provenance.json": "9b838f4865b4b56404d59adbc5c600dd30cd1573d77d062f4d1bfbc7e035cfac",
+  "gate/reports/georgia/report.html": "3ae885fc3f0773203f264f5940faceac726311507677b9b26bb971def60a1611",
+  "gate/reports/georgia/report.json": "00c8b397a4b5255e5020c1b84676a3943c51fc8afbab14facd5425474033baf8"
+}
