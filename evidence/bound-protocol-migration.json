@@ -1,0 +1,13 @@
+{
+  "base_sha": "6b743813b5e59a82d811b690c4e329cd8b8a337e",
+  "original_contract_sha256": "4a9c2ad1fd99a5c58916f426a013efbe69da3795d1b3810eb71b94fe6e95f26b",
+  "bound_contract_sha256": "024add09dd2eb645b7eb997f1d78214074a4c188231d29e805e3b8efe5cedc73",
+  "unchanged_case_inputs_expectations_and_invariants": {
+    "georgia/cases.json": "f111dba982bdedde6615304cab2116f0660bd654efb85c78a1421489df0cc597",
+    "georgia/integration_cases.json": "3d7d209e1ceadbbb48393797a4100255191da293d6fddc7cf6a7630087f20e17",
+    "georgia/hard-invariants.cjs": "ca824ab84a9f69c63e7be1e26b23bdf2cf92417f1a4e0c3e206ef8baa333f631",
+    "georgia/run.py": "547f5fc9f8d0f001d516602151be4ce5cd3a6c77ac9653a5bf56db61494815a3"
+  },
+  "baseline_fields_except_contract_hash_unchanged": true,
+  "real_model_quality_claim": false
+}

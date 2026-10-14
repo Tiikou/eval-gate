@@ -134,12 +134,32 @@ function gatewayAnswer(request, overrides = {}) {
 // Deterministic model: writes the product's price slot when the facts carry
 // one; otherwise it fabricates the amount a careless model would invent, so a
 // money-authority bypass becomes customer-visible instead of silently passing.
+// Model protocol fixtures, never real-model quality evidence. Only refs
+// issued in the current request may become native facts.
+function boundTurn(input) { return JSON.parse(input.messages.at(-1).content); }
+function boundPlan(input, text) {
+  const data = boundTurn(input);
+  return { text: JSON.stringify({ schema: data.OFFER.schema, blocks: [{ type: 'prose', text }] }) };
+}
+function boundReview(input, unsupported = []) {
+  const data = boundTurn(input);
+  return { text: JSON.stringify({ inputHash: data.INPUT_HASH, priorClaims: [], completedActions: [], unsupportedProductClaims: unsupported, groundedChecks: [] }) };
+}
 function directModel(calls) {
   return {
     complete: async input => {
       calls.push(1);
       if (input.purpose === 'direct_semantics') return { text: JSON.stringify(semanticFixture(input)) };
-      if (input.purpose === 'direct_response_semantics') return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: [], productClaims: [] }) };
+      if (input.purpose === 'direct_response_semantics') {
+        if (boundTurn(input).BLOCKS) return boundReview(input);
+        return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: [], productClaims: [] }) };
+      }
+      if (input.purpose === 'generation') {
+        const data = boundTurn(input);
+        const blocks = data.OFFER.facts.filter(f => f.kind === 'title' || f.kind === 'price').map(f => ({ type: 'fact', ref: f.ref }));
+        if (!data.OFFER.facts.some(f => f.kind === 'price')) blocks.push({ type: 'prose', text: 'Стоимость по Вашему запросу нужно подтвердить отдельно.' });
+        return { text: JSON.stringify({ schema: data.OFFER.schema, blocks }) };
+      }
       const prompt = JSON.stringify(input);
       const slot = prompt.match(/Price authority: «[^»]*» = (\[\[PRICE:\d+\]\])/);
       return { text: slot ? `Стоимость экскурсии «${TITLE}» — ${slot[1]}. Подходит Вам этот вариант?` : 'Точную стоимость сейчас подтвердить не могу.' };
@@ -486,9 +506,9 @@ function stagedModel(calls, mode, qualificationText = FORMAT_QUESTION) {
     const purpose = request.purpose;
     if (mode === 'unavailable' && purpose === 'direct_semantics') { calls.push(1); const error = new Error('synthetic interpretation timeout'); error.code = 'ETIMEDOUT'; throw error; }
     if (mode === 'rejected' && purpose === 'direct_semantics') { calls.push(1); return { text: 'not a typed interpretation' }; }
-    if (mode === 'response_unavailable' && purpose === undefined) { calls.push(1); const error = new Error('synthetic response timeout'); error.code = 'ETIMEDOUT'; throw error; }
-    if (mode === 'response_rejected' && purpose === undefined) { calls.push(1); return { text: 'Стоимость — $180 за группу. Подтверждаю бронь.' }; }
-    if (purpose === undefined) { calls.push(1); return { text: qualificationText }; }
+    if (mode === 'response_unavailable' && (purpose === undefined || purpose === 'generation')) { calls.push(1); const error = new Error('synthetic response timeout'); error.code = 'ETIMEDOUT'; throw error; }
+    if (mode === 'response_rejected' && (purpose === undefined || purpose === 'generation')) { calls.push(1); return purpose === 'generation' ? boundPlan(request, 'Стоимость — $180 за группу. Подтверждаю бронь.') : { text: 'Стоимость — $180 за группу. Подтверждаю бронь.' }; }
+    if ((purpose === undefined || purpose === 'generation')) { calls.push(1); return purpose === 'generation' ? boundPlan(request, qualificationText) : { text: qualificationText }; }
     return base.complete(request);
   } };
 }
@@ -548,10 +568,12 @@ SCENARIOS.direct_recommendation_rejected_drafts = async c => {
     if (request.purpose === 'direct_semantics') return { text: JSON.stringify({ ...semanticFixture(request), action: 'recommend' }) };
     if (request.purpose === 'direct_response_semantics') {
       const data = JSON.parse(request.messages?.[1]?.content || '{}');
-      const unsupported = String(data.DRAFT || '').includes(c.input.unsupportedClaim) ? [c.input.unsupportedClaim] : [];
+      const unsupported = String(data.ANSWER || data.DRAFT || '').includes(c.input.unsupportedClaim) ? [c.input.unsupportedClaim] : [];
+      if (data.BLOCKS) return boundReview(request, unsupported);
       return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: unsupported, ...(Array.isArray(data.PRODUCT_FACTS) && data.PRODUCT_FACTS.length ? { productClaims: [] } : {}) }) };
     }
-    return { text: c.input.drafts[Math.min(responses++, c.input.drafts.length - 1)] };
+    const draft = c.input.drafts[Math.min(responses++, c.input.drafts.length - 1)];
+    return request.purpose === 'generation' ? boundPlan(request, draft) : { text: draft };
   } });
   const d = createDirect('recommend', { rows, model });
   try {

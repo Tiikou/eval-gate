@@ -22,6 +22,16 @@ const handoffCases = JSON.parse(fs.readFileSync(process.argv[5], 'utf8')).filter
 let handoffCursor = 0;
 Module._load = function (request, parent, isMain) {
   const exports = originalLoad.call(this, request, parent, isMain);
+  if (negative && String(request).endsWith('product-claim-guard') && exports.guardProductClaims) {
+    if (wrapped.has(exports)) return wrapped.get(exports);
+    const result = { ...exports, guardProductClaims: (text, input) => {
+      const reason = exports.guardProductClaims(text, input);
+      const scope = context.getStore();
+      if (positiveIds.has(scope?.caseId) && text.includes('Какой формат поездки Вам ближе: групповой или индивидуальный?')) console.error('GEORGIA_NEGATIVE_PRODUCT_GUARD=' + JSON.stringify({ caseId: scope.caseId, reason }));
+      return reason;
+    } };
+    wrapped.set(exports, result); return result;
+  }
   if (negative && String(request).endsWith('direct/builder') && exports.createGeorgiaDirectBuilder) {
     if (wrapped.has(exports)) return wrapped.get(exports);
     const result = { ...exports, createGeorgiaDirectBuilder: options => {
@@ -54,11 +64,11 @@ Module._load = function (request, parent, isMain) {
       if (!client || typeof client.complete !== 'function') return exports.createGeorgiaDirectRuntime(options);
       const modelClient = { ...client, complete: async input => {
         const response = await client.complete(input);
-        if (!negative && positiveIds.has(caseId) && input.purpose === undefined && response?.text === 'Какой формат поездки Вам ближе: групповой или индивидуальный?') {
+        if (!negative && positiveIds.has(caseId) && (input.purpose === undefined && response?.text === 'Какой формат поездки Вам ближе: групповой или индивидуальный?' || input.purpose === 'generation' && response?.text?.includes('Какой формат поездки Вам ближе: групповой или индивидуальный?'))) {
           // The canonical synthetic offer is group-only. This old generic
           // question now correctly trips the real product-format guard.
           // Use a factual-neutral fixture reply; never bypass that guard.
-          return { ...response, text: 'Пожелания понятны, спасибо.' };
+          return input.purpose === 'generation' ? { ...response, text: JSON.stringify({ schema: JSON.parse(input.messages.at(-1).content).OFFER.schema, blocks: [{ type: 'prose', text: 'Пожелания понятны, спасибо.' }] }) } : { ...response, text: 'Пожелания понятны, спасибо.' };
         }
         if (input.purpose !== 'direct_response_semantics') return response;
         let data, review;
