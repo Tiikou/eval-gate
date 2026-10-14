@@ -15,6 +15,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const Module = require('node:module');
+const crypto = require('node:crypto');
 
 const [srcArg, workArg, nativeArg, casesFile] = process.argv.slice(2);
 const SRC = path.resolve(srcArg);
@@ -48,6 +49,7 @@ const load = Module._load;
 Module._load = function guardedLoad(request, parent, isMain) {
   if (request === 'better-sqlite3') return load.call(this, path.join(NATIVE, 'better-sqlite3'), parent, isMain);
   const name = String(request).replace(/^node:/, '');
+  if (name === 'os') return Object.freeze({ tmpdir: () => WORK });
   if (DENIED.has(name)) {
     return new Proxy({}, { get: (_, key) => (key === '__esModule' ? false : () => { blocked.push(`${name}.${String(key)}`); throw new Error(`EXTERNAL_CALL_BLOCKED:${name}`); }) });
   }
@@ -65,6 +67,7 @@ const { quoteOnDemand } = src('georgia-on-demand-quote');
 const { processDirectAtV2Boundary } = src('instagram-v2/integration/direct-entrypoint');
 const { runDirectOwnership } = src('instagram-v2/integration/ownership');
 const { createGeorgiaCommentsRuntime } = src('instagram-v2/runtime/comments-runtime');
+const { productFactsForCanonicalRow } = src('instagram-v2/direct/product-facts');
 const { notifyManagerDurably, drainManagerNotifications } = src('instagram-v2/outbox/auxiliary-delivery');
 
 const ACCOUNT = 'synthetic_account';
@@ -136,7 +139,7 @@ function directModel(calls) {
     complete: async input => {
       calls.push(1);
       if (input.purpose === 'direct_semantics') return { text: JSON.stringify(semanticFixture(input)) };
-      if (input.purpose === 'direct_response_semantics') return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: [] }) };
+      if (input.purpose === 'direct_response_semantics') return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: [], productClaims: [] }) };
       const prompt = JSON.stringify(input);
       const slot = prompt.match(/Price authority: «[^»]*» = (\[\[PRICE:\d+\]\])/);
       return { text: slot ? `Стоимость экскурсии «${TITLE}» — ${slot[1]}. Подходит Вам этот вариант?` : 'Точную стоимость сейчас подтвердить не могу.' };
@@ -218,11 +221,26 @@ function createDirect(name, { row = authorityRow(), rows = null, gateway = null,
   effects.setManager = mode => { effects.manager = mode; };
   effects.manager = manager;
   const exactRow = input => (rows ? rows.find(item => String(item.product_id) === String(input?.listingId)) || null : row);
+  const findFacts = ({listingId}) => {
+    const selected = exactRow({listingId});
+    if (!selected) return null;
+    // Match the older collector-row adapter's exact projection. Hash the
+    // synthetic bytes that back these facts so provenance stays fixture-bound.
+    const sourceRow = { ...selected, tripster_id: selected.product_id, type: selected.kind,
+      source_row: 2, full_description: selected.description || '' };
+    const bytes = Buffer.from(JSON.stringify(sourceRow));
+    const digest = crypto.createHash('sha256').update(bytes).digest('hex');
+    const file = path.join(root, `synthetic-collector-row-${digest}.json`);
+    fs.writeFileSync(file, bytes, { mode: 0o600 });
+    return productFactsForCanonicalRow({ listingId: Number(listingId), row: sourceRow,
+      source: { path: file, sha256: digest } });
+  };
   const catalog = createDirectCatalogProvider({
     siteProvider: async () => ({ ok: true, cards: [] }),
     hybridProvider: async () => ({ ok: true, rawCards: (rows || [row]).map(item => ({ tripster_id: Number(item.product_id) })), cards: [], mode: 'SYNTHETIC' }),
-    rebindCard: (card, options) => rebindHybridCard(card, { ...options, findExactCard: input => exactRow(input) }),
+    rebindCard: (card, options) => rebindHybridCard(card, { ...options, findExactCard: input => exactRow(input), findFacts }),
     findExactCard: input => exactRow(input),
+    findFacts,
     onDemandQuote: gateway ? async ({ exact, input }) => quoteOnDemand({ exact, input, gateway: async request => { effects.gatewayRequests.push(request); return gateway(request); } }) : null,
     env: {}
   });
