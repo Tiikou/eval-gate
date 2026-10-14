@@ -15,6 +15,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const Module = require('node:module');
+const crypto = require('node:crypto');
 
 const [srcArg, workArg, nativeArg, casesFile] = process.argv.slice(2);
 const SRC = path.resolve(srcArg);
@@ -57,6 +58,7 @@ Module._load = function guardedLoad(request, parent, isMain) {
 globalThis.fetch = async () => { blocked.push('fetch'); throw new Error('EXTERNAL_CALL_BLOCKED:fetch'); };
 
 const src = rel => require(path.join(SRC, rel));
+const CASE_DIRECT_EFFECTS = [];
 const { createGeorgiaDirectRuntime } = src('instagram-v2/runtime/direct-runtime');
 const { createDirectCatalogProvider, rebindHybridCard } = src('instagram-v2/providers/tripster-hybrid-catalog-provider');
 const { createDirectKnowledgeProvider } = src('instagram-v2/integration/direct-knowledge-provider');
@@ -210,19 +212,34 @@ function managerTransport(effects, mode, takeover) {
   };
 }
 
-function createDirect(name, { row = authorityRow(), gateway = null, send = null, model = null, manager = 'receipt' } = {}) {
+function createDirect(name, { row = authorityRow(), rows = null, gateway = null, send = null, model = null, manager = 'receipt' } = {}) {
   const root = fs.mkdtempSync(path.join(WORK, `${name}-`));
   const effects = { sends: [], modelCalls: [], gatewayRequests: [], crm: [], managerTasks: [], hostAttention: [], managerCards: [], legacyCalls: 0, retries: 0, cards: [], inbound: [], history: [], historyReads: 0, takeoverDuringHistory: false };
+  CASE_DIRECT_EFFECTS.push(effects);
   let runtime = null;
   const takeover = () => runtime.store.setConversationMode({ accountId: ACCOUNT, conversationId: CONVERSATION, mode: 'MANUAL', reason: 'telegram_crm_manual_reply' });
   effects.setManager = mode => { effects.manager = mode; };
   effects.manager = manager;
-  const findFacts = ({listingId}) => Number(listingId) === PRODUCT ? productFactsForCanonicalRow({listingId:PRODUCT,row:{...row,tripster_id:String(PRODUCT),source_row:2,start_city:'Тбилиси'},source:{path:path.join(root,'synthetic-canonical.xlsx'),sha256:'c'.repeat(64)}}) : null;
+  const exactRow = input => (rows ? rows.find(item => String(item.product_id) === String(input?.listingId)) || null : row);
+  const findFacts = ({listingId}) => {
+    const selected = exactRow({listingId});
+    if (!selected) return null;
+    // Match the older collector-row adapter's exact projection. Hash the
+    // synthetic bytes that back these facts so provenance stays fixture-bound.
+    const sourceRow = { ...selected, tripster_id: selected.product_id, type: selected.kind,
+      source_row: 2, full_description: selected.description || '' };
+    const bytes = Buffer.from(JSON.stringify(sourceRow));
+    const digest = crypto.createHash('sha256').update(bytes).digest('hex');
+    const file = path.join(root, `synthetic-collector-row-${digest}.json`);
+    fs.writeFileSync(file, bytes, { mode: 0o600 });
+    return productFactsForCanonicalRow({ listingId: Number(listingId), row: sourceRow,
+      source: { path: file, sha256: digest } });
+  };
   const catalog = createDirectCatalogProvider({
     siteProvider: async () => ({ ok: true, cards: [] }),
-    hybridProvider: async () => ({ ok: true, rawCards: [{ tripster_id: PRODUCT }], cards: [], mode: 'SYNTHETIC' }),
-    rebindCard: (card, options) => rebindHybridCard(card, { ...options, findExactCard: () => row, findFacts }),
-    findExactCard: () => row,
+    hybridProvider: async () => ({ ok: true, rawCards: (rows || [row]).map(item => ({ tripster_id: Number(item.product_id) })), cards: [], mode: 'SYNTHETIC' }),
+    rebindCard: (card, options) => rebindHybridCard(card, { ...options, findExactCard: input => exactRow(input), findFacts }),
+    findExactCard: input => exactRow(input),
     findFacts,
     onDemandQuote: gateway ? async ({ exact, input }) => quoteOnDemand({ exact, input, gateway: async request => { effects.gatewayRequests.push(request); return gateway(request); } }) : null,
     env: {}
@@ -461,7 +478,9 @@ const SCENARIOS = {
 // response mock serve the other purposes. A failed interpretation is fail
 // closed; response-stage failures are distinct and cannot rewrite validated
 // customer facts.
-function stagedModel(calls, mode) {
+const FORMAT_QUESTION = 'Какой формат поездки Вам ближе: групповой или индивидуальный?';
+const NEUTRAL_QUALIFICATION = 'Спасибо, учёл. Что Вам интереснее в поездке: горы, вино или море?';
+function stagedModel(calls, mode, qualificationText = FORMAT_QUESTION) {
   const base = directModel(calls);
   return { complete: async request => {
     const purpose = request.purpose;
@@ -469,7 +488,7 @@ function stagedModel(calls, mode) {
     if (mode === 'rejected' && purpose === 'direct_semantics') { calls.push(1); return { text: 'not a typed interpretation' }; }
     if (mode === 'response_unavailable' && purpose === undefined) { calls.push(1); const error = new Error('synthetic response timeout'); error.code = 'ETIMEDOUT'; throw error; }
     if (mode === 'response_rejected' && purpose === undefined) { calls.push(1); return { text: 'Стоимость — $180 за группу. Подтверждаю бронь.' }; }
-    if (purpose === undefined) { calls.push(1); return { text: 'Подскажите Ваши пожелания к поездке.' }; }
+    if (purpose === undefined) { calls.push(1); return { text: qualificationText }; }
     return base.complete(request);
   } };
 }
@@ -481,7 +500,12 @@ const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+
 const EXTERNAL_ACTION = /подтверждаю\s+бронь|бронь\s+подтвержден|забронировал[аи]?(?![а-я])|оформил[аи]?\s+бронь/iu;
 const REASK_DATE = /на\s+какие\s+даты|какого\s+числа|когда\s+(?:вы\s+)?(?:планиру|приезжа|прилета)/iu;
 async function broadDateQualification({ message, model = 'qualification' }) {
-  const d = createDirect('broaddate', { model: calls => stagedModel(calls, model) });
+  // The synthetic offer is group-only, so FORMAT_QUESTION is correctly
+  // rejected by the product format guard; as the broad-date qualification
+  // reply it only produced the technical stub (handoff cases keep it on
+  // purpose: their negative control proves that guard). A neutral interest
+  // question asserts no product fact or format.
+  const d = createDirect('broaddate', { model: calls => stagedModel(calls, model, NEUTRAL_QUALIFICATION) });
   try {
     const r = await deliverDirect(d, 'synthetic_event_1', message, {});
     const summary = directSummary(d, [r]);
@@ -511,6 +535,35 @@ async function broadDateQualification({ message, model = 'qualification' }) {
   } finally { d.runtime.store.close(); }
 }
 SCENARIOS.direct_broad_date_qualification = c => broadDateQualification(c.input);
+// 2026-10-13 production canary: a recommendation question whose first draft
+// states unsupported money and whose repaired draft carries a product claim
+// the reviewer cannot verify. With current options the customer must get a
+// guarded answer naming the options — never the technical stub, never money.
+const SECOND_TITLE = 'Синтетическая Сванетия';
+SCENARIOS.direct_recommendation_rejected_drafts = async c => {
+  const rows = [authorityRow({ price_verified: 'false' }), authorityRow({ product_id: String(PRODUCT + 1), supplier_product_id: String(PRODUCT + 1), title: SECOND_TITLE, quote_scope_id: `${PRODUCT + 1}:PER_PERSON`, price_verified: 'false', price_evidence_ref: `tripster:${PRODUCT + 1}:price` })];
+  let responses = 0;
+  const model = calls => ({ complete: async request => {
+    calls.push(1);
+    if (request.purpose === 'direct_semantics') return { text: JSON.stringify({ ...semanticFixture(request), action: 'recommend' }) };
+    if (request.purpose === 'direct_response_semantics') {
+      const data = JSON.parse(request.messages?.[1]?.content || '{}');
+      const unsupported = String(data.DRAFT || '').includes(c.input.unsupportedClaim) ? [c.input.unsupportedClaim] : [];
+      return { text: JSON.stringify({ priorClaims: [], completedActions: [], unsupportedProductClaims: unsupported, ...(Array.isArray(data.PRODUCT_FACTS) && data.PRODUCT_FACTS.length ? { productClaims: [] } : {}) }) };
+    }
+    return { text: c.input.drafts[Math.min(responses++, c.input.drafts.length - 1)] };
+  } });
+  const d = createDirect('recommend', { rows, model });
+  try {
+    const r = await deliverDirect(d, 'synthetic_event_1', c.input.message, {});
+    const summary = directSummary(d, [r]);
+    const last = String(d.effects.sends[d.effects.sends.length - 1]?.text || '');
+    return { statuses: summary.statuses, sends: summary.sends, eventStates: summary.eventStates, legacyCalls: summary.legacyCalls,
+      ...attentionSummary(d), renderedMoney: summary.renderedMoney,
+      optionTitlesShown: [TITLE, SECOND_TITLE].filter(title => last.includes(title)).length,
+      unsupportedClaimSent: last.includes(c.input.unsupportedClaim) };
+  } finally { d.runtime.store.close(); }
+};
 SCENARIOS.direct_broad_date_matrix = async c => {
   const results = [];
   for (const turn of c.input.turns) {
@@ -617,12 +670,33 @@ async function comments(name, reply, policy = 'Synthetic policy.', options = {})
   } finally { runtime.store.close(); }
 }
 
+// The customer-facing technical stub is identified by the gate's own canonical
+// phrase and, additionally, by the candidate's declared constant.
+const GATE_TECHNICAL_STUB = /Сейчас не могу надёжно подтвердить детали/u;
+let SOURCE_TECHNICAL_STUB = null;
+try { SOURCE_TECHNICAL_STUB = String(src('instagram-v2/direct/fallback-policy').SAFE_TECHNICAL_REPLY || '').trim() || null; } catch (_) {}
+const isTechnicalStub = text => GATE_TECHNICAL_STUB.test(String(text || ''))
+  || Boolean(SOURCE_TECHNICAL_STUB && String(text || '').includes(SOURCE_TECHNICAL_STUB));
+
 (async () => {
   const out = {};
   for (const c of CASES) {
     const scenario = SCENARIOS[c.scenario];
     if (!scenario) throw new Error(`HARNESS_UNKNOWN_SCENARIO:${c.scenario}`);
+    CASE_DIRECT_EFFECTS.length = 0;
     out[c.id] = await scenario(c);
+    // Observed customer content, not a declared field: did any Direct send of
+    // this case deliver the technical stub? run.py rejects it unless the case
+    // explicitly expects a technical failure.
+    if (CASE_DIRECT_EFFECTS.length && out[c.id] && typeof out[c.id] === 'object') {
+      const stubSent = effects => effects.sends.some(item => isTechnicalStub(item?.text));
+      out[c.id].technicalStubSent = CASE_DIRECT_EFFECTS.some(stubSent);
+      // One runtime per turn: the observation is attributable to each turn.
+      const turns = out[c.id].results;
+      if (Array.isArray(turns) && turns.length === CASE_DIRECT_EFFECTS.length) {
+        out[c.id].technicalStubSentByTurn = CASE_DIRECT_EFFECTS.map(stubSent);
+      }
+    }
   }
   if (blocked.length) throw new Error(`EXTERNAL_OR_OUT_OF_SANDBOX_ACCESS:${[...new Set(blocked)].join(',')}`);
   process.stdout.write(JSON.stringify(out));

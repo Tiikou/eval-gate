@@ -35,7 +35,7 @@ INTEGRATION_ENTRIES = ['instagram-v2/runtime/direct-runtime.js', 'instagram-v2/p
                        'georgia-on-demand-quote.js', 'instagram-v2/integration/direct-entrypoint.js', 'instagram-v2/integration/ownership.js',
                        'instagram-v2/runtime/comments-runtime.js']
 LEAF_CAPABILITIES = {'node:fs','node:path','node:crypto','better-sqlite3'}
-INTEGRATION_CAPABILITIES = LEAF_CAPABILITIES | {'fs','path','crypto','os','node:os','node:url','child_process','node:child_process','node:net','node:dns','node:https','node:stream','node:util'}
+INTEGRATION_CAPABILITIES = LEAF_CAPABILITIES | {'fs','path','crypto','os','node:os','node:url','child_process','node:child_process','node:net','node:dns','node:https','node:stream','node:util','util'}
 DEFAULT_SOURCE = '/root/georgia-pr97-integration-20261001-evidence/primary-release-build'
 BASELINE = ROOT / 'georgia/baseline.json'
 CASE_FILES = [ROOT/'georgia/cases.json', ROOT/'georgia/integration_cases.json']
@@ -208,6 +208,28 @@ def schema(expected):
         properties[key] = {'type': kind, 'enum': [value]}
     return {'type':'object','required':list(expected),'properties':properties}
 
+def closed_world_violation(expected, output):
+    """A technical failure is an outcome only where the case declares it."""
+    if not isinstance(output, dict):
+        return True
+    def technical(observed):
+        return isinstance(observed, dict) and (observed.get('attentionReason') == 'technical_failure' or observed.get('technicalStubSent') is True)
+    if isinstance(expected.get('results'), list):
+        turns = output.get('results')
+        if not isinstance(turns, list) or len(turns) != len(expected['results']):
+            return True
+        # Multi-turn: each turn that does not declare a technical failure must
+        # not observe one; a case-level stub needs at least one declared turn.
+        stubs = output.get('technicalStubSentByTurn')
+        stubs = stubs if isinstance(stubs, list) and len(stubs) == len(turns) else [False] * len(turns)
+        if any(item.get('attentionReason') != 'technical_failure' and (technical(turn) or stub is True)
+               for item, turn, stub in zip(expected['results'], turns, stubs)):
+            return True
+        return output.get('technicalStubSent') is True and not any(item.get('attentionReason') == 'technical_failure' for item in expected['results'])
+    if expected.get('attentionReason') == 'technical_failure':
+        return False
+    return technical(output)
+
 def evaluate(source: Path, report_dir: Path, mutation=None, baseline=True):
     leaf_cases = json.loads(CASE_FILES[0].read_text())
     integration_cases = json.loads(CASE_FILES[1].read_text())
@@ -234,7 +256,7 @@ def evaluate(source: Path, report_dir: Path, mutation=None, baseline=True):
             raise RuntimeError(f'harness exit={proc.returncode}: {proc.stderr[-2500:]}')
         outputs = json.loads(proc.stdout)
         (work/'integration').mkdir()
-        proc = subprocess.run([shutil.which('node') or 'node', '--max-old-space-size=256', str(ROOT/'georgia/integration.cjs'), str(snapshot), str(work/'integration'), str(ROOT), str(CASE_FILES[1])],
+        proc = subprocess.run([shutil.which('node') or 'node', '--max-old-space-size=256', '--require', str(ROOT/'georgia/source-compat.cjs'), str(ROOT/'georgia/integration.cjs'), str(snapshot), str(work/'integration'), str(ROOT), str(CASE_FILES[1])],
                               env={'PATH':os.defpath, 'TZ':'UTC'}, capture_output=True,text=True,timeout=120)
         if proc.returncode != 0:
             raise RuntimeError(f'integration harness exit={proc.returncode}: {proc.stderr[-2500:]}')
@@ -266,13 +288,19 @@ def evaluate(source: Path, report_dir: Path, mutation=None, baseline=True):
         # Independent A/C deterministic assertions as a separate required bar.
         # Compare selected contract fields, not complete prose or extra metadata.
         code_failures = [c['id'] for c in cases if c['layer']!='B' and any(outputs[c['id']].get(k)!=v for k,v in c['expected'].items())]
+        # Closed-world customer outcome: declared fields alone let a positive
+        # case pass while the customer received the technical stub (2026-10-13
+        # release: 12/12 broad-date cases). A technical failure or a sent stub
+        # passes only where the case explicitly expects a technical failure.
+        closed_world_failures = [c['id'] for c in cases if c['layer']=='D' and closed_world_violation(c['expected'], outputs[c['id']])]
+        code_failures += [i for i in closed_world_failures if i not in code_failures]
         reference = [c['id'] for c in cases if c.get('production_contract') is False]
         failing = set(result.failing_case_ids()) | set(code_failures)
         counts = {'production_passed': sum(1 for c in cases if c['id'] not in reference and c['id'] not in failing),
                   'production_total': len(cases)-len(reference),
                   'integration_passed': sum(1 for c in integration_cases if c['id'] not in failing), 'integration_total': len(integration_cases),
                   'reference_passed': sum(1 for i in reference if i not in failing), 'reference_total': len(reference)}
-        (report_dir/'provenance.json').write_text(json.dumps({'source_root':str(source),'source_hashes':hashes,'native_dependency':native_provenance(),'mutation':mutation,'code_failures':code_failures,'counts':counts,'contract_sha256':contract_hash,'network':False,'production_writes':False,'external_calls':0},indent=2)+'\n')
+        (report_dir/'provenance.json').write_text(json.dumps({'source_root':str(source),'source_hashes':hashes,'native_dependency':native_provenance(),'mutation':mutation,'code_failures':code_failures,'closed_world_failures':closed_world_failures,'counts':counts,'contract_sha256':contract_hash,'network':False,'production_writes':False,'external_calls':0},indent=2)+'\n')
         result.code_failures = code_failures
         return verdict.exit_code or (1 if code_failures else 0), result
 

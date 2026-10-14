@@ -2016,5 +2016,32 @@
       "supplierTextLeaked": false
     },
     "provenance": "Synthetic available Comments context control: safe replies are delivered once, replay does not duplicate them, and no manager notice is created."
+  },
+  {
+    "id": "int_direct_recommendation_rejected_drafts",
+    "scenario": "direct_recommendation_rejected_drafts",
+    "layer": "D",
+    "input": {
+      "message": "Какие варианты экскурсий есть для двоих?",
+      "drafts": [
+        "Для двоих есть «Синтетическая Кахетия» — $450 на двоих. Какой вариант Вам ближе?",
+        "Для двоих могу предложить:\n1. Синтетическая Кахетия — обед включён.\n2. Синтетическая Сванетия\nКакой вариант Вам ближе?"
+      ],
+      "unsupportedClaim": "обед включён"
+    },
+    "expected": {
+      "statuses": [
+        "sent"
+      ],
+      "sends": 1,
+      "eventStates": [
+        "SENT"
+      ],
+      "legacyCalls": 0,
+      "renderedMoney": [],
+      "optionTitlesShown": 2,
+      "unsupportedClaimSent": false
+    },
+    "provenance": "Real production canary (2026-10-13): «какие варианты тура … для двоих?» — draft 1 rejected unsupported_money, the repaired draft rejected semantic_unverified_product_fact, and the customer received the technical stub although current options existed. Expected: the guarded catalog answer names the current options; no money, no unverified claim, no stub (closed-world)."
   }
 ]
