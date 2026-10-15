@@ -1,0 +1,32 @@
+{
+  "status": "READY_FOR_INTEGRATION",
+  "poc_verdict": "READY_FOR_INTEGRATION",
+  "scope_note": "Ready for a separate, explicitly authorized task to wire into Night Run/CI. Not connected to any deploy gate here.",
+  "georgia_agent_source_head": "2ebaf59d78fb8adddc4aa035f63184a751a08f97",
+  "georgia_agent_source_tree": "cc4900582f585e070a632809817bf502da476313",
+  "gateway_companion_inspected": "263f9baef218fbc2d8b1c1f56525b1641f3c4337",
+  "sources_verified": [
+    "default release build == git archive 2ebaf59 (diff -rq: only .git differs)",
+    "live Direct/webhook cwd = releases/git-2ebaf59...-aux-combined-v1; 485 runtime .js/.cjs/.mjs/.sql/.json files byte-identical to 2ebaf59"
+  ],
+  "upstream_sha": "71b832630e76da7d1dbe0d91c0c35145db2847c6",
+  "upstream_tests": "97/97 PASS",
+  "adapter_tests": "6/6 PASS",
+  "cases_total": 41,
+  "cases_pass": 41,
+  "production_contract_cases": "35/35",
+  "integration_cases": "11/11",
+  "legacy_reference_only_cases": "6/6 (not production guarantees)",
+  "mutations_total": 22,
+  "mutations_caught": 22,
+  "mutation_semantics": "GREEN control -> one anchored source mutation -> exit 1 with named expected detectors failing -> fresh unmodified GREEN control; exit 2/anchor errors are never catches",
+  "external_calls_real": 0,
+  "real_messages_sent": 0,
+  "real_crm_writes": 0,
+  "live_llm": false,
+  "exit_codes": {
+    "0": "PASS",
+    "1": "REGRESSION",
+    "2": "CONFIG/INFRASTRUCTURE"
+  }
+}
