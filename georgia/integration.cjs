@@ -143,7 +143,8 @@ function boundPlan(input, text) {
 }
 function boundReview(input, unsupported = []) {
   const data = boundTurn(input);
-  return { text: JSON.stringify({ inputHash: data.INPUT_HASH, priorClaims: [], completedActions: [], unsupportedProductClaims: unsupported, groundedChecks: [] }) };
+  return { text: JSON.stringify({ inputHash: data.INPUT_HASH, priorClaims: [], completedActions: [], unsupportedProductClaims: unsupported, groundedChecks: [],
+    ...(data.ACTION === 'recommend' ? { recommendationFit: 'SUPPORTED' } : {}) }) };
 }
 function directModel(calls) {
   return {
