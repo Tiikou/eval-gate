@@ -574,7 +574,7 @@ SCENARIOS.direct_recommendation_rejected_drafts = async c => {
   let responses = 0;
   const model = calls => ({ complete: async request => {
     calls.push(1);
-    if (request.purpose === 'direct_semantics') return { text: JSON.stringify({ ...semanticFixture(request), action: 'recommend' }) };
+    if (request.purpose === 'direct_semantics') return { text: JSON.stringify({ ...semanticFixture(request), action: 'recommend', catalogSearch: [{ q: c.input.message, kind: 'all', city: null, format: null }] }) };
     if (request.purpose === 'direct_response_semantics') {
       const data = JSON.parse(request.messages?.[1]?.content || '{}');
       const unsupported = String(data.ANSWER || data.DRAFT || '').includes(c.input.unsupportedClaim) ? [c.input.unsupportedClaim] : [];
