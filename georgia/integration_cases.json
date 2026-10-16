@@ -2039,9 +2039,24 @@
       ],
       "legacyCalls": 0,
       "renderedMoney": [],
-      "optionTitlesShown": 2,
-      "unsupportedClaimSent": false
+      "unsupportedClaimSent": false,
+      "generationDrafts": 2,
+      "candidateIds": [
+        42,
+        43
+      ],
+      "conversationMode": "AUTO",
+      "attentionOutcome": "NOTIFY_MANAGER",
+      "attentionReason": "technical_failure",
+      "attentionStatus": "ACTIVE",
+      "managerOutbox": [
+        "SENT"
+      ],
+      "managerCards": 1,
+      "selectedExperienceId": null,
+      "persistedMenuIds": [],
+      "safeTechnicalRefusal": true
     },
-    "provenance": "Real production canary (2026-10-13): «какие варианты тура … для двоих?» — draft 1 rejected unsupported_money, the repaired draft rejected semantic_unverified_product_fact, and the customer received the technical stub although current options existed. Expected: the guarded catalog answer names the current options; no money, no unverified claim, no stub (closed-world)."
+    "provenance": "Real production canary (2026-10-13): the first draft's unsupported price and repaired draft's unsupported product claim are both denied. After the bounded two-draft budget, the required outcome is the exact safe technical refusal plus one durably receipted NOTIFY_MANAGER/technical_failure notice while AUTO continues. Canonical candidate IDs are observed; rejected drafts must not create a product selection or persist a menu the customer never received. No money or unsupported claim may be sent."
   }
 ]

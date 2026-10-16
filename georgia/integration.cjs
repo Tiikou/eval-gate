@@ -522,7 +522,7 @@ function stagedModel(calls, mode, qualificationText = FORMAT_QUESTION) {
 }
 const { quoteInputFrom } = src('instagram-v2/direct/catalog-selection');
 const { validateInterpretation } = src('instagram-v2/direct/conversation-semantics');
-const { FALLBACK_TEXT } = src('instagram-v2/direct/fallback-policy');
+const { FALLBACK_TEXT, SAFE_TECHNICAL_REPLY } = src('instagram-v2/direct/fallback-policy');
 const REASK_PEOPLE = /сколько\s+(?:вас|человек|людей|гост|участник)|количеств\S*\s+(?:человек|гостей|участник)/iu;
 const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+)?(?:старт|выезж|поед|начин)|город\S*\s+(?:старта|отправлени|выезда)/iu;
 const EXTERNAL_ACTION = /подтверждаю\s+бронь|бронь\s+подтвержден|забронировал[аи]?(?![а-я])|оформил[аи]?\s+бронь/iu;
@@ -565,8 +565,9 @@ async function broadDateQualification({ message, model = 'qualification' }) {
 SCENARIOS.direct_broad_date_qualification = c => broadDateQualification(c.input);
 // 2026-10-13 production canary: a recommendation question whose first draft
 // states unsupported money and whose repaired draft carries a product claim
-// the reviewer cannot verify. With current options the customer must get a
-// guarded answer naming the options — never the technical stub, never money.
+// the reviewer cannot verify. The current fail-safe contract exhausts the
+// bounded model budget, sends the safe technical refusal, and durably notifies
+// the manager; application code must not choose products to rescue bad drafts.
 const SECOND_TITLE = 'Синтетическая Сванетия';
 SCENARIOS.direct_recommendation_rejected_drafts = async c => {
   const rows = [authorityRow({ price_verified: 'false' }), authorityRow({ product_id: String(PRODUCT + 1), supplier_product_id: String(PRODUCT + 1), title: SECOND_TITLE, quote_scope_id: `${PRODUCT + 1}:PER_PERSON`, price_verified: 'false', price_evidence_ref: `tripster:${PRODUCT + 1}:price` })];
@@ -588,10 +589,22 @@ SCENARIOS.direct_recommendation_rejected_drafts = async c => {
     const r = await deliverDirect(d, 'synthetic_event_1', c.input.message, {});
     const summary = directSummary(d, [r]);
     const last = String(d.effects.sends[d.effects.sends.length - 1]?.text || '');
+    const envelope = d.runtime.store.getConversationContextEnvelope({ accountId: ACCOUNT, conversationId: CONVERSATION }) || {};
+    const leadFacts = envelope.leadFacts || {};
+    const persistedMenuIds = [...new Set((Array.isArray(envelope.lastOptions) ? envelope.lastOptions : [])
+      .flatMap(option => Array.isArray(option?.variants) ? option.variants : [])
+      .map(row => Number(row?.experienceId ?? row?.id))
+      .filter(id => Number.isSafeInteger(id) && id > 0))].sort((a, b) => a - b);
     return { statuses: summary.statuses, sends: summary.sends, eventStates: summary.eventStates, legacyCalls: summary.legacyCalls,
       ...attentionSummary(d), renderedMoney: summary.renderedMoney,
-      optionTitlesShown: [TITLE, SECOND_TITLE].filter(title => last.includes(title)).length,
-      unsupportedClaimSent: last.includes(c.input.unsupportedClaim) };
+      unsupportedClaimSent: last.includes(c.input.unsupportedClaim),
+      generationDrafts: responses,
+      candidateIds: [...new Set(d.effects.cards.map(card => Number(card.id)).filter(id => Number.isSafeInteger(id) && id > 0))].sort((a, b) => a - b),
+      conversationMode: String((d.runtime.store.getConversation(ACCOUNT, CONVERSATION) || {}).mode || ''),
+      selectedExperienceId: Number.isSafeInteger(Number(leadFacts.selectedExperienceId)) && Number(leadFacts.selectedExperienceId) > 0
+        ? Number(leadFacts.selectedExperienceId) : null,
+      persistedMenuIds,
+      safeTechnicalRefusal: last === SAFE_TECHNICAL_REPLY };
   } finally { d.runtime.store.close(); }
 };
 SCENARIOS.direct_broad_date_matrix = async c => {
