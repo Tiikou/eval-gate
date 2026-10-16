@@ -183,13 +183,20 @@ const MANAGER_INTENTS = [
 function semanticFixture(request) {
   const data = JSON.parse(request.messages?.[1]?.content || '{}');
   const message = String(data.CURRENT_MESSAGE || '');
-  const proposal = { format: { state: 'unknown', choice: null, source: null, quote: null }, updates: [], requestKind: 'travel', availabilityRequested: false, action: 'qualify', questions: [], correction: false, apologyWarranted: false, selection: null, releaseSelection: false, topicSwitch: false, transitionEvidence: null };
+  const proposal = { format: { state: 'unknown', choice: null, source: null, quote: null }, updates: [], requestKind: 'travel', availabilityRequested: false, action: 'qualify', questions: [], correction: false, apologyWarranted: false, selection: null, releaseSelection: false, topicSwitch: false, transitionEvidence: null, catalogSearch: [] };
   // The semantic contract requires a typed managerIntent with a verbatim
   // current-message quote; a bare action:'handoff' is invalid model output.
   const intent = MANAGER_INTENTS.find(([pattern]) => pattern.test(message));
   if (intent) {
     proposal.managerIntent = { outcome: intent[1], reason: intent[2], quote: message.match(intent[0])[0], ...(intent[2] === 'custom_quote' ? { formatRequired: false } : {}) };
     if (intent[1] === 'MANUAL_HANDOFF') proposal.action = 'handoff';
+    // The deterministic model fixture makes a bounded catalog intent for a
+    // custom-route request. This lets the integration test exercise the same
+    // canonical candidate path as the live semantic contract; it grants no
+    // product, price, selection, or delivery authority.
+    if (intent[2] === 'custom_quote') proposal.catalogSearch = [
+      { q: 'индивидуальный маршрут винодельни', kind: 'all', city: null, format: null }
+    ];
   }
   if (/сколько стоит|сколько будет стоить/i.test(message)) { proposal.action = 'answer'; proposal.questions = ['price']; }
   const facts = [
