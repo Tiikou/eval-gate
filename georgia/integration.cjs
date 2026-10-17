@@ -527,6 +527,13 @@ const REASK_PEOPLE = /сколько\s+(?:вас|человек|людей|го�
 const REASK_CITY = /из\s+какого\s+города|откуда\s+(?:вы\s+)?(?:старт|выезж|поед|начин)|город\S*\s+(?:старта|отправлени|выезда)/iu;
 const EXTERNAL_ACTION = /подтверждаю\s+бронь|бронь\s+подтвержден|забронировал[аи]?(?![а-я])|оформил[аи]?\s+бронь/iu;
 const REASK_DATE = /на\s+какие\s+даты|какого\s+числа|когда\s+(?:вы\s+)?(?:планиру|приезжа|прилета)/iu;
+// Durable model-wait lifecycle: present only when an outage left the event in
+// REJECTED_BEFORE_DELIVERY/model_unavailable_transient, so other cases' outputs
+// are unchanged. Deterministic fields only (no timestamps or retry deadlines).
+function durableRetrySummary({ runtime }) {
+  const rows = runtime.store.db.prepare("SELECT status, error_code, attempt FROM events WHERE account_id=? AND channel IN ('direct','fallback') AND error_code='model_unavailable_transient' ORDER BY event_id").all(ACCOUNT);
+  return rows.length ? { durableRetry: rows.map(e => ({ eventState: e.status, errorCode: e.error_code, attempt: e.attempt })) } : {};
+}
 async function broadDateQualification({ message, model = 'qualification' }) {
   // The synthetic offer is group-only, so FORMAT_QUESTION is correctly
   // rejected by the product format guard; as the broad-date qualification
@@ -547,6 +554,7 @@ async function broadDateQualification({ message, model = 'qualification' }) {
       conversationMode: String(conversation.mode || ''),
       modeReason: String(conversation.mode_reason || ''),
       ...attentionSummary(d),
+      ...durableRetrySummary(d),
       genericFallback: d.effects.sends.some(x => String(x.text).trim() === FALLBACK_TEXT),
       modelCalls: d.effects.modelCalls.length,
       people: Number.isInteger(facts.people) ? facts.people : null,
