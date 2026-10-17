@@ -140,7 +140,9 @@ EXPECTED_DETECTORS = {
  'broad_window_collapsed_to_one_day': {'int_hard_broad_windows'},
  'semantic_week_statement_availability': {'int_hard_date_statement'},
  'semantic_human_boundary_bypass': {'int_review22_boundaries', 'int_handoff_human_receipt_owned'},
- 'technical_hard_handoff': {'int_model_unavailable_broad_date_real', 'int_response_model_unavailable'},
+ # A model outage sends no technical reply (2026-10-17 policy); the technical
+ # reply on unusable model output still carries the handoff outcome.
+ 'technical_hard_handoff': {'int_direct_recommendation_rejected_drafts', 'int_response_rejected_money', 'int_review22_participants', 'int_review22_son'},
  'complete_custom_brief_not_notified': {'int_handoff_custom_complete_notify_once'},
  'incomplete_custom_brief_hard_handoff': {'int_handoff_custom_incomplete_auto'},
  'manager_sent_without_receipt': {'int_handoff_unknown_receipt_held'},
