@@ -74,7 +74,7 @@ MUTATIONS = {
  'semantic_stale_format': ('instagram-v2/direct/conversation-semantics.js', "if (format.source !== 'CURRENT_MESSAGE' && (prior.format || prior.formatOpen === true)", "if (false && format.source !== 'CURRENT_MESSAGE' && (prior.format || prior.formatOpen === true)"),
  'semantic_false_product': ('instagram-v2/direct/conversation-semantics.js', 'if (review.unsupportedProductClaims.length) {', 'if (false && review.unsupportedProductClaims.length) {'),
  'semantic_false_action': ('instagram-v2/direct/conversation-semantics.js', "if (review.completedActions.length) return 'semantic_unverified_external_action';", "if (false && review.completedActions.length) return 'semantic_unverified_external_action';"),
- 'semantic_false_prior': ('instagram-v2/direct/conversation-semantics.js', 'for (const claim of review.priorClaims) {', 'for (const claim of []) {'),
+ 'semantic_false_prior': ('instagram-v2/direct/conversation-semantics.js', 'for (const claim of choiceOnlyInCustomerQuotes(draft, input) ? [] : review.priorClaims) {', 'for (const claim of []) {'),
  'fabricated_availability': ('instagram-v2/direct/output-guard.js', 'if (factReason) return { text: null, reason: factReason };', 'if (false && factReason) return { text: null, reason: factReason };'),
  'stale_delivery_claim': ('instagram-v2/state-store.js', "if(!event||event.lease_owner!==claim.leaseOwner||event.revision!==claim.eventRevision)throw new GeorgiaV2Error('event_claim_mismatch');", "if(!event||event.lease_owner!==claim.leaseOwner)throw new GeorgiaV2Error('event_claim_mismatch');"),
  'manual_stale_cas': ('instagram-v2/state-store.js', 'WHERE account_id=? AND conversation_id=? AND revision=?`).run(mode,reason,now,boundaryReceivedAt,boundaryEventId,now,text(accountId),text(conversationId),expectedRevision);', 'WHERE account_id=? AND conversation_id=? AND ? IS NOT NULL`).run(mode,reason,now,boundaryReceivedAt,boundaryEventId,now,text(accountId),text(conversationId),expectedRevision);'),
@@ -83,7 +83,7 @@ MUTATIONS = {
  'overwrite_current_format': ('instagram-v2/direct/conversation-semantics.js', 'facts.format = choice;', "facts.format = 'group';"),
  'broad_date_dropped': ('instagram-v2/context/direct-lead-state.js', 'const broad=broadDateWindow(value,today);', 'const broad=null;'),
  'broad_window_collapsed_to_one_day': ('instagram-v2/context/direct-lead-state.js', 'if(sy===ey&&sm===em)return`${start.getUTCDate()}–${end.getUTCDate()} ${MONTH_NAMES[em]} ${ey}`;', 'if(sy===ey&&sm===em)return`${start.getUTCDate()} ${MONTH_NAMES[sm]} ${sy}`;'),
- 'semantic_week_statement_availability': ('instagram-v2/direct/conversation-semantics.js', 'proposedAction, managerIntent, selection, droppedSelection, qualificationDeferral, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });', "proposedAction, managerIntent, availabilityRequested:true, questions:['date_availability'], selection, droppedSelection, qualificationDeferral, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });"),
+ 'semantic_week_statement_availability': ('instagram-v2/direct/conversation-semantics.js', 'proposedAction, managerIntent, selection, droppedSelection, qualificationDeferral, exclusions: acceptedExclusions, droppedExclusions, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });', "proposedAction, managerIntent, availabilityRequested:true, questions:['date_availability'], selection, droppedSelection, qualificationDeferral, exclusions: acceptedExclusions, droppedExclusions, leadFacts: facts, priorLeadFacts: prior, provenance, currentFacts });"),
  'semantic_human_boundary_bypass': ('instagram-v2/direct/builder.js', "if (managerIntent?.outcome === 'MANUAL_HANDOFF') {", "if (false) {"),
  # Direct handoff lifecycle (approved AUTO / NOTIFY_MANAGER / MANUAL_HANDOFF policy).
  'technical_hard_handoff': ('instagram-v2/direct/fallback-policy.js', "handoffOutcome: 'NOTIFY_MANAGER', handoffReason: 'technical_failure',", "handoffOutcome: 'MANUAL_HANDOFF', handoffReason: 'technical_failure',"),
@@ -140,7 +140,9 @@ EXPECTED_DETECTORS = {
  'broad_window_collapsed_to_one_day': {'int_hard_broad_windows'},
  'semantic_week_statement_availability': {'int_hard_date_statement'},
  'semantic_human_boundary_bypass': {'int_review22_boundaries', 'int_handoff_human_receipt_owned'},
- 'technical_hard_handoff': {'int_model_unavailable_broad_date_real', 'int_response_model_unavailable'},
+ # A model outage sends no technical reply (2026-10-17 policy); the technical
+ # reply on unusable model output still carries the handoff outcome.
+ 'technical_hard_handoff': {'int_direct_recommendation_rejected_drafts', 'int_response_rejected_money', 'int_review22_participants', 'int_review22_son'},
  'complete_custom_brief_not_notified': {'int_handoff_custom_complete_notify_once'},
  'incomplete_custom_brief_hard_handoff': {'int_handoff_custom_incomplete_auto'},
  'manager_sent_without_receipt': {'int_handoff_unknown_receipt_held'},
